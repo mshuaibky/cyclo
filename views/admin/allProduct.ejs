@@ -1,0 +1,78 @@
+
+
+<div class="col-lg-10 grid-margin stretch-card ">
+
+    
+    <div class="card">
+      <div class="card-body">
+        <a href="/admin/addProduct" class="btn btn-info ml-auto">Add products</a>
+      
+        <div class="table-responsive pt-3">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>
+               No
+                </th>
+                <th>
+                 Image
+                </th>
+                <th>
+                 Name
+                </th>
+                <th>
+                Discribtion
+                </th>
+                <th>
+                  Catagory
+                  </th>
+                  <th>
+                  Price
+                    </th>
+                <th>
+                 
+                </th>
+               
+              </tr>
+            </thead>
+            <tbody>
+              <% products.forEach((products,index)=>{ %>
+
+           
+              <tr>
+                <td>
+                  <%- index+1 %> 
+                </td>
+                <td>
+                    <img style="border-radius: 0px!important;width: 102px!important;height: 85px!important;" src=/productimages/<%= products._id %>.jpg alt="image">
+                </td>
+                <td>
+                  <%- products.name %> 
+                  </td>
+                <td>
+                  <%- products.description %> 
+                </td>
+                <td>
+                  <%- products.catagory %> 
+                </td>
+                <td>
+                  <%- products.price %> 
+                
+                </td>
+                <td>
+                   
+                    <a href="/admin/editProduct/<%= products._id %>"  class="btn-sm btn-primary   mr-5">Edit</a>
+                  
+                    <a href="/admin/deleteProduct/<%= products._id %>" onclick="return confirm('are you sure want to delete')" class="btn-sm btn-danger ">Delete</a>
+                  
+                  
+              
+            </td>
+              </tr>
+           <% })%>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>

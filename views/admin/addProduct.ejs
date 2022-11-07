@@ -1,0 +1,46 @@
+<div class="col-8 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Basic form elements</h4>
+            <p class="card-description">
+                Basic form elements
+            </p>
+
+        
+            <form action="/admin/allProduct"  method="post" class="forms-sample" enctype="multipart/form-data">
+              
+                <div class="form-group">
+                    <label for="exampleInputName1">Name</label>
+                    <input type="text" name="name" class="form-control" placeholder="Name" >
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputName1">Describtion</label>
+                    <input type="text" name="description" class="form-control" placeholder="Discribtion">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail3">Catagory</label>
+                   
+                        <label for="exampleInputName1">catagory</label>
+                        <select class="form-control" name="catagory" id="exampleSelectGender">
+                            <% catagory.forEach((catagory)=>{ %> 
+                            <option value="<%= catagory.name %> "><%= catagory.name %> </option>
+                            <% }) %> 
+                        </select>
+                       
+                    
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail3">Price</label>
+                    <input type="text" name="price" class="form-control" placeholder="price">
+                </div>
+                <div class="form-group">
+                    <label>File upload</label>
+                    <input type="file" name="Image" class="form-control">
+                   
+                </div>
+                <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                <button class="btn btn-light">Cancel</button>
+            </form>
+        </div>
+    </div>
+</div>

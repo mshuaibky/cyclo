@@ -1,0 +1,59 @@
+
+
+<div class="col-lg-10 grid-margin stretch-card ">
+
+    
+    <div class="card">
+      <div class="card-body">
+        <a href="/admin/addCatagory" class="btn btn-info ml-auto">Add Catagory</a>
+      
+        <div class="table-responsive pt-3">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>
+                  No
+                </th>
+               
+                <th>
+                 Name
+                  </th>
+                 
+                <th>
+                 
+                </th>
+               
+              </tr>
+            </thead>
+            <tbody>
+              
+              <% catagory.forEach((catagory,index)=>{ %>
+           
+              <tr>
+                <td>
+                <%- index+1 %> 
+                </td>
+              
+                <td>
+                <%- catagory.name%> 
+                  </td>
+               
+                </td>
+                <td>
+                   
+                    <a href="/admin/editCatagory/<%= catagory._id %>"  class="btn-sm btn-primary   mr-5">Edit</a>
+                  
+                    <a href="/admin/deleteCatagory/<%= catagory._id %>" onclick=" return confirm('are you sure want to delete')" class="btn-sm btn-danger ">Delete</a>
+                  
+                  
+              
+            </td>
+                
+              </tr>
+              <% })%>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>

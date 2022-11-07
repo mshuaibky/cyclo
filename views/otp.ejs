@@ -1,0 +1,125 @@
+<main class="main">
+    <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17"
+        style="background-image: url('/images/backgrounds/c3.jpg')">
+        <div class="container">
+            <div class="form-box">
+                <div class="form-tab">
+                    <ul class="nav nav-pills nav-fill" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="register-tab-2" data-toggle="tab" role="tab"
+                                aria-controls="register-2" aria-selected="true">OTP Login</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="register-2" role="tabpanel"
+                            aria-labelledby="register-tab-2">
+                            <form action="#">
+
+                                <div class="form-group">
+                                    <p class="text-danger" id="err"></p>
+                                    <label for="register-password-2">Mobile</label>
+                                    <input type="tel" class="form-control" id="mobile" name="mobile" required>
+                                </div><!-- End .form-group -->
+                                <button type="button" onclick="validation()" class="btn btn-outline-primary-2">
+                                    <span>SEND OTP</span>
+                                    <i class="icon-long-arrow-right"></i>
+                                </button>
+                                <div class="form-group">
+                                    <p class="text-danger" id="err"></p>
+                                    <label for="register-email-2">Enter otp</label>
+                                    <input type="tel" class="form-control" id="otp" name="otp" required>
+                                </div><!-- End .form-group -->
+
+                                <div class="form-footer">
+                                    <button type="button" onclick="verify()" class="btn btn-outline-primary-2">
+                                        <span>Login</span>
+                                        <i class="icon-long-arrow-right"></i>
+                                    </button>
+
+                                    <div class="ml-2">
+                                        <input type="checkbox" class="custom-control-input" id="register-policy-2"
+                                            required>
+                                        <label class="custom-control-label" for="register-policy-2">Dont have an
+                                            account ? <a href="/signup"> SignUp Now</a></label>
+                                    </div><!-- End .custom-checkbox -->
+                                </div><!-- End .form-footer -->
+                            </form>
+                        </div><!-- End .row -->
+                    </div><!-- End .form-choice -->
+                </div><!-- .End .tab-pane -->
+            </div><!-- End .tab-content -->
+        </div><!-- End .form-tab -->
+    </div><!-- End .form-box -->
+    </div><!-- End .container -->
+    </div><!-- End .login-page section-bg -->
+</main><!-- End .main -->
+
+<script>
+function validation(){
+    const mobile=document.getElementById('mobile')
+    const mobileValue=mobile.value?.trim()
+    const err1=mobile.parentElement.querySelector("P")
+    
+
+    let flag=1
+    if(mobileValue==""){
+        err1.innerText="this field is required"
+        flag=2
+    }
+    else if (!mobileValue.match(/^[0-9]{10}$/)){
+    err1.innerText='Enter a valid mobile number'
+    flag=2
+    }
+   
+    if(flag==1){
+        submit1(mobileValue);
+    
+    }
+    function submit1(mobileValue){
+        fetch(`/otp-login?phonenumber=${mobileValue}`,{
+       method:'GET',
+       headers:{
+        'Content-Type':'application/json'
+            }
+        })
+    }
+}
+
+
+
+    function verify(){
+        const otp=document.getElementById('otp')
+        const otpValue=otp.value?.trim();
+       
+          let flag=1
+        if(otpValue==""){
+        err2.innerText="this field is required"
+    }
+        submit(otpValue);
+
+        
+
+        function submit(otpValue){
+            const mobileValue=document.getElementById('mobile').value
+            fetch(`/otpVerify?phonenumber=${mobileValue}'&code=${otpValue}`,{
+                method:'GET',
+                headers:{
+                    'content-Type':'application/JSON'
+                }
+            }).then((res)=>res.json())
+              .then((res)=>{
+                if(res.value=='success'){
+                    window.location.href='/'
+                }
+                else{
+                    const otp=document.getElementById('otp')
+                    const err2=otp.parentElement.querySelector("p")
+                    const otpValue=otp.value?.trim();
+       
+                    err2.innerText="otp not valid"
+                                  }
+              })
+
+        }
+    }
+</script>
