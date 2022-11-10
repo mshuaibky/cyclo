@@ -60,7 +60,9 @@
                                     </div><!-- End .product-action -->
 
                                     <div class="product-action action-icon-top">
-                                        <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                                        <button onclick="addtocart('<%= products._id %>')"  class="btn-product btn-cart"> Add to cart</button>
+
+
                                         <a href="popup/quickView.html" class="btn-product btn-quickview" title="Quick view"><span>quick view</span></a>
                                         <a href="#" class="btn-product btn-compare" title="Compare"><span>compare</span></a>
                                     </div><!-- End .product-action -->
@@ -354,3 +356,21 @@
         </div><!-- End .page-content -->
     </main><!-- End .main -->
 </section>
+
+<script>
+   function addtocart(proId){
+    $.ajax({
+        url:'/addtocart/'+proId,
+        method:'get',
+        success:(response)=>{
+            if(response.status){
+                console.log('test status');
+                let count=$('#cart').html()
+                count=parseInt(count)+1
+                $("#cart").html(count)
+            }
+           
+        }
+    })
+}
+</script>

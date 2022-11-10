@@ -5,12 +5,51 @@
            
             <form action="/admin/editCatagory/<%- catagory._id  %> "  method="post" class="forms-sample" enctype="">
                 <div class="form-group">
-                    <label for="exampleInputName1">Name</label>
-                    <input type="text" name="name" class="form-control" placeholder="Name" value="<%- catagory.name  %> ">
+                    <p id="err" class="text-danger"></p>
+                    <label  for="exampleInputName1">Name</label>
+                    <input id="name" type="text" name="name" class="form-control" placeholder="Name" value="<%- catagory.name  %> ">
                 </div>
-                <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                <button onclick="validate()" type="submit" class="btn btn-primary mr-2">Submit</button>
               
             </form>
         </div>
     </div>
 </div>
+
+<!-- <script>
+  function validate(){
+    const name=document.getElementById('name')
+    const nameValue=name.value?.trim()
+    const err1=name.parentElement.querySelector('p')
+
+    let flag=1
+    if(nameValue==""){
+        err1.innerText="this field is required"
+        flag=2
+    }
+    if(flag==1){
+        submit(nameValue)
+   
+    }
+    function submit(nameValue){
+       fetch("/admin/addCatagory",{
+        method:'post',
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify({
+            name:nameValue
+        })
+        
+       }).then((res)=>res.json())
+         .then((res)=>{
+            if(res.value='success'){
+                window.location.href='/admin/catagory'
+            }else{
+                err1.document.getElementById('err').innerText="catagory already ecxists"
+            }
+         })
+    }
+  }
+
+</script> -->

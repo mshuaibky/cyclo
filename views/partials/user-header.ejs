@@ -110,16 +110,18 @@
 
              
                 
-                <div class="wishlist">
-                    <a href="/cart" title="Wishlist">
+                <div class="dropdown cart-dropdown">
+                    <a href="/cart" class="dropdown-toggle"  a>
                         <div class="icon">
                             <i class="icon-shopping-cart"></i>
-                           
+                            <span id="cart" class="cart-count"><%= locals.cartcount %> </span>
                         </div>
                         <p>Cart</p>
                     </a>
-                </div><!-- End .compare-dropdown -->
 
+                   
+                    </div><!-- End .dropdown-menu -->
+                </div><!-- End .cart-dropdown -->
             </div><!-- End .header-right -->
         </div><!-- End .container -->
     </div><!-- End .header-middle -->

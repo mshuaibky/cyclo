@@ -8,7 +8,7 @@ module.exports={
 addproduct:(product)=>{
     return new Promise(async(resolve,reject)=>{
       let data=await db.product(product)
-      console.log(product);
+      
       data.save()
       resolve(data._id)
     })
@@ -57,12 +57,30 @@ updateProduct:(proId,proDetails)=>{
   })
 },
 
-addCatagory:(catagory)=>{
+addCatagory:(catagoryFromUser)=>{
+
  return new Promise(async(resolve,reject)=>{
- let cata=await db.catagory(catagory)
-  cata.save()
-  resolve(cata)
+  console.log(catagoryFromUser);
+   db.catagory.find({name:catagoryFromUser.name}).then( async(catagory)=>{
+    console.log(catagory)
+     let response={}
+     if(catagory.length == 0){
+      
+       let cata= await db.catagory(catagoryFromUser)
+
+
+      cata.save()
+      response.data=cata
+       response.status=true
+
+      resolve(response)
+
+    }else{
+      resolve({status:false})
+    }
+
  })
+})
 },
 
 getallCatagory:()=>{

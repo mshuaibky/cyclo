@@ -2,15 +2,58 @@
     <div class="card">
         <div class="card-body">
             <h4 class="card-title">Add Catagory</h4>
+            <p id="err1" class="text-danger" ></p>
            
-            <form action="/admin/addCatagory"  method="post" class="forms-sample" enctype="">
+            <form action=""  method="" class="forms-sample" enctype="">
                 <div class="form-group">
+                    <p id="error" class="text-danger"></p>
                     <label for="exampleInputName1">Name</label>
-                    <input type="text" name="name" class="form-control" placeholder="Name" >
+                    <input id="name" type="text" name="name" class="form-control" placeholder="Name" >
                 </div>
-                <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                <button onclick="validate()" type="button" class="btn btn-primary mr-2">Submit</button>
               
             </form>
         </div>
     </div>
 </div>
+<script>
+    function validate(){
+      const name=document.getElementById('name')
+      const nameValue=name.value?.trim()
+      const err1=name.parentElement.querySelector('p')
+  
+      let flag=1
+      if(nameValue==""){
+          err1.innerText="This Field Is Required"
+          flag=2
+      }
+      if(flag==1){
+          submit(nameValue)
+     
+      }
+      function submit(nameValue){
+         fetch("/admin/addCatagory",{
+          method:'post',
+          headers:{
+              'Content-Type':'application/json'
+          },
+          body:JSON.stringify({
+//.........   data base schema(name) ............//  
+           name:nameValue
+          })
+          
+         }).then((res)=>res.json())
+           .then((res)=>{
+              if(res.value=='success'){
+                console.log('if');
+                  window.location.href='/admin/catagory'
+              }else{
+               
+                let err1=document.getElementById('err1')
+                err1.innerText='Catagory Already Exists'
+              }
+           })
+      }
+    }
+  
+  </script>

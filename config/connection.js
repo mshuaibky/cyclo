@@ -1,6 +1,7 @@
 const mongoose=require('mongoose')
+const {ObjectId}=require('mongoose')
 const db=mongoose.createConnection('mongodb://localhost:27017/cycles')
-const bcrypt=require('bcrypt')
+
 
 db.on('error',(err)=>{
     console.log(err);
@@ -35,8 +36,19 @@ const catagoryschema= new mongoose.Schema({
     name:String
 })
 
+const cartschema=new mongoose.Schema({
+user:mongoose.Types.ObjectId,
+products:[{
+    item: mongoose.Types.ObjectId,
+    quantity: Number,
+    name:String
+
+}]
+})
+
 module.exports={
     product:db.model('products',productschema),
     users:db.model('Users',Userschema),
-    catagory:db.model('catagory',catagoryschema)
+    catagory:db.model('catagory',catagoryschema),
+    cart:db.model('cart',cartschema)
 }

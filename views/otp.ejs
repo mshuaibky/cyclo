@@ -16,6 +16,7 @@
                             <form action="#">
 
                                 <div class="form-group">
+                                    <p class="text-danger" id="err4"></p>
                                     <p class="text-danger" id="err"></p>
                                     <label for="register-password-2">Mobile</label>
                                     <input type="tel" class="form-control" id="mobile" name="mobile" required>
@@ -25,6 +26,8 @@
                                     <i class="icon-long-arrow-right"></i>
                                 </button>
                                 <div class="form-group">
+                                    <p id="err2" class="text-danger"></p>
+                                    <p id="err1" class="text-danger"></p>
                                     <p class="text-danger" id="err"></p>
                                     <label for="register-email-2">Enter otp</label>
                                     <input type="tel" class="form-control" id="otp" name="otp" required>
@@ -60,6 +63,7 @@ function validation(){
     const mobileValue=mobile.value?.trim()
     const err1=mobile.parentElement.querySelector("P")
     
+    
 
     let flag=1
     if(mobileValue==""){
@@ -79,9 +83,20 @@ function validation(){
         fetch(`/otp-login?phonenumber=${mobileValue}`,{
        method:'GET',
        headers:{
-        'Content-Type':'application/json'
+        'Content-Type':'application/JSON'
             }
-        })
+        }).then((res)=>res.json())
+          .then((res)=>{
+            if(value=='success'){
+err1.getElementById('err1').innerText="you will get your otp"
+            }
+            else{
+              
+               let err4=document.getElementById('err4')
+               err4.innerText="user not exist"
+
+            }
+          })
     }
 }
 
@@ -90,12 +105,17 @@ function validation(){
     function verify(){
         const otp=document.getElementById('otp')
         const otpValue=otp.value?.trim();
+        const err2=otp.parentElement.querySelector('p')
        
           let flag=1
         if(otpValue==""){
         err2.innerText="this field is required"
+        flag=2
     }
+    if(flag==1){
         submit(otpValue);
+
+    }
 
         
 
@@ -112,11 +132,8 @@ function validation(){
                     window.location.href='/'
                 }
                 else{
-                    const otp=document.getElementById('otp')
-                    const err2=otp.parentElement.querySelector("p")
-                    const otpValue=otp.value?.trim();
-       
-                    err2.innerText="otp not valid"
+                   const err3=document.getElementById('err2')
+                   err3.innerText="otp is not valid"
                                   }
               })
 
