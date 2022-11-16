@@ -50,5 +50,17 @@ router.post('/changeProductQuantity',controller.changeproductquntity)
 
 router.post('/deleteCartProduct',controller.deleteCartProduct)
 
+router.get('/checkout',controller.checkOut)
+
+router.post('/checkout',controller.placeOrder)
+
+router.get('/orders',controller.orders)
+
+router.post('/cancelOrder',controller.cancelOrder)
+
+router.get('/success',controller.success)
+
+router.get('/filladdres/:id',controller.fillAddress)
+
 
 module.exports = router;

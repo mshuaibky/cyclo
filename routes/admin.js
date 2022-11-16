@@ -9,7 +9,8 @@ const data=require('../config/admindetails');
 const { DayInstance } = require('twilio/lib/rest/bulkexports/v1/export/day');
 const { TrustProductsEvaluationsList } = require('twilio/lib/rest/trusthub/v1/trustProducts/trustProductsEvaluations');
 const adminController=require('../controlers/admincontroller');
-const admincontroller = require('../controlers/admincontroller');
+
+
 
  
 /* GET users listing. */
@@ -47,7 +48,7 @@ router.get('/editProduct/:id',adminController.editProducts)
 
 
 
-router.post('/editProduct/:id',admincontroller.editProductsPost)
+router.post('/editProduct/:id',adminController.editProductsPost)
 
 
 router.get('/deleteProduct/:id',adminController.deleteProductsGet)
@@ -80,5 +81,10 @@ router.get('/adminlogin',adminController.adminLoginGet)
 router.post('/adminlogin',adminController.adminLoginPost)
 
 router.get('/adminlogout',adminController.adminLogout)
+
+router.get('/adminOrders',adminController.adminOrders)
+
+
+
 
 module.exports = router;

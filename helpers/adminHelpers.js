@@ -1,5 +1,6 @@
 const data=require('../config/admindetails')
 const bcrypt = require('bcrypt');
+const db = require('../config/connection')
 
 module.exports={
  
@@ -25,6 +26,15 @@ module.exports={
                 resolve({status:false})
             }
         })
-    }
+    },
+    getorders:(userId)=>{
+       
+        return new Promise(async(resolve,reject)=>{
+        let orders=await db.order.find({})
+               resolve(orders)
+         
+        })
+    },
 
+    
 }

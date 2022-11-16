@@ -46,9 +46,52 @@ products:[{
 }]
 })
 
+
+const addressschema=new mongoose.Schema({
+  user:mongoose.Types.ObjectId,
+  address:[{
+    firstname:String,
+    lastname:String,
+    country:String,
+    street:String,
+    city:String,
+    state:String,
+    pincode:Number,
+    phone:Number,
+    email:String,
+  }]
+})
+
+const orderschema=new mongoose.Schema({
+    userId:mongoose.Types.ObjectId,
+   orders:[
+    {
+        firstname:String,
+        lastname:String,
+        phone:Number,
+        paymentMethod:String,
+        productDetails:Array,
+        totalPrice:Number,
+        shippingAddress:Object,
+        createdAt:{
+            type:Date,
+            default:new Date()
+        },
+        status:{
+            type:Boolean,
+            default:true
+        }
+    }
+   ]
+}) 
+
 module.exports={
     product:db.model('products',productschema),
     users:db.model('Users',Userschema),
     catagory:db.model('catagory',catagoryschema),
-    cart:db.model('cart',cartschema)
+    cart:db.model('cart',cartschema),
+    address:db.model('address',addressschema),
+    order:db.model('order',orderschema)
 }
+
+

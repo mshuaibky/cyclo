@@ -51,9 +51,10 @@ module.exports = {
             console.log(req.body);
             let Image = req.files.Image
             let imageName = insertedId
-            Image.mv('./public/productimages/' + imageName + '.jpg', (err, done) => {
+            req.files.Image.forEach((element,index)=>{
+            element.mv('./public/productimages/' + imageName +index+ '.jpg', (err, done) => {
                 if (!err) {
-                    res.redirect('/admin/allProduct')
+                   console.log('product aploaded');
                 }
                 else {
                     console.log(err);
@@ -62,6 +63,8 @@ module.exports = {
 
 
         })
+        res.redirect('/admin/allProduct')
+    })
     },
 
     adminUsers: (req, res) => {
@@ -220,5 +223,14 @@ module.exports = {
     adminLogout: (req, res) => {
         req.session.adminlogin = false
         res.redirect('/admin')
-    }
+    },
+
+    adminOrders:async(req,res)=>{
+        let userId=req.session.user._id
+   let orderitems= await adminHelpers.getorders(userId)
+    console.log(orderitems)
+            res.render('admin/Orders',{ layout: 'admin/adminLayout',orderitems,nav: true, sidebar: true })
+    
+    },
+   
 }

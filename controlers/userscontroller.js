@@ -37,12 +37,13 @@ shopPage:async(req,res)=>{
   })
   },
 
-  productPage:function(req,res,next){
+  productPage: async(req,res)=>{
+    let cartcount= await userHelpers.getCartCount(req.session.user._id)
     let product=req.params.id
     productHelpers.getproductdetails(product).then((productid)=>{
   
     if(req.session.loggedIn){
-    res.render('products',{nav:true,footer:true,productid,})
+    res.render('products',{nav:true,footer:true,productid,cartcount})
     }else{
       res.redirect('/userLogin')
     }
@@ -77,7 +78,7 @@ cartPage:async(req,res)=>{
     let cartcount= await userHelpers.getCartCount(req.session.user._id)
     let cartproducts=await userHelpers.getCartProducts(req.session.user._id)
     totalAmount= await  userHelpers.getTotalAmount(req.session.user._id)
-  res.render('cart',{nav:true,footer:true,totalAmount,cartproducts,cartcount})
+  res.render('cart',{totalAmount,cartproducts,cartcount,nav:true})
 
   }else{
     res.redirect('/userLogin')
@@ -189,9 +190,54 @@ userOtpPost:(req,res)=>{
       })
     },
     deleteCartProduct:(req,res)=>{
-      console.log("contoller");
+      
       userHelpers.deleteProductInCart(req.body).then((response)=>{
         res.json(response)
       })
-    }
+    },
+
+    checkOut:async(req,res)=>{
+      let cartproducts=await userHelpers.getCartProducts(req.session.user._id)
+ let address=await   userHelpers.getAddress(req.session.user._id)
+    let totalamount= await userHelpers.getTotalAmount(req.session.user._id)
+    
+      res.render('checkout',{totalamount,address,cartproducts})
+    },
+    placeOrder:async(req,res)=>{
+let totalamount=await userHelpers.getTotalAmount(req.session.user._id)
+
+     req.body.userId=req.session.user._id
+    userHelpers.placeOrder(req.body,totalamount).then((response)=>{
+      res.json(response)
+    })
+ 
+    },
+
+    orders:async(req,res)=>{
+     
+      userHelpers.getorders(req.session.user._id).then((ordersitems)=>{
+
+       res.render('orders',{ordersitems})
+     })
+    },
+    cancelOrder:(req,res)=>{
+      console.log("data",req.body);
+      userHelpers.cancel(req.body).then((response)=>{
+        
+          res.json(response)
+      })
+        
+    },
+
+success:(req,res)=>{
+  res.render('success')
+},
+fillAddress:(req,res)=>{
+  userId=req.session.user._id
+  addressId=req.params.id
+ 
+  userHelpers.addressFill(userId,addressId).then((data)=>{
+    res.send(data[0].address)
+  })
+}
 }
