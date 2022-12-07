@@ -1,0 +1,382 @@
+<style>
+  body {
+    background-image: url('/images/page-header-bg.jpg');
+  }
+
+
+  .btn {
+    min-width: 60px;
+    color: white;
+  }
+
+  h6 {
+    padding-right: 50px;
+
+  }
+
+  .line {
+    width: 100.5%;
+    height: 1px;
+    background-color: #FCB941;
+  }
+
+  .nav {
+    background-image: url('/images/page-header-bg.jpg');
+  }
+
+  .fas.fa-angle-up {
+    display: none;
+  }
+
+
+
+  /* Main */
+
+  .mainDiv {
+    height: auto;
+    width: 710px;
+    border: 1px solid #a1a1a1;
+    border-radius: 5px;
+  }
+
+  .addrDiv {
+    height: auto;
+    border: 1px solid #a1a1a1;
+    border-radius: 5px;
+
+  }
+</style>
+<section>
+
+
+  </div>
+  <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+    <div class="container">
+      <h1 class="page-title">YOUR ORDERS<span>Shop</span></h1>
+    </div><!-- End .container -->
+  </div><!-- End .page-header -->
+  <nav aria-label="breadcrumb" class="breadcrumb-nav">
+    <div class="container">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="/shop">Shop</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Orders</li>
+      </ol>
+    </div><!-- End .container -->
+  </nav><!-- End .breadcrumb-nav -->
+  <div class="container-fluid ">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="mainbar ">
+          <section id="page-top">
+            <!-- Page Wrapper -->
+            <div id="wrapper">
+              <!-- Content Wrapper -->
+              <div id="content-wrapper" class="d-flex flex-column">
+                <!-- Main Content -->
+                <div id="content">
+                  <!-- Begin Page Content -->
+                  <div class="container-fluid">
+                    <!-- DataTales Example -->
+                    <div class="card shadow mt-5 mb-4" style="border: 5px solid #ebebeb; background-image: url('/images/page-header-bg.jpg');">
+                      <div class="card-body mt-4">
+                        <% orderDetails?.orders?.reverse().forEach((items)=>{%>
+
+                        <div class="container">
+                          <div class="row">
+                            <div class="col-12">
+                              <%  const dataToReadable=(date)=>{
+  
+                                      const date_ = new Date(date);
+                                      let month = ['Jan','Feb','March','April','May','June','July','Aug','Sept','Nov','Dec']
+                                      let dd = date_.getDate();
+                                      let mm = date_.getMonth()-1;
+                                      let monthText = month[mm]
+                                      let yyyy = date_.getFullYear();
+  
+                                      return `${isNaN(dd)?'00':dd}-${monthText}-${isNaN(yyyy)?'0000':yyyy}`;
+                                      }; %>
+
+
+
+
+
+                            </div>
+                          </div>
+
+
+                          <div class="row mt-1">
+
+                            <div class="row mt-5 ml-1">
+
+                              <div class="mx-3">
+                                <h6 style="font-weight: 400; font-size: small; color: #585858;">Ordered :<%=items.createdAt.getDate()+":"+ items.createdAt.getMonth()+":"+items.createdAt.getFullYear() %> <span class="px-4 text-light">|</span>Order Id : <%= items._id  %> </h6>
+                              </div>
+
+                              <div class="col-12 mainDiv">
+                                <% items.productDetails.forEach((products,index)=>{%>
+
+                                <div class="row mt-2 p-3 mb-2">
+
+
+                                  <div class="col-6 mx-5" style="float: left;">
+                                    <div class="d-flex">
+                                      <div class="mx-5 h5"> <%= products.productsName %></div> <span style="margin-top: 6px;" class="mx-3">
+
+                                      </span>
+                                    </div>
+                                    <div class="d-flex">
+
+                                      <img class="mx-5 mt-2" style="width: 100px; height:100px; object-fit:contain" src="/product-images/<%= products.image[0] %> " alt="">
+                                      <div class="d-flex-column">
+                                        <div class="mt-2" style="font-size: large;"><span class="px-2" style="color: #fb7e00; font-weight: 500;">Rs: <%= products.productPrice  %></span> </div>
+                                        <div class="text-center h6"><span>Qty:</span><%=products.quantity %> </div>
+                                        <% if(products.status){ %>
+                                        <div class="text-center text-white mt-1 " style="width: 100px;height:23px; border-radius: 10px; background-color: rgb(109, 176, 85); font-size: small; font-weight: 600;">
+                                          Order Placed
+                                        </div>
+                                        <% }else{ %>
+                                        <div class="text-center text-white mt-1" style="width: 100px;height:23px; border-radius: 10px; background-color: rgb(205, 66, 66); font-size: small; font-weight: 600;">
+                                          Cancelled
+                                        </div>
+                                        <% } %>
+                                      </div>
+                                      <% if(products.status){ %>
+                                      <div class="h6" style="padding-left: 150px; margin-top: 50px;">
+                                        OrderStatus:<% if(products.shippingStatus==1){ %>
+                                        <b class="text-danger">Placed</b>
+                                        <%} else if(products.shippingStatus==2){ %>
+                                        <b class="text-warning">Dispatched</b>
+                                        <% }else if(products.shippingStatus==3){ %>
+                                        <b class="text-primary">Shipped</b>
+
+
+                                        <% }else{%>
+                                        <b class="text-success">Delivered</b>
+                                        <% } %>
+                                      </div>
+                                      <% } %>
+                                    </div>
+                                  </div>
+
+
+                                  <div class="col-5 " style="float: left;margin-top: 70px !important ;padding-left: 279px;">
+                                    <% if(products.status) {%>
+                                    <div class="d-flex">
+
+                                      <% if(products.shippingStatus<=3){ %>
+                                      <button onclick="cancelOrder('<%= items._id %>','<%= products._id %>')" class="cancel btn text-white  mx-3" style="border-radius: 10px; width: 130px; background-color: rgb(234, 34, 4);">Cancel Order</button>
+
+                                      <% }else { %>
+                                      <button class="cancel btn text-white bg-danger mx-3" style="border-radius: 10px; width: 130px; " disabled>Cancel Order</button>
+                                      <% } %>
+
+                                    </div>
+                                    <% } %>
+                                    <br>
+
+                                    <button onclick="returnOrder('<%=items._id %>','<%= products._id %>')" class="cancel btn text-white bg-danger mx-3" style="border-radius: 10px; width: 130px; ">Return Order</button>
+                                    <br>
+                                    <br>
+                                    <button style="border-radius: 15px;" class="btn btn-success mx-3 my-3" onclick="downloadInvoice('<%= items.id%>','<%=index%>')">Download Invoice</button>
+                                  </div>
+                                </div>
+                                <% }) %>
+                              </div>
+
+                            </div>
+                          </div>
+                          <div class="row mt-3">
+                            <div class="col-12">
+                              <div class="row addrDiv pb-2">
+                                <div class="col-4  " style="float: left;">
+                                  <h6 class="mt-2 mx-4">Shipping address</h6>
+                                  <p class="mx-4 mt-1">
+                                    <%= items.shippingAddress.street %>
+                                  <p class="mx-4 "><%= items.shippingAddress.phone %></p>
+                                  <p class="mx-4 "><%= items.shippingAddress.city %></p>
+                                  <p class="mx-4 "><%= items.shippingAddress.email %></p>
+
+                                  <span style="font-weight: 500;"></span> <br>
+                                  </p>
+
+                                </div>
+
+                                <div class="col-4 ">
+                                  <h6 class="mt-2 mx-4 ">Payment Method</h6>
+
+                                  <p class="mx-4 mt-1 "> <b><%= items.paymentMethod %></p></b>
+                                  <div>
+                                    <h6 class="mt-2 mx-4 ">Payment Status</h6>
+                                    <%  if( items.paymentStatus==0) {%>
+                                    <p class="mx-4 mt-1 text-danger b "><b> PENDING</b> </p>
+                                    <% }else {%>
+                                    <p class="mx-4 mt-1 text-success "><b> SUCCESS</b> </p>
+                                    <% } %>
+                                  </div>
+                                </div>
+                                <div class="col-4">
+
+                                  <h6 class="mt-2 mx-4 ">Total Price</h6>
+                                  <span class="mx-4 mt-2 " style="color: #fb6400; font-size: x-large !important; font-weight: 500; ">Rs: <%=items.totalPrice%></span>
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                        <% })  %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+      </a>
+
+
+
+</section>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+
+<script src="https://unpkg.com/easyinvoice/dist/easyinvoice.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/easyinvoice/dist/easyinvoice.min.js"></script>
+<script>
+  function cancelOrder(orderId, proId) {
+
+    $.ajax({
+      url: '/cancelOrder',
+      data: {
+        orderId: orderId,
+        proId: proId,
+      },
+      method: 'post',
+      beforeSend: () => {
+        return confirm('Are you sure want to cancel this order?')
+      },
+      success: (response) => {
+        location.reload()
+      }
+    })
+  }
+
+  function returnOrder(orderId, proId) {
+
+    $.ajax({
+      url: '/returnOrder',
+      method: 'post',
+      data: {
+        orderId: orderId,
+        proId: proId
+      },
+      success: (response) => {
+        location.reload()
+      }
+    })
+  }
+
+  function downloadInvoice(orderId,index) {
+    console.log(orderId);
+    $.ajax({
+      url: '/downloadInvoice/' + orderId,
+      method: 'post',
+      success: (response) => {
+        console.log(response, 'response');
+        let orders = response.data.orders
+        console.log(orders, 'oo');
+
+        var data = getSampleData(orders,index);
+        easyinvoice.createInvoice(data, function(result) {
+          easyinvoice.download('myInvoice.pdf', result.pdf);
+          //	you can download like this as well:
+          //	easyinvoice.download();
+          //	easyinvoice.download('myInvoice.pdf');
+        });
+      }
+    })
+
+  }
+
+  function getSampleData(orders,index) {
+    return {
+      // "customize": {
+      //     "template": "SGVsbG8gd29ybGQh" // Must be base64 encoded html. This example contains 'Hello World!' in base64
+      // },
+      images: {
+        logo: 'https://text2image.com/user_images/202211/text2image_T2710537_20221128_130558.png',
+        background: 'https://public.easyinvoice.cloud/img/watermark-draft.jpg'
+      },
+      sender: {
+        company: "CYCLO",
+        address: 'new york',
+        zip: '1234 AB',
+        city: 'Sampletown',
+        country: 'India'
+        // "custom1": "custom value 1",
+        // "custom2": "custom value 2",
+        // "custom3": "custom value 3"
+      },
+      client: {
+        company: orders.firstname+" "+orders.lastname,
+        address: orders.shippingAddress.street,
+        zip: orders.shippingAddress.pincode,
+        city:orders.shippingAddress.city,
+        country: orders.shippingAddress.country,
+        // "custom1": "custom value 1",
+        // "custom2": "custom value 2",
+        // "custom3": "custom value 3"
+      },
+      information: {
+        number: '2021.0001',
+        date: orders.createdAt,
+        'due-date': '31-12-2021'
+      },
+      products: [{
+          quantity: orders?.productDetails[index]?.quantity,
+          description: orders?.productDetails[index]?.productsName,
+          'tax-rate': 0,  
+          price: orders.productDetails[index].productPrice,
+        },
+       
+      ],
+      'bottom-notice': 'Kindly pay your invoice within 15 days.',
+      settings: {
+        currency: 'USD' // See documentation 'Locales and Currency' for more info. Leave empty for no currency.
+        // "locale": "nl-NL", // Defaults to en-US, used for number formatting (see docs)
+        // "taxNotation": "gst", // Defaults to vat
+        // "margin-top": 25, // Default to 25
+        // "margin-right": 25, // Default to 25
+        // "margin-left": 25, // Default to 25
+        // "margin-bottom": 25, // Default to 25
+        // "format": "Letter", // Defaults to A4,
+        // "height": "1000px", // allowed units: mm, cm, in, px
+        // "width": "500px", // allowed units: mm, cm, in, px
+        // "orientation": "landscape", // portrait or landscape, defaults to portrait
+      }
+      // Used for translating the headers to your preferred language
+      // Defaults to English. Below example is translated to Dutch
+      // "translate": {
+      //     "invoice": "FACTUUR",
+      //     "number": "Nummer",
+      //     "date": "Datum",
+      //     "due-date": "Verloopdatum",
+      //     "subtotal": "Subtotaal",
+      //     "products": "Producten",
+      //     "quantity": "Aantal",
+      //     "price": "Prijs",
+      //     "product-total": "Totaal",
+      //     "total": "Totaal"
+      // },
+    };
+  }
+</script>

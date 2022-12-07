@@ -1,0 +1,91 @@
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title">Banner Management</h3>
+        <p></p>
+  
+        <br>
+  
+        <form class="forms-sample" method="post" action="/admin/banersmain" enctype="multipart/form-data">
+  
+          <div class="row">
+           
+            <div class="col-12">
+              <div class="form-group col-md-5">
+                <div class="d-flex">
+                  <label class="w-25">Title</label>
+                  <p id="err" class="text-danger d-flex justify-content-end w-75"></p>
+                </div>
+                <input name="name" type="text" class="form-control" id="name" placeholder="Title" name="title0" value="" required>
+              </div>
+  
+              <div class="form-group col-md-5">
+                <div class="d-flex">
+                  <label class="w-25">Description</label>
+                  <p id="err" class="text-danger d-flex justify-content-end w-75"></p>
+                </div>
+                <input name="description" type="text" class="form-control" id="name" placeholder="Description" name="description0" value="" required>
+              </div>
+  
+              <div class="form-group col-md-5">
+                <div class="d-flex">
+                  <label class="w-25">Market Price</label>
+                  <p id="err" class="text-danger d-flex justify-content-end w-75"></p>
+                </div>
+                <input name="marketprice" type="text" class="form-control" id="name" placeholder="Market Price" name="marketPrice0" value="" required>
+                <div class="d-flex">
+                  <label class="w-25">Offered Price</label>
+                  <p id="err" class="text-danger d-flex justify-content-end w-75"></p>
+                </div>
+                <input name="offeredprice" type="text" class="form-control" id="name" placeholder="offer Price" name="offerPrice0" value="" required>
+              </div>
+  
+              <div class="form-group col-md-10">
+                <img id="viewImage" src="" alt="" style="width:40em; height:20em; " >
+              </div>
+  
+              <div class="form-group col-md-5">
+                <label for="">Image</label>
+                <input type="file" name="image" id="image" class="form-control" onchange="previewimage(event)" >
+              </div>
+            </div>
+  
+            
+            <div class="col-6">
+              <button type="submit" class="btn btn-primary ml-3 mr-2 col-md-2">Submit</button>
+              <button class="btn btn-light">Cancel</button>
+            </div>
+         
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+
+    const previewimage=(event)=>{
+        const  imageFiles=event.target.imageFiles
+        const imageSrc=URL.createObjectURL(imageFiles[0])
+        const imagePriviewElement=document.getElementById('viewImage')
+        imagePriviewElement.src=imageSrc
+    }
+  </script>
+  <!-- <script>
+    function viewImage0(event) {
+      document.getElementById('imgView0').src = URL.createObjectURL(event.target.files[0])
+      console.log(event)
+    }
+  
+    function viewImage1(event) {
+      document.getElementById('imgView1').src = URL.createObjectURL(event.target.files[0])
+      console.log(event)
+    }
+  
+    function viewImage2(event) {
+      document.getElementById('imgView2').src = URL.createObjectURL(event.target.files[0])
+    }
+  
+    function viewImage3(event) {
+      document.getElementById('imgView3').src = URL.createObjectURL(event.target.files[0])
+    }
+  </script> -->

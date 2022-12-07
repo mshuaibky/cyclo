@@ -31,8 +31,11 @@
                         <a href="">Links</a>
                         <ul>
                             
-                            
+                            <% if (locals.loggedIn){ %> 
                             <a href="/logout" class="sf-with-ul">Logout</a> 
+                            <% }else{ %> 
+                            <a href="/userLogin" class="sf-with-ul">Login</a> 
+                            <% } %> 
                             
                            
                             
@@ -96,6 +99,14 @@
                         </ul>
 
                     </div><!-- End .dropdown-menu -->
+                </div><!-- End .compare-dropdown -->
+                <div class="account">
+                    <a href="/useraccount" title="My account">
+                        <div class="icon">
+                            <i class="icon-user"></i>
+                        </div>
+                        <p>Account</p>
+                    </a>
                 </div><!-- End .compare-dropdown -->
 
                 <div class="wishlist">

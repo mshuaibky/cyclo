@@ -11,23 +11,32 @@ var client=require('twilio')(otp.accountsId,otp.authToken)
 
 /* GET home page. */
 
+ const varifyLogin= (req,res,next)=>{
+    if(req.session?.loggedIn){
+       res.locals.loggedIn=true
+        next()
+    }else{
+      res.redirect('/userLogin')
+    }
+}
 
-router.get('/',controller.landingPage);
+
+router.get('/',varifyLogin,controller.landingPage);
 
 
 router.get('/shop',controller.shopPage);
 
 
 
-router.get('/products/:id',controller.productPage)
+router.get('/products/:id',varifyLogin,controller.productPage)
 
 
-router.get('/about',controller.aboutPages)
+router.get('/about',varifyLogin,controller.aboutPages)
 
 
-router.get('/cart',controller.cartPage)
+router.get('/cart',varifyLogin,controller.cartPage)
 
-router.get('/addtocart/:id',controller.addTocartPage)
+router.get('/addtocart/:id',varifyLogin,controller.addTocartPage)
 
 router.get('/userLogin',controller.userLoginGet)
 
@@ -50,11 +59,11 @@ router.post('/changeProductQuantity',controller.changeproductquntity)
 
 router.post('/deleteCartProduct',controller.deleteCartProduct)
 
-router.get('/checkout',controller.checkOut)
+router.get('/checkout',varifyLogin,controller.checkOut)
 
 router.post('/checkout',controller.placeOrder)
 
-router.get('/orders',controller.orders)
+router.get('/orders',varifyLogin,controller.orders)
 
 router.post('/cancelOrder',controller.cancelOrder)
 
@@ -62,5 +71,28 @@ router.get('/success',controller.success)
 
 router.get('/filladdres/:id',controller.fillAddress)
 
+router.post('/varifyPayment',controller.razorpay)
+
+router.get('/useraccount',varifyLogin,controller.userAccount)
+
+router.post('/deleteAddress',controller.deleteAddress)
+
+router.post('/addressedit',controller.addressEdit)
+
+router.post('/addNewAddress',controller.addAddress)
+
+router.post('/changeUserDetails',controller.changeUserDetails)
+
+router.post('/create-order',controller.paypalOrder)
+
+router.get('/paypalSuccess',controller.paypalSuccess)
+
+router.get('/produnct-quantity/:id',controller.productQuantity)
+
+router.post('/returnOrder',controller.returnOrder)
+
+router.post('/downloadInvoice/:id',controller.findOrder)
+
+router.get('/detailOrder/:id',controller.detailOrder)
 
 module.exports = router;

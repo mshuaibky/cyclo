@@ -1,87 +1,67 @@
 
+<div class="container pt-5 ">
+<table id="dtBasicExample" class="table table-striped table-bordered table-sm mt-2" cellspacing="0" width="100%">
+  <thead>
+    <tr class="text-center"> 
+     
+      <th  class="th-sm pt-3">User
 
-<div class="col-lg-10 grid-margin">
+      </th>
+      <th class="th-sm">Order ID
 
-    
-    <div class="card">
-      <div class="card-body">
-<h3 class="pt-3">Order Status</h3>      
-        <div class="table-responsive pt-3">
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                
-              
-               
-                <th>
-                 Image
-                </th>
-                <th>
-                 Name
-                </th>
-                <th>
-               price/Qty
-                </th>
-                <th>
-                orderId
-                  </th>
-                  <th>
-                  status
-                    </th>
-                    
-                          <th>
+      </th>
+      <th class="th-sm">Total Price
+
+      </th>
+      <th class="th-sm">Ordered On
+
+      </th>
+      <th class="th-sm">Status
+
+      </th>
+      <th class="th-sm">
+
+      </th>
+     
+    </tr>
+  </thead>
+  <tbody>
+   <% orderitems.reverse().forEach((items)=>{ %> 
+    <tr class="text-center">
+      <td class="p-4"><%= items.orders.firstname  %>  </td>
+      <td><%= items.orders._id %> </td>
+      <td><%=  items.orders.totalPrice  %> </td>
+      <td><%= items.orders.createdAt.getDate()+":"+ items.orders.createdAt.getMonth()+":"+items.orders.createdAt.getFullYear() %> </td>
+     <% if(items.orders.paymentStatus==1){ %> 
+      <td class="font-weight-bold text-white" style="background-color:rgb(39, 250, 32) ;">SUCCESS</td>
+      <% }else{ %> 
+        <td class="font-weight-bold text-white" style="background-color:rgb(255, 31, 15) ;">PENDING</td>
+        <% } %> 
+
+      <td> <a href="/admin/viewmore/<%=items.orders._id  %> " class="text-decoration-none  font-weight-bold" href=""> view more</a>
+      </td>
+      
+    </tr>
+    <% }) %> 
+   </tbody>
+</table>
+
+</div>
 
 
-                          </th>
-                        
-               
-              </tr>
-            </thead>
-            <tbody>
 
-                <% for(i=orderitems.length-1;i>0;i--){ %> 
-                    <% orderitems[i]?.productDetails?.forEach((ordersitems,index)=>{ %> 
-           
-              <tr>
-                
-              
-                <td>
-                    <img style="border-radius: 0px!important;width: 102px!important;height: 85px!important;" src="/productimages/<%= ordersitems._id %>0.jpg "alt="image">
-                </td>
-                <td>
-                  <%= ordersitems?.productsName  %> 
-                  </td>
-                <td>
-                  <%= ordersitems.productPrice %>x<%= ordersitems.quantity  %>  
-                </td>
-                <td>
-                  <%= ordersitems._id %> 
-                </td>
-                <td>
-                    <span style="color:<%= ordersitems.status?'green':'red' %>"><%= ordersitems?.status?'Placed':'Cancelled' %></span> 
 
-                </td>
-                
-                <td>
-                    <button onclick="cancelOrder('<%= orderitems[i]?._id%>','<%= ordersitems._id%>')" class="btn-sm btn-danger" >Cancel Order  </button>
 
-                  </td>
-                  
-                </tr>
-                <% })  %> 
-                <% } %> 
-             
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <script>
+
+
+
+
+
+  <!-- <script>
     function cancelOrder(orderId,proId){
       console.log(orderId,proId);
-       console.log('dfjkfd');
+      
    
        $.ajax({
         url:'/cancelOrder',
@@ -98,4 +78,4 @@
         }
     })
     }
-  </script>
+  </script> --> 

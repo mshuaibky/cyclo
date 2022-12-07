@@ -1,21 +1,24 @@
 const { product } = require('../config/connection')
 const db=require('../config/connection')
 const { proppatch } = require('../routes')
+const {ObjectId}=require('mongoose')
+const { ActivityInstance } = require('twilio/lib/rest/taskrouter/v1/workspace/activity')
 
+var voucher_codes = require('voucher-code-generator');
 module.exports={
 
 
 addproduct:(product)=>{
     return new Promise(async(resolve,reject)=>{
       let data=await db.product(product)
-      
+    
       data.save()
-      resolve(data._id)
+      resolve(data)
     })
 },
 
 
-getAllProducts:()=>{
+ getAllProducts:()=>{
   return new Promise(async(resolve,reject)=>{
     let Products=await db.product.find({})
     resolve(Products)
@@ -33,7 +36,7 @@ getproductdetails:(proId)=>{
 
 
 deleteProducts:(proId)=>{
-  return new Promise((resolve,rejuct)=>{
+  return new Promise((resolve,reject)=>{
     db.product.deleteOne({_id:proId}).then(()=>{
       resolve()
     })
@@ -59,13 +62,15 @@ updateProduct:(proId,proDetails)=>{
 
 addCatagory:(catagoryFromUser)=>{
 
+  catagoryFromUser.name= catagoryFromUser.name.toLowerCase()
  return new Promise(async(resolve,reject)=>{
-  console.log(catagoryFromUser);
+ 
    db.catagory.find({name:catagoryFromUser.name}).then( async(catagory)=>{
+    
     console.log(catagory)
      let response={}
      if(catagory.length == 0){
-      
+     
        let cata= await db.catagory(catagoryFromUser)
 
 
@@ -120,4 +125,55 @@ return new Promise(async(resolve,reject)=>{
 })
 },
 
+addbaners:(data)=>{
+  return new Promise(async(resolve,reject)=>{
+    let baner=await db.banner(data)
+    console.log(baner,'banerssssssssss');
+    baner.save()
+    resolve(baner)
+  })
+},
+
+getAllBaners:()=>{
+ try {
+  return new Promise(async(resolve,reject)=>{
+    let banners=await db.banner.find({})
+     resolve(banners)
+  })
+ } catch (error) {
+  console.log(error);
+ }
+},
+
+deletebanner:(bannerId)=>{
+  try {
+    return new Promise((resolve,reject)=>{
+      db.banner.deleteOne({_id:bannerId}).then((response)=>{
+        console.log(response,'response');
+        resolve()
+      })
+    })
+  } catch (error) {
+    console.log(error);
+  }
+},
+
+generateCoupon:()=>{
+  try {
+    return new Promise((resolve,reject)=>{
+    let voucherCode= voucher_codes.generate({
+        length: 8,
+        count: 1,
+        prefix:"cyclo-"
+
+    })
+    console.log(voucherCode,'vouchercode');
+    resolve({voucherCode:voucherCode})
+  })
+  
+  } catch (error) {
+    console.log(error);
+    reject({error:error})
+  }
+}
 }

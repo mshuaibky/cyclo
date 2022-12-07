@@ -21,7 +21,7 @@
                  Name
                 </th>
                 <th>
-                Discribtion
+                Discription
                 </th>
                 <th>
                   Catagory
@@ -29,6 +29,12 @@
                   <th>
                   Price
                     </th>
+                    <th>
+                      OfferPrice
+                        </th>
+                    <th>
+                      Stock
+                        </th>
                 <th>
                  
                 </th>
@@ -44,7 +50,8 @@
                   <%- index+1 %> 
                 </td>
                 <td>
-                    <img style="border-radius: 0px!important;width: 102px!important;height: 85px!important;" src="/productimages/<%= products._id %>0.jpg" alt="image">
+                  <% console.log(products,';ljfjkflkf'); %> 
+                    <img style="border-radius: 0px!important;width: 102px!important;height: 85px!important;" src="/product-images/<%= products.image[0] %>" alt="image">
                 </td>
                 <td>
                   <%- products.name %> 
@@ -57,6 +64,14 @@
                 </td>
                 <td>
                   <%- products.price %> 
+                
+                </td>
+                <td>
+                  <%= products.Offerprice %> 
+                
+                </td>
+                <td>
+               <%= products.stock %> 
                 
                 </td>
                 <td>

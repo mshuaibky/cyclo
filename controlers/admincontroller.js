@@ -6,6 +6,7 @@ var adduserHelpers = require('../helpers/addingUserHelpers')
 var db = require('../config/connection');
 const { product, users } = require('../config/connection');
 var adminHelpers = require('../helpers/adminHelpers')
+var couponHelpers = require('../helpers/couponHelpers')
 const data = require('../config/admindetails');
 // const { DayInstance } = require('twilio/lib/rest/bulkexports/v1/export/day');
 // const { TrustProductsEvaluationsList } = require('twilio/lib/rest/trusthub/v1/trustProducts/trustProductsEvaluations');
@@ -46,25 +47,27 @@ module.exports = {
         }
     },
 
-    adminAllProductsPost: (req, res) => {
-        productHelpers.addproduct(req.body).then((insertedId) => {
-            console.log(req.body);
-            let Image = req.files.Image
-            let imageName = insertedId
-            req.files.Image.forEach((element,index)=>{
-            element.mv('./public/productimages/' + imageName +index+ '.jpg', (err, done) => {
-                if (!err) {
-                   console.log('product aploaded');
-                }
-                else {
-                    console.log(err);
-                }
-            })
+    adminAddProductsPost: (req, res) => {
 
-
-        })
-        res.redirect('/admin/allProduct')
+        console.log(req.body,'data bodyyyyy');
+       console.log(req.files,'soorya');
+    const files=req.files
+    const filename=files.map((file)=>{
+        return file.filename
     })
+     
+     const product=req.body
+     product.image=filename
+     productHelpers.addproduct(product).then((insertedId) => {
+        console.log(insertedId,'test2');
+       
+         // let Image = req.files.Image
+        
+     res.redirect('/admin/allProduct')
+ })
+
+      
+       
     },
 
     adminUsers: (req, res) => {
@@ -107,16 +110,19 @@ module.exports = {
 
 
         productHelpers.updateProduct(req.params.id, req.body).then(() => {
-            let Image = req.files.Image
-            let imageName = req.params.id
-            Image.mv('./public/productimages/' + imageName + '.jpg', (err, done) => {
-                if (!err) {
-                    res.redirect('/admin/allProduct')
-                }
-                else {
-                    console.log(err)
-                }
-            })
+           
+
+            const files=req.files
+             const filename=files.map((file)=>{
+                return file.filename
+             })
+
+             const product=req.body
+             product.image=filename
+             productHelpers.addproduct(product).then((insertedId)=>{
+               
+                res.redirect('/admin/allproduct')
+             })
         })
 
 
@@ -134,6 +140,7 @@ module.exports = {
 
     blockUser: (req, res) => {
         adduserHelpers.blockUser(req.params.id).then((user) => {
+            req.session.loggedIn=false
             console.log(user);
             res.redirect('/admin/allUsers')
         })
@@ -226,11 +233,125 @@ module.exports = {
     },
 
     adminOrders:async(req,res)=>{
-        let userId=req.session.user._id
-   let orderitems= await adminHelpers.getorders(userId)
-    console.log(orderitems)
-            res.render('admin/Orders',{ layout: 'admin/adminLayout',orderitems,nav: true, sidebar: true })
+        // let userId=req.session.user._id
+   let orderitems= await adminHelpers.getorders()
+    
+            res.render('admin/Orders',{ layout: 'admin/adminLayout',orderitems,nav: true })
     
     },
-   
+    viewMore:async(req,res)=>{
+       
+        let allOrders=await adminHelpers.orderDetails(req.params._id)
+       
+        res.render('admin/viewmore',{allOrders,layout: 'admin/adminLayout',nav:true})
+    },
+    changeShippingStatus:(req,res)=>{
+        
+        console.log(req.body,'shipping');
+        adminHelpers.shippingStatus(req.body).then((response)=>{
+            console.log(response,'the main response');
+            res.json(response)
+        })
+    },
+
+    salesReport:async(req,res)=>{
+        
+        let dailydata=await adminHelpers.dailyData()
+        console.log(dailydata,'dailydata');
+    //    let monthlydata = await adminHelpers.findMonthly()
+     
+       let EveryMonthly=await adminHelpers.findEveryMonthly()
+       
+       let yearlyData=await adminHelpers.yeardata()
+
+        res.render('admin/salesReport',{layout:'admin/adminLayout' ,sidebar:true,EveryMonthly:EveryMonthly,dailydata:dailydata,yearlyData:yearlyData})
+    },
+
+    yearlyreport:async(req,res)=>{
+    
+        let dailydata=await adminHelpers.dailyData()
+        
+        let EveryMonthly=await adminHelpers.findEveryMonthly()
+        let yearlyData=await adminHelpers.yeardata()
+ 
+         res.send({EveryMonthly,dailydata,yearlyData} )
+     },
+     coupon:(req,res)=>{
+        couponHelpers.getAllCoupons().then((allcoupons)=>{
+
+            res.render('admin/couponmanagment',{layout:'admin/adminLayout' ,sidebar:true,allcoupons})
+
+        })
+     },
+
+     addCoupon:(req,res)=>{
+        res.render('admin/addcoupon',{layout:'admin/adminLayout' ,sidebar:true})
+     },
+
+     banermanagment:(req,res)=>{
+        res.render('admin/banermanagment',{layout:'admin/adminLayout' ,sidebar:true})
+     },
+
+     banermain:(req,res)=>{
+        res.render('admin/banermain',{layout:'admin/adminLayout' ,sidebar:true})
+     },
+
+     banermainpost:(req,res)=>{
+          console.log(req.files,'photosos');
+        console.log(req.body,'ith namma bodyyyyyyyy');
+        const files=req.files
+        const filesname=files.map((file)=>{
+            return file.filename
+        })
+        const baner=req.body
+        
+        baner.image=filesname
+        console.log(baner,'banerrrrrrr');
+        productHelpers.addbaners(baner).then((insertedId)=>{
+            console.log(insertedId,'insertedId');
+            res.redirect('/admin/banermainTable')
+        })
+     },
+
+     banertable:async(req,res)=>{
+     let banners=await   productHelpers.getAllBaners()
+            res.render('admin/banermainTable',{layout:'admin/adminLayout' ,sidebar:true,banners})
+     
+     },
+     deleteBanner:(req,res)=>{
+        let bannerId=req.params.id
+        console.log(bannerId,'bannerId');
+        productHelpers.deletebanner(bannerId).then((response)=>{
+            
+            res.redirect('/admin/banermainTable')
+        })
+     },
+     newArrival:(req,res)=>{
+        res.render('admin/newarrivals',{layout:'admin/adminLayout' ,sidebar:true})
+     },
+
+
+     gernerateCode:(req,res)=>{
+        productHelpers.generateCoupon().then((response)=>{
+            res.json(response)
+        }).catch((error)=>{
+              res.send({error:error})
+        })
+     },
+
+     addCouponPost:(req,res)=>{
+      
+        couponHelpers.saveCoupon(req.body).then((response)=>{
+          res.json({status:true})
+        })
+     },
+
+
+     deleteCoupon:(req,res)=>{
+        console.log(req.params.id,'iddddddddd');
+        couponHelpers.deleteCoupons(req.params.id).then((response)=>{
+            res.redirect('/admin/couponManagment')
+        })
+     }
+     
 }

@@ -1,0 +1,101 @@
+<!-- 
+
+// <div class="col-lg-10 grid-margin">
+
+    
+// <div class="card">
+//   <div class="card-body">
+// <h3 class="pt-3">Order Status</h3>      
+//     <div class="table-responsive pt-3">
+//       <table class="table table-bordered">
+//         <thead>
+//           <tr>
+            
+          
+           
+//             <th>
+//              Image
+//             </th>
+//             <th>
+//              Name
+//             </th>
+//             <th>
+//            price/Qty
+//             </th>
+//             <th>
+//             orderId
+//               </th>
+//               <th>
+//               status
+//                 </th>
+                
+//                       <th>
+
+
+//                       </th>
+                    
+           
+//           </tr>
+//         </thead>
+//         <tbody>
+
+//             <% for(i=orderitems.length-1;i>0;i--){ %> 
+//                 <% orderitems[i]?.productDetails?.forEach((ordersitems,index)=>{ %> 
+       
+//           <tr>
+            
+          
+//             <td>
+//                 <img style="border-radius: 0px!important;width: 102px!important;height: 85px!important;" src="/productimages/<%= ordersitems._id %>0.jpg "alt="image">
+//             </td>
+//             <td>
+//               <%= ordersitems?.productsName  %> 
+//               </td>
+//             <td>
+//               <%= ordersitems.productPrice %>x<%= ordersitems.quantity  %>  
+//             </td>
+//             <td>
+//               <%= ordersitems._id %> 
+//             </td>
+//             <td>
+//                 <span style="color:<%= ordersitems.status?'green':'red' %>"><%= ordersitems?.status?'Placed':'Cancelled' %></span> 
+
+//             </td>
+            
+//             <td>
+//                 <button onclick="cancelOrder('<%= orderitems[i]?._id%>','<%= ordersitems._id%>')" class="btn-sm btn-danger" >Cancel Order  </button>
+
+//               </td>
+              
+//             </tr>
+//             <% })  %> 
+//             <% } %> 
+         
+//         </tbody>
+//       </table>
+//     </div>
+//   </div>
+// </div>
+// </div>
+
+// <script>
+// function cancelOrder(orderId,proId){
+//   console.log(orderId,proId);
+  
+
+//    $.ajax({
+//     url:'/cancelOrder',
+//     data:{
+//         orderId:orderId,
+//         proId:proId,
+//     },
+//     method:'post',
+//     beforeSend:()=>{
+//       return confirm('Are you sure want to cancel this order?')
+//     },
+//     success:(response)=>{
+//         location.reload()
+//     }
+// })
+// }
+// </script> -->

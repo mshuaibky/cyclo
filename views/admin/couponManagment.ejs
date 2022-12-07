@@ -1,0 +1,82 @@
+
+
+<div class="col-lg-10 stretch-card">
+    
+    <div class="card">
+        <div class="card-body">
+          <div>
+            <a href="/admin/addcoupon">
+              <button class="btn btn-primary"> Add Coupon</button></a>
+          </div>
+       
+        <div class="table-responsive pt-3">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>
+                  NO
+                </th>
+                <th>
+                Coupon Name
+                </th>
+                <th>
+                  expiryDate
+                </th>
+                <th>
+                  MinPurchase
+                </th>
+                <th>
+                  Discount
+                </th>
+                <th>
+                  Description
+                </th>
+                <th>
+                  Max Amount
+                </th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% allcoupons.forEach((data,index)=>{ %> 
+              <tr class="table-info">
+                <td>
+              <%=index+1 %> 
+                </td>
+                <td>
+                 <%= data.couponName  %> 
+                </td>
+                <td>
+                  <%= data.validity  %> 
+                </td>
+                <td>
+                <%= data.minPurchased  %> 
+                </td>
+                <td>
+                <%= data.discountPercentage  %> 
+                </td>
+                <td>
+                 <%= data.description  %> 
+                </td>
+                <td>
+                  <%= data.maxCount  %> 
+                  
+
+                 <td>
+                 <%= console.log(data._id);  %> 
+                   <a href="/admin/deleteCoupon/<%= data._id  %>  "  class="btn-sm btn-danger ">Delete</a>
+                </td>
+                
+               
+             
+              </tr>
+              
+              <% }) %> 
+              
+              
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>

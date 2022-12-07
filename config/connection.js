@@ -16,8 +16,12 @@ db.once('open',()=>{
 const productschema= new mongoose.Schema({
     name:String,
     catagory:String,
+    stock:Number,
     price:Number,
-    description:String
+    Offerprice:Number,
+    offerPercentage:Number,
+    description:String,
+    image:Array
 })
 
 const Userschema= new mongoose.Schema({
@@ -25,10 +29,12 @@ const Userschema= new mongoose.Schema({
     email:String,
     password:String,
     phone:Number,
+    wallet:Array,
     status:{
         type:Boolean,
         default:true
-    }
+    },
+    
     
 })
 
@@ -62,6 +68,15 @@ const addressschema=new mongoose.Schema({
   }]
 })
 
+const bannerschema=new mongoose.Schema({
+    name:String,
+    description:String,
+    marketprice:Number,
+    offeredprice:Number,
+    image:Array,
+
+})
+
 const orderschema=new mongoose.Schema({
     userId:mongoose.Types.ObjectId,
    orders:[
@@ -70,8 +85,13 @@ const orderschema=new mongoose.Schema({
         lastname:String,
         phone:Number,
         paymentMethod:String,
+        paymentStatus:{
+            type:Number,
+            default:0
+        },
         productDetails:Array,
         totalPrice:Number,
+        totalQuantity:Number,
         shippingAddress:Object,
         createdAt:{
             type:Date,
@@ -80,10 +100,22 @@ const orderschema=new mongoose.Schema({
         status:{
             type:Boolean,
             default:true
-        }
+        },
+       
     }
    ]
 }) 
+
+const couponSchema=new mongoose.Schema({
+    couponName:String,
+    validity:{
+        type:Date
+    },
+    minPurchased:Number,
+    discountPercentage:Number,
+    maxCount:Number,
+    description:String
+})
 
 module.exports={
     product:db.model('products',productschema),
@@ -91,7 +123,9 @@ module.exports={
     catagory:db.model('catagory',catagoryschema),
     cart:db.model('cart',cartschema),
     address:db.model('address',addressschema),
-    order:db.model('order',orderschema)
+    order:db.model('order',orderschema),
+    banner:db.model('banner',bannerschema),
+    coupon:db.model('coupon',couponSchema)
 }
 
 

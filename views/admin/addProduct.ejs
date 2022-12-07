@@ -7,20 +7,21 @@
             </p>
 
         
-            <form action="/admin/allProduct"  method="post" class="forms-sample" enctype="multipart/form-data">
+            <form id="form" action="/admin/addProduct"  method="post" class="forms-sample" enctype="multipart/form-data">
               
                 <div class="form-group">
                     <label for="exampleInputName1">Name</label>
-                    <input type="text" name="name" class="form-control" placeholder="Name" >
+                    <p class="text-danger"></p>
+                    <input id="name" type="text" name="name" class="form-control" placeholder="Name" >
                 </div>
                 <div class="form-group">
                     <label for="exampleInputName1">Describtion</label>
-                    <input type="text" name="description" class="form-control" placeholder="Discribtion">
+                    <p class="text-danger"></p>
+                    <input id="discription" type="text" name="description" class="form-control" placeholder="Discribtion">
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail3">Catagory</label>
-                   
-                        <label for="exampleInputName1">catagory</label>
+                    <p class="text-danger"></p>
+                        <label id="catagory" for="exampleInputName1">catagory</label>
                         <select class="form-control" name="catagory" id="exampleSelectGender">
                             <% catagory.forEach((catagory)=>{ %> 
                             <option value="<%= catagory.name %> "><%= catagory.name %> </option>
@@ -31,31 +32,186 @@
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail3">Price</label>
-                    <input type="text" name="price" class="form-control" placeholder="price">
+                    <p class="text-danger"></p>
+                    <input id="price" type="text" name="price" class="form-control" placeholder="price">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail3">OfferPercentage</label>
+                    <p class="text-danger"></p>
+                    <input onkeyup="calculateOffer()"  id="OfferPercentage" type="text" name="offerPercentage" class="form-control" placeholder="price">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail3">OfferPrice</label>
+                    <p class="text-danger"></p>
+                    <input  id="OfferPrice" type="text" name="Offerprice" class="form-control" placeholder="price" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputEmail3">Stock</label>
+                    <p class="text-danger"></p>
+                    <input id="stock" type="text" name="stock" class="form-control" placeholder="stock">
                 </div>
                 <div class="form-group">
                     <label>File upload</label>
-                    <input type="file" name="Image" class="form-control">
+                    <p class="text-danger"></p>
+                    <input id="image1" type="file" name="Image" class="form-control">
                    
                 </div>
                 <div class="form-group">
                     <label>File upload</label>
-                    <input type="file" name="Image" class="form-control">
+                    <p class="text-danger"></p>
+                    <input id="image2" type="file" name="Image" class="form-control">
                    
                 </div>
                 <div class="form-group">
                     <label>File upload</label>
-                    <input type="file" name="Image" class="form-control">
+                    <p class="text-danger"></p>
+                    <input id="image3" type="file" name="Image" class="form-control">
                    
                 </div>
                 <div class="form-group">
                     <label>File upload</label>
-                    <input type="file" name="Image" class="form-control">
+                    <p class="text-danger"></p>
+                    <input id="image4" type="file" name="Image" class="form-control">
                    
                 </div>
-                <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                <!-- <div class="form-group">
+                    <label>File upload</label>
+                    <input type="file" name="Image" class="form-control">
+                   
+                </div> -->
+                <!-- <div class="form-group">
+                    <label>File upload</label>
+                    <input type="file" name="Image" class="form-control">
+                   
+                </div> -->
+                <!-- <div class="form-group">
+                    <label>File upload</label>
+                    <input type="file" name="Image" class="form-control">
+                   
+                </div> -->
+                <button onclick="validation()" type="button" class="btn btn-primary mr-2">Submit</button>
                 <button class="btn btn-light">Cancel</button>
             </form>
         </div>
     </div>
 </div>
+
+<script>
+
+   function calculateOffer(){
+     const price=document.getElementById('price').value
+     const offerPrice=document.getElementById('OfferPrice')
+     const offerPercentage=document.getElementById('OfferPercentage').value
+     offerPrice.value=price-price*offerPercentage/100
+
+   }
+   
+  function  validation(){
+
+    let name=document.getElementById('name')
+    let namevalue=name.value?.trim()
+    let err1=name.parentElement.querySelector('p')
+    err1.innerText=""
+
+    let discription=document.getElementById('discription')
+    let  disvalue=discription.value?.trim()
+    let err2=discription.parentElement.querySelector('p')
+    err2.innerText=""
+
+    let catagory=document.getElementById('catagory')
+    let catagoryvalue=catagory.value?.trim()
+    let err3=catagory.parentElement.querySelector('p')
+    err3.innerText=""
+
+    let price=document.getElementById('price')
+    let pricevalue=price.value?.trim()
+    let err4=price.parentElement.querySelector('p')
+    err4.innerText=""
+
+    let stock=document.getElementById('stock')
+    let stockvalue=stock.value?.trim()
+    let err5=stock.parentElement.querySelector('p')
+    err5.innerText=""
+
+    let image=document.getElementById('image1')
+    let imagevalue=image.value?.trim()
+    let err6=image.parentElement.querySelector('p')
+    err6.innerText=""
+
+    let image2=document.getElementById('image2')
+    let imagevalue2=image2.value?.trim()
+    let err7=image2.parentElement.querySelector('p')
+    err7.innerText=" "
+
+    let image3=document.getElementById('image3')
+    let imagevalue3=image3.value?.trim()
+    let err8=image3.parentElement.querySelector('p')
+    err8.innerText=""
+
+    let image4=document.getElementById('image4')
+    let imagevalue4=image4.value?.trim()
+    let err9=image4.parentElement.querySelector('p')
+    err9.innerText=""
+
+
+    let flag=1
+    if(namevalue==""){
+        err1.innerText="this field is required"
+        flag=2
+       
+    }
+
+    if(disvalue==""){
+       err2.innerText='this field is required'
+       flag=2
+    }
+     
+    if(catagoryvalue==""){
+        err3.innerText='this field is required'
+        flag=2
+    }
+    
+    if(pricevalue==""){
+        err4.innerText='this field is required'
+        flag=2
+    }
+    else if(!pricevalue.match( /^[0-9]/)){
+     err4.innerText='this field is required'
+     flag=2
+    }
+
+    if(stockvalue==""){
+      err5.innerText='this field is required'
+      flag=2
+    }
+    else if(!stockvalue.match(/^[0-9]/)){
+   err5.innerText='enter currect value'
+   flag=2
+    }
+
+    if(imagevalue==""){
+        err6.innerText='this field is required'
+        flag=2
+    }
+    if(imagevalue2==""){
+        err7.innerText='this field is required'
+        flag=2
+    }
+    
+    if(imagevalue3==""){
+        err8.innerText='this field is required'
+        flag=2
+    }
+
+    if(imagevalue4==""){
+        err9.innerText='this field is required'
+        flag=2
+    }
+
+
+    if(flag==1){
+     document.getElementById('form').submit()
+    }
+    }
+</script>

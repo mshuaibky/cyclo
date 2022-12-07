@@ -1,3 +1,86 @@
+<style>
+    *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'poppins', sans-serif;
+    
+}
+.coupon{
+    width: 100%;
+    height: 100vh;
+    background: #f0fff3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+.coupon-card{
+    background: linear-gradient(135deg, #7158fe, #9d4de6);
+    color: #fff;
+    text-align: center;
+    padding: 40px 80px;
+    border-radius: 15px;
+    box-shadow: 0 10px 10px 0 rgba(0,0,0,0.15);
+    position: relative;
+
+}
+.logo{
+    width: 80px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+
+}
+.coupon-card h3{
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 40px;
+
+}
+.coupon-card p{
+    font-size: 15px;
+
+}
+.coupon-row{
+    display: flex;
+    align-items: center;
+    margin: 25px auto;
+    width: fit-content;
+
+}
+#cpnCode{
+    border: 1px dashed #fff;
+    padding: 10px 20px;
+    border-right: 0;
+
+}
+#cpnBtn{
+    border: 1px solid #fff;
+    background: #fff;
+    padding: 10px 20px;
+    color: #7158fe;
+    cursor: pointer;
+}
+.circle1, .circle2{
+    background: #f0fff3;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+
+}
+.circle1{
+    left: -25px;
+}
+.circle2{
+    right: -25px;
+}
+
+</style>
+
+
 <main class="main">
     <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
         <div class="container">
@@ -17,32 +100,72 @@
 
     
 
-    <div class="page-content">
+    <div class="page-content ">
         <div class="checkout">
             <div class="container">
                 
-                
-                <div class="checkout-discount">
-                    
-                    <form action="#">
-                        <input type="text" class="form-control" required id="checkout-discount-input">
-                        <label for="checkout-discount-input" class="text-truncate">Have a coupon? <span>Click here to
-                                enter your code</span></label>
-                    </form>
-                </div><!-- End .checkout-discount -->
+              <!-- Button trigger modal -->
+<button style="border-radius: 15px;" type="button" class="btn btn-primary my-4" data-toggle="modal" data-target="#exampleModal">
+   Apply Your Coupon
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Your Coupons</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <!--..................... modal body,,,,,,,,,,,,,,,,,,,,,,,,,, -->
 
-                <div  class="card ">
+            
+            <body>
+                <div class="container coupon">
+                    <div class="coupon-card">
+                        <img src="https://i.postimg.cc/KvTqpZq9/uber.png" class="logo">
+                        <h3>20% flat off on all rides within the city<br>using HDFC Credit Card</h3>
+                        <di class="coupon-row">
+                            <span id="cpnCode">STEALDEAL20</span>
+                            <span id="cpnBtn">Copy Code</span>
+                        </di>
+                        <p>Valid Till: 20Dec, 2021</p>
+                        <div class="circle1"></div>
+                        <div class="circle2"></div>
+                    </div>
+                </div>
+            </body>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+                
+
+
+
+
+
+            
+                <div style="background-color:#e4edfa ; border-radius: 5px;" class="card ">
                     
                     <% address?.address?.forEach((addresses,index)=>{ %> 
-                    <div class="card-header pt-3" id="heading-3">
+                        
+                    <div class="card-header pt-3 mx-3" id="heading-3">
                         <p style="font-size:17px ;"  class="card-title  ">
-                           <input   onclick="display('<%=addresses._id %>')" name="address" id=" <%= index+1 %>" value="addrress" type="radio" class="collapsed " role="button" data-toggle="collapse"
-                                href="#collapse-3" aria-expanded="false" aria-controls="collapse-<%= index+1 %>">
+                           <input  onclick="display('<%=addresses._id %>')" name="address" id=" <%= index+1 %>" value="addrress" type="radio" class="collapsed " role="button" data-toggle="collapse"
+                                href="#collapse-<%=index+1 %> " aria-expanded="false" aria-controls="collapse-<%= index+1 %>">
                                  <%= addresses.firstname %> <%= addresses.lastname %> 
                         </input>
                     </p>
                     </div><!-- End .card-header -->
-                    <div id="collapse-3" class="collapse" aria-labelledby="heading-3"
+                    <div id="collapse-<%=index+1 %> " class="collapse" aria-labelledby="heading-<%=index+1 %> "
                         data-parent="#accordion-payment">
                         <div class="card-body">
                         
@@ -52,13 +175,13 @@
                     </div><!-- End .collapse -->
                     <% }) %> 
                     <a class="m-3" href="/checkout">
-                    <button  class="btn btn-primary col-md-12">Add Address</button>
+                    <button style="border-radius:18px ; "  class="btn btn-primary  mt-2 ">Add Address</button>
                 </a>
                 </div><!-- End .card -->
 
-                
+              
                 <form action="#">
-                    <div class="row">
+                    <div class="row mt-3" >
                         <div class="col-lg-9">
                             <h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
                             <div class="row">
@@ -97,11 +220,11 @@
 
                             <div>
                                 <div class="d-flex justify-content-between">
-                                    <label name="streetaddress" id="streetaddress">Street address *</label>
+                                    <label name="streetaddress" id="streetaddress"> address *</label>
                                     <p id="err"  class="text-danger"></p>
                                 </div>
-                                <input name="streetaddress" id="streetadress" type="text" class="form-control"
-                                    placeholder="House number and Street name" required>
+                                <input name="street" id="streetadress" type="text" class="form-control"
+                                    placeholder="house name" required>
                             </div>
 
                             <div class="row">
@@ -207,46 +330,27 @@
 
                                 <div class="accordion-summary" id="accordion-payment">
                                     <div class="card">
-                                        <div class="card-header" id="heading-1">
+                                        <div class="card-header" id="heading-3">
                                             <h2 class="card-title">
-                                                <a role="button" data-toggle="collapse" href="#collapse-1"
-                                                    aria-expanded="true" aria-controls="collapse-1">
-                                                    Direct bank transfer
-                                                </a>
+                                               <input name="pay" id="paypal" value="paypal" type="radio" class="collapsed" role="button" data-toggle="collapse"
+                                                    href="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
+                                                  Paypal
+                                            </input>
                                             </h2>
                                         </div><!-- End .card-header -->
-                                        <div id="collapse-1" class="collapse show" aria-labelledby="heading-1"
+                                        <div id="collapse-3" class="collapse" aria-labelledby="heading-3"
                                             data-parent="#accordion-payment">
-                                            <div class="card-body">
-                                                Make your payment directly into our bank account. Please use your Order
-                                                ID as the payment reference. Your order will not be shipped until the
-                                                funds have cleared in our account.
+                                            <div class="card-body">Quisque volutpat mattis eros. Lorem ipsum dolor sit
+                                                amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis
+                                                eros.
                                             </div><!-- End .card-body -->
                                         </div><!-- End .collapse -->
                                     </div><!-- End .card -->
-
-                                    <div class="card">
-                                        <div class="card-header" id="heading-2">
-                                            <h2 class="card-title">
-                                                <a class="collapsed" role="button" data-toggle="collapse"
-                                                    href="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
-                                                    Check payments
-                                                </a>
-                                            </h2>
-                                        </div><!-- End .card-header -->
-                                        <div id="collapse-2" class="collapse" aria-labelledby="heading-2"
-                                            data-parent="#accordion-payment">
-                                            <div class="card-body">
-                                                Ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque
-                                                volutpat mattis eros. Nullam malesuada erat ut turpis.
-                                            </div><!-- End .card-body -->
-                                        </div><!-- End .collapse -->
-                                    </div><!-- End .card -->
-
+                                    
                                     <div class="card">
                                         <div class="card-header" id="heading-3">
                                             <h2 class="card-title">
-                                               <input id="cash" value="cash" type="radio" class="collapsed" role="button" data-toggle="collapse"
+                                               <input name="pay" id="cash" value="cash" type="radio" class="collapsed" role="button" data-toggle="collapse"
                                                     href="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
                                                     Cash on delivery
                                             </input>
@@ -262,50 +366,36 @@
                                     </div><!-- End .card -->
 
                                     <div class="card">
-                                        <div class="card-header" id="heading-4">
+                                        <div class="card-header" id="heading-3">
                                             <h2 class="card-title">
-                                                <a class="collapsed" role="button" data-toggle="collapse"
-                                                    href="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
-                                                    PayPal <small class="float-right paypal-link">What is
-                                                        PayPal?</small>
-                                                </a>
+                                               <input name="pay" id="Upi" value="Upi" type="radio" class="collapsed" role="button" data-toggle="collapse"
+                                                    href="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
+                                                    Razorpay
+                                            </input>
                                             </h2>
                                         </div><!-- End .card-header -->
-                                        <div id="collapse-4" class="collapse" aria-labelledby="heading-4"
+                                        <div id="collapse-3" class="collapse" aria-labelledby="heading-3"
                                             data-parent="#accordion-payment">
-                                            <div class="card-body">
-                                                Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non,
-                                                semper suscipit, posuere a, pede. Donec nec justo eget felis facilisis
-                                                fermentum.
+                                            <div class="card-body">Quisque volutpat mattis eros. Lorem ipsum dolor sit
+                                                amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis
+                                                eros.
                                             </div><!-- End .card-body -->
                                         </div><!-- End .collapse -->
                                     </div><!-- End .card -->
 
-                                    <div class="card">
-                                        <div class="card-header" id="heading-5">
-                                            <h2 class="card-title">
-                                                <a class="collapsed" role="button" data-toggle="collapse"
-                                                    href="#collapse-5" aria-expanded="false" aria-controls="collapse-5">
-                                                    Credit Card (Stripe)
-                                                    <img src="assets/images/payments-summary.png" alt="payments cards">
-                                                </a>
-                                            </h2>
-                                        </div><!-- End .card-header -->
-                                        <div id="collapse-5" class="collapse" aria-labelledby="heading-5"
-                                            data-parent="#accordion-payment">
-                                            <div class="card-body"> Donec nec justo eget felis facilisis fermentum.Lorem
-                                                ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque
-                                                volutpat mattis eros. Lorem ipsum dolor sit ame.
-                                            </div><!-- End .card-body -->
-                                        </div><!-- End .collapse -->
-                                    </div><!-- End .card -->
-                                </div><!-- End .accordion -->
+                                 
+                                    
+        
 
                                 <button onclick="proceedCheckout()" type="button"
                                     class="btn btn-outline-primary-2 btn-order btn-block">
                                     <span class="btn-text">Place Order</span>
                                     <span class="btn-hover-text">Proceed to Checkout</span>
                                 </button>
+
+                                <div id="paypal_btn"></div> 
+
+
                             </div><!-- End .summary -->
                         </aside><!-- End .col-lg-3 -->
                     </div><!-- End .row -->
@@ -316,6 +406,19 @@
 </main><!-- End .main -->
 
 
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+     var cpnBtn = document.getElementById("cpnBtn");
+            var cpnCode = document.getElementById("cpnCode");
+
+            cpnBtn.onclick = function(){
+                navigator.clipboard.writeText(cpnCode.innerHTML);
+                cpnBtn.innerHTML ="COPIED";
+                setTimeout(function(){
+                    cpnBtn.innerHTML="COPY CODE";
+                }, 3000);
+            }
+</script>
 <script>
 
     function proceedCheckout() {
@@ -441,7 +544,8 @@
         flag=2
        }
        
-       let paymentMethod=document.getElementById('cash').value
+       let paymentMethod=document.querySelector('input[name="pay"]:checked').value
+      
 
         if(flag==1){
              submit(
@@ -485,31 +589,168 @@ function submit(
     },
     method:'post',
     success:(response)=>{
-        if(response){
-            console.log(response);
+        if(response.cod){
+         
             window.location.href="/success"
+        }else if(response.paypal){
+          
+           loadpaypal()
+            
+        
+          
         }
+        else{
+            razorpaypayment(response)
+            console.log(response);
+        }
+
         
     }
 
 })
+function loadpaypal(){
+    paypal
+      .Buttons({
+        createOrder: function() {
+          return fetch("/create-order", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                items: [{
+                  id: 1,
+                }],
+              }),
+            })
+            .then(res => {
+              if (res.ok) return res.json()
+              return res.json().then(json => Promise.reject(json))
+            })
+            .then(({
+              id
+            }) => {
+              return id
+            })
+            .catch(e => {
+              console.error(e.error)
+            })
+        },
+        onApprove: function(data, actions) {
+         
+            console.log(data);
+            $.ajax({
+                url:'/paypalSuccess',
+                method:'get'
+            }).then((response)=>{
+                if(response.status){
+                
+                    location.replace('/success')
+                }else{
+                    Swal.fire('Something Went Wrong')
+                }
+    
+            
+             
+               
+                 
+                
+        
+          })
+        },
+      })
+      .render("#paypal_btn")
+}
+
+function razorpaypayment(order){
+    console.log(order,'namm ordere');
+    var options = {
+    "key": "rzp_test_OGwUAcKVHVaenQ", // Enter the Key ID generated from the Dashboard
+    "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "currency": "INR",
+    "name": "CYCLO",
+    "description": "Test Transaction",
+    "image": "https://example.com/your_logo",
+    "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "handler": function (response){
+        Swal.fire({
+  position: 'top-centre',
+  icon: 'success',
+  title: ' Order placed',
+  showConfirmButton: false,
+  timer: 5000
+})
+       
+         
+        
+        // alert(response.razorpay_order_id);
+        // alert(response.razorpay_signature)
+
+   varifyPayment(response,order)
+       
+    },
+    "prefill": {
+        "name": "shuhaib",
+        "email": "gaurav.kumar@example.com",
+        "contact": "9999999999"
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+};
+var rzp1 = new Razorpay(options);
+rzp1.on('payment.failed', function (response){
+        alert(response.error.code);
+        alert(response.error.description);
+        alert(response.error.source);
+        alert(response.error.step);
+        alert(response.error.reason);
+        alert(response.error.metadata.order_id);
+        alert(response.error.metadata.payment_id);
+});
+ rzp1.open();
+  
+
+}
+}
+function varifyPayment(payment,order){
+    $.ajax({
+        url:'/varifyPayment',
+        data:{
+            payment,
+            order,
+        },
+        method:'post',
+        success:(response)=>{
+            if(response.status){
+                window.location.href='/orders'
+            }
+        }
+    })
 }
 
      
     }
 
+    
+ 
+   
+
     function display(addressId){
         
-         
+         console.log('fkfklf');
         $.ajax({
             url:'/filladdres/'+addressId,
             method:'get',
             success:(response)=>{
-                console.log(response)
+               
                 document.getElementById('firstname').value=response.firstname
                 document.getElementById('lastname').value=response.lastname
                 document.getElementById('country').value=response.country
-                document.getElementById('streetadress').value=response.streetadress
+                document.getElementById('streetadress').value=response.street
                 document.getElementById('city').value=response.city
                 document.getElementById('state').value=response.state
                 document.getElementById('pincode').value=response.pincode

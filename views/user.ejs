@@ -1,0 +1,726 @@
+
+
+
+
+<style>
+ 
+
+.wallet-container {
+	background: linear-gradient(rgba(206, 128, 128, 0.6),rgba(0,0,0,0.6)),url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjOvSperRYjHH9-EHlKZJBfwvXy4rJpyerzHQsnp8DuuycYU5_);
+		width: 800px;
+		color: #fff;
+		font-size: 15px;
+		padding: 20px 20px 0;
+		top: 55%;
+		left: 50%;
+		transform: translate(-50%,-50%);
+		position: absolute;
+  
+  
+}
+
+.page-title {
+	text-align: left;
+}
+
+.fa-user {
+	float: right;
+}
+
+.fa-align-left {
+	margin-right: 15px;
+}
+
+.amount-box img {
+	width: 50px;
+}
+
+.amount {
+	font-size: 35px;
+}
+
+.amount-box p {
+	margin-top: 10px;
+	margin-bottom: -10px;
+}
+
+.btn-group {
+	margin: 20px 0;
+}
+
+.btn-group .btn {
+	margin: 8px;
+	border-radius: 20px !important;
+	font-size: 12px;
+}
+
+.txn-history {
+	text-align: left;
+}
+
+.txn-list {
+	background-color: #fff;
+	padding: 12px 10px; 
+	color: #777;
+	font-size: 14px;
+	margin: 7px 0;
+}
+
+.debit-amount {
+	color: red;
+	float: right;
+}
+
+.credit-amount {
+	color: green;
+	float: right;
+
+}
+
+.footer-menu {
+	margin: 20px -20px 0;
+	bottom: 0;
+	border-top: 1px solid #ccc;
+	padding: 10px 10px 0;
+}
+
+.footer-menu p {
+	font-size: 12px;
+}
+
+@media screen and (max-width: 800px){
+  .wallet-container {
+    height: 115%;
+    bottom: 20px;
+    margin-top: 100px;
+  }
+  
+}
+</style>
+
+<main class="main">
+  <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+    <div class="container">
+      <h1 class="page-title text-center">My Account<span>Shop</span></h1>
+    </div><!-- End .container -->
+  </div><!-- End .page-header -->
+  <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+    <div class="container">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="/shop">Shop</a></li>
+        <li class="breadcrumb-item active" aria-current="page">My Account</li>
+      </ol>
+    </div><!-- End .container -->
+  </nav><!-- End .breadcrumb-nav -->
+
+  <div class="page-content">
+    <div class="dashboard">
+      <div class="container">
+        <div class="row">
+          <aside class="col-md-4 col-lg-3">
+            <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="tab-dashboard-link" data-toggle="tab" href="#tab-dashboard" role="tab" aria-controls="tab-dashboard" aria-selected="true">Dashboard</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="tab-orders-link" data-toggle="tab" href="#tab-orders" role="tab" aria-controls="tab-orders" aria-selected="false">Orders</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="tab-downloads-link" data-toggle="tab" href="#tab-downloads" role="tab" aria-controls="tab-downloads" aria-selected="false">My Wallets</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="tab-address-link" data-toggle="tab" href="#tab-address" role="tab" aria-controls="tab-address" aria-selected="false">Adresses</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-account" role="tab" aria-controls="tab-account" aria-selected="false">Account Details</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Sign Out</a>
+              </li>
+            </ul>
+          </aside><!-- End .col-lg-3 -->
+
+          <div class="col-md-8 col-lg-9">
+            <div class="tab-content">
+              <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel" aria-labelledby="tab-dashboard-link">
+                <p>Hello <span class="font-weight-normal text-dark">User</span> (not <span class="font-weight-normal text-dark">User</span>? <a href="#">Log out</a>)
+
+                  <br>
+                  From your account dashboard you can view your <a href="#tab-orders" class="tab-trigger-link link-underline">recent orders</a>, manage your <a href="#tab-address" class="tab-trigger-link">shipping and billing addresses</a>,
+                  and <a href="#tab-account" class="tab-trigger-link">edit your password and account
+                    details</a>.
+                </p>
+              </div><!-- .End .tab-pane -->
+
+              <div class="tab-pane fade" id="tab-orders" role="tabpanel" aria-labelledby="tab-orders-link">
+                <p>No order has been made yet.</p>
+                <a href="category.html" class="btn btn-outline-primary-2"><span>GO SHOP</span><i class="icon-long-arrow-right"></i></a>
+              </div><!-- .End .tab-pane -->
+              
+              <div class="tab-pane fade" id="tab-downloads" role="tabpanel" aria-labelledby="tab-downloads-link">
+                 <% function add(accumulator, a) {
+                  return accumulator + a;
+                } %> 
+                <% const total =userDetails.wallet.reduce(add, 0) %> 
+                <% console.log(total,'lll'); %> 
+                <body >
+                  <div class="wallet-container text-center ">
+                    <p class= "  page-title"><i class="fa fa-align-left"></i>My E-wallet<i class="fa fa-user"></i></p>
+                
+                    <div class="amount-box text-center">
+                      <img src="https://lh3.googleusercontent.com/ohLHGNvMvQjOcmRpL4rjS3YQlcpO0D_80jJpJ-QA7-fQln9p3n7BAnqu3mxQ6kI4Sw" alt="wallet">
+                      <p class="text-white">Total Balance</p>
+                      <% console.log(userDetails.wallet,'namma wallet') %> 
+                     
+                      <p class="text-light amount"><%= total %> </p>
+                    </div>
+                
+                </div>
+                </body>
+                
+              </div><!-- .End .tab-pane -->
+
+
+
+              <div class="tab-pane fade" id="tab-address" role="tabpanel" aria-labelledby="tab-address-link">
+
+                <button type="button" class="btn btn-info btn-sm icon-edit" data-toggle="modal" data-target="#addAddress">Add Adresses</button>
+                <!--.............. add address Modal............................... -->
+                <!-- addAddress Modal -->
+                <div class="modal fade" id="addAddress" role="dialog">
+                  <div class="modal-dialog">
+
+                    <!--  addd new addrss Modal content-->
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h4 class="modal-title">Add New Address</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      </div>
+                      <div class="modal-body">
+                        <!--................... add address body............................... -->
+                        <main class="main">
+
+
+                          <div class="page-content">
+                            <div class="checkout">
+                              <div class="container">
+                                <div class="checkout-discount">
+
+                                </div><!-- End .checkout-discount -->
+                                <form action="#">
+                                  <div class="row container">
+                                    <div class="col-12">
+                                      <div class="row">
+                                        <div class="col-sm-6">
+                                          <label>First Name *</label>
+                                          <input id="fname" type="text" class="form-control" required>
+                                        </div><!-- End .col-sm-6 -->
+
+                                        <div class="col-sm-6">
+                                          <label>Last Name *</label>
+                                          <input id="lname" type="text" class="form-control" required>
+                                        </div><!-- End .col-sm-6 -->
+                                      </div><!-- End .row -->
+
+
+
+                                      <label>Country *</label>
+                                      <input id="newcountry" type="text" class="form-control" required>
+
+                                      <label>Street address *</label>
+                                      <input id="newstreet" type="text" class="form-control" placeholder="House number and Street name" required>
+
+                                      <div class="row">
+                                        <div class="col-sm-6">
+                                          <label>Town / City *</label>
+                                          <input id="newcity" type="text" class="form-control" required>
+                                        </div><!-- End .col-sm-6 -->
+
+                                        <div class="col-sm-6">
+                                          <label>State / County *</label>
+                                          <input id="newstate" type="text" class="form-control" required>
+                                        </div><!-- End .col-sm-6 -->
+                                      </div><!-- End .row -->
+
+                                      <div class="row">
+                                        <div class="col-sm-6">
+                                          <label>Postcode / ZIP *</label>
+                                          <input id="newpincode" type="text" class="form-control" required>
+                                        </div><!-- End .col-sm-6 -->
+
+                                        <div class="col-sm-6">
+                                          <label>Phone *</label>
+                                          <input id="newphone" type="tel" class="form-control" required>
+                                        </div><!-- End .col-sm-6 -->
+                                      </div><!-- End .row -->
+
+                                      <label>Email address *</label>
+                                      <input id="newemail" type="email" class="form-control" required>
+
+
+
+                                    </div><!-- End .col-lg-9 -->
+
+                                  </div><!-- End .row -->
+                                </form>
+                              </div><!-- End .container -->
+                            </div><!-- End .checkout -->
+                          </div><!-- End .page-content -->
+                        </main><!-- End .main -->
+                      </div>
+                      <div class="modal-footer">
+                        <button style="border-radius:15px ;" type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                        <button onclick="addAddress()" style="border-radius:15px ;" class="btn btn-primary">Save</button>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="row mt-3    ">
+                  <% address.address.forEach((details)=>{ %>
+                  <div class="col-lg-6">
+                    <div class="card card-dashboard">
+                      <div class="card-body">
+                        <h3 class="card-title">Billing Address</h3><!-- End .card-title -->
+
+                        <p>
+                          <b>
+                            <%= details.firstname+" "+details.lastname  %> </b><br>
+                          <%= details.country  %> <br>
+                          <%= details.street  %> <br>
+                          <%= details.city  %> <br>
+                          <%= details.state  %> <br>
+                          <%= details.pincode  %> <br>
+                          <%= details.phone %> <br>
+                          <%= details.email  %> <br>
+
+                          <span class=" mx-3"> <button onclick="deleteAddress('<%= details._id %>')" style="border-radius:15px  ; background-color: rgb(90, 159, 250);border: none;" class="btn btn-primary ">
+                              Delete</button></span>
+
+                          <button onclick="addressFilling('<%= details._id %>')" style=" border-radius:15px ;background-color: rgb(90, 159, 250);border: none;" class="btn btn-primary " data-toggle="modal" data-target="#exampleModal">
+                            edit</button>
+
+                          <!--<<<<<<<<<<< modal starting >>>>>>>>>>>>>>>>-->
+
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Edit address
+                                </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <!--.//////////////////// modal-body//////////////////////////////// -->
+
+                                <main class="main">
+
+
+
+                                  <div class="page-content">
+                                    <div class="checkout">
+                                      <div class="container">
+
+                                        <form action="#" class="container-fluid">
+                                          <div class="row">
+                                            <div class="col-lg-12">
+
+                                              <div class="row">
+                                                <div class="col-sm-6">
+                                                  <label>First
+                                                    Name
+                                                    *</label>
+                                                  <input id="firstname" type="text" class="form-control" required>
+                                                  <input hidden value="<%= details._id %> ">
+                                                </div>
+                                                <!-- End .col-sm-6 -->
+
+                                                <div class="col-sm-6">
+                                                  <label>Last
+                                                    Name
+                                                    *</label>
+                                                  <input id="lastname" type="text" class="form-control" required>
+                                                </div>
+                                                <!-- End .col-sm-6 -->
+                                              </div>
+                                              <!-- End .row -->
+
+
+
+                                              <label>Country
+                                                *</label>
+                                              <input id="country" type="text" class="form-control" required>
+
+                                              <label>Street
+                                                address
+                                                *</label>
+                                              <input id="street" type="text" class="form-control" placeholder="House number and Street name" required>
+
+                                              <div class="row">
+                                                <div class="col-sm-6">
+                                                  <label>Town
+                                                    /
+                                                    City
+                                                    *</label>
+                                                  <input id="city" type="text" class="form-control" required>
+                                                </div>
+                                                <!-- End .col-sm-6 -->
+
+                                                <div class="col-sm-6">
+                                                  <label>State
+                                                    /
+                                                    County
+                                                    *</label>
+                                                  <input id="state" type="text" class="form-control" required>
+                                                </div>
+                                                <!-- End .col-sm-6 -->
+                                              </div>
+                                              <!-- End .row -->
+
+                                              <div class="row">
+                                                <div class="col-sm-6">
+                                                  <label>Postcode
+                                                    /
+                                                    ZIP
+                                                    *</label>
+                                                  <input id="pincode" type="text" class="form-control" required>
+                                                </div>
+                                                <!-- End .col-sm-6 -->
+
+                                                <div class="col-sm-6">
+                                                  <label>Phone
+                                                    *</label>
+                                                  <input id="phone" type="tel" class="form-control" required>
+                                                </div>
+                                                <!-- End .col-sm-6 -->
+                                              </div>
+                                              <!-- End .row -->
+
+                                              <label>Email
+                                                address
+                                                *</label>
+                                              <input id="email" type="email" class="form-control" required>
+                                              <input hidden id="_id"  class="form-control"  >
+
+
+
+
+
+                                            </div>
+                                            <!-- End .col-lg-9 -->
+
+                                          </div>
+                                          <!-- End .row -->
+                                        </form>
+                                      </div>
+                                      <!-- End .container -->
+                                    </div><!-- End .checkout -->
+                                  </div><!-- End .page-content -->
+                                </main><!-- End .main -->
+
+                              </div>
+                              <div class="modal-footer">
+                                <button style="border-radius:15px ;" type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                                <button onclick="editAddress(this)" style="border-radius: 15px;" type="button" class="btn btn-primary">Save
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div><!-- End .card-body -->
+                    </div><!-- End .card-dashboard -->
+                  </div><!-- End .col-lg-6 -->
+
+                  <% }) %>
+                </div><!-- End .row -->
+              </div><!-- .End .tab-pane -->
+
+
+              <div class="tab-pane fade" id="tab-account" role="tabpanel" aria-labelledby="tab-account-link">
+                <section class="h-100 gradient-custom-2">
+                    <div class="container py-5 h-100">
+                      <div class="row d-flex justify-content-center align-items-center h-100">
+                        <div class="col col-12">
+                          <div class="card">
+                            <div class="rounded-top text-white d-flex flex-row" style="background-color: rgb(51, 47, 47); height:200px;">
+                              <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
+                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+                                  alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
+                                  style="width: 150px; z-index: 1">
+                                <button type="button" class="btn btn-dark" data-mdb-ripple-color="dark"
+                                  style="z-index: 1;" data-toggle="modal" data-target="#add4Address">
+                                  Edit profile
+                                </button>
+
+                                <!--///////////////////// modal body ///////////////////-->
+                                 <!-- addAddress Modal -->
+                  <div class="modal fade" id="add4Address" role="dialog">
+                    <div class="modal-dialog">
+
+                      <!--  addd new addrss Modal content-->
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h4 class="modal-title">Edit profile</h4>
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="container-fluid">
+                        <div class="modal-body ">
+                            <div  id="tab-account" role="tabpanel" aria-labelledby="tab-account-link">
+                                <form >
+                                    <div class="row ">
+                                        <div class="col-sm-12">
+                                            <label> Name *</label>
+                                         
+                                            <input id="firstName" type="text" class="form-control" required>
+                                        </div><!-- End .col-sm-6 -->
+
+                                        <!-- <div class="col-sm-6">
+                                            <label>Last Name *</label>
+                                            <input id="lastName" type="text" class="form-control" required>
+                                        </div>End .col-sm-6 -->
+                                    </div><!-- End .row -->
+
+                                
+                                    <label>Email address *</label>
+                                    <input id="Emailaddress" type="email" class="form-control" required>
+                              
+
+                             
+                                    <label>Current password (leave blank to leave unchanged)</label>
+                                    <input id="currentPassword" type="password" class="form-control">
+                            
+                                    <label>New password (leave blank to leave unchanged)</label>
+                                    <input id="newPassword" type="password" class="form-control">
+
+                                    <label>Confirm new password</label>
+                                    <input id="confirmPassword" type="password" class="form-control mb-2">
+
+                                    <button onclick="editProfile()" type="button" class="btn btn-outline-primary-2">
+                                        <span>SAVE CHANGES</span>
+                                        <i class="icon-long-arrow-right"></i>
+                                    </button>
+                                </form>
+                            </div><!-- .End .tab-pane -->
+                        </div>
+                    </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                              </div>
+                              <div class="ms-3" style="margin-top: 130px;">
+                                <h5 class="text-light text-uppercase "><%=userDetails.name  %> </h5>
+                                <p>INDIA</p>
+                              </div>
+                            </div>
+                            <div class="p-4 text-black" style="background-color:  #2b4763;">
+                              <div style="background-color:  #2b4763;;" class="d-flex justify-content-end text-center py-1">
+                               
+                              </div>
+                            </div>
+                            <div style="background-color:  #2b4763;;" class="card-body p-4 text-black">
+                              <div style="margin-left: 260 px;" class="mb-5">
+                               
+                                <div class="p-4" style="background-color: #2b4763;">
+                                  <p class="font-italic mb-1">INDIA </p>
+                                  <p class="font-italic mb-1"><%= userDetails.phone  %> </p>
+                                  <p class="font-italic mb-0"><%= userDetails.email  %></p>
+                                </div>
+                              </div>
+                            
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+              </div><!-- .End .tab-pane -->
+            </div>
+          </div><!-- End .col-lg-9 -->
+        </div><!-- End .row -->
+      </div><!-- End .container -->
+    </div><!-- End .dashboard -->
+  </div><!-- End .page-content -->
+</main><!-- End .main -->
+<script>
+  function deleteAddress(addressId) {
+    console.log(addressId);
+    $.ajax({
+      url: '/deleteAddress',
+      data: {
+        addressId: addressId
+
+      },
+      method: 'post'
+    }).then((response) => {
+      if (response.status) {
+          location.reload()
+        Swal.fire('DELETED')
+      }
+    })
+  }
+
+  function editAddress(input) {
+    console.log('kggh')
+    let firstname = input.parentElement.parentElement.querySelector('#firstname').value
+    let lastname = input.parentElement.parentElement.querySelector('#lastname').value
+    let country = input.parentElement.parentElement.querySelector('#country').value
+    let street =input.parentElement.parentElement.querySelector('#street').value
+    let city =input.parentElement.parentElement.querySelector('#city').value
+    let state = input.parentElement.parentElement.querySelector('#state').value
+    let pincode = input.parentElement.parentElement.querySelector('#pincode').value
+    let phone = input.parentElement.parentElement.querySelector('#phone').value
+    let email = input.parentElement.parentElement.querySelector('#email').value
+    let addressId=input.parentElement.parentElement.querySelector('#_id').value
+
+
+
+
+    $.ajax({
+      url: '/addressedit',
+      data: {
+        addressId: addressId,
+        firstname: firstname,
+        lastname: lastname,
+        country: country,
+        street: street,
+        city: city,
+        state: state,
+        pincode: pincode,
+        phone: phone,
+        email: email,
+        addressId: addressId,
+      },
+      method: 'post',
+    }).then((response) => {
+      if (response.status) {
+        Swal.fire('Your action is SAVED')
+
+        location.reload()
+      }
+    })
+  }
+
+  function addAddress() {
+    let firstname = document.getElementById('fname').value
+    let lastname = document.getElementById('lname').value
+    let country = document.getElementById('newcountry').value
+    let street = document.getElementById('newstreet').value
+    let city = document.getElementById('newcity').value
+    let state = document.getElementById('newstate').value
+    let pincode = document.getElementById('newpincode').value
+    let phone = document.getElementById('newphone').value
+    let email = document.getElementById('newemail').value
+
+    $.ajax({
+      url: '/addNewAddress',
+      data: {
+
+        firstname: firstname,
+        lastname: lastname,
+        country: country,
+        street: street,
+        city: city,
+        state: state,
+        pincode: pincode,
+        phone: phone,
+        email: email
+      },
+
+      method: 'post',
+    }).then((response) => {
+      if (response.status) {
+        Swal.fire('Address Saved')
+        location.reload()
+      } else {
+        Swal.fire('Address Already Exist')
+        location.reload()
+      }
+    })
+  }
+
+  function addressFilling(addressId) {
+   
+    const inputId = ['firstname', 'lastname', 'country', 'street', 'city', 'state', 'pincode', 'phone', 'email', '_id']
+    $.ajax({
+      url: '/filladdres/' + addressId,
+      method: 'get',
+      success: (response) => {
+
+console.log(response);
+        inputId.forEach((data) => {
+          document.getElementById(data).value = response[data]
+        })
+        document.getElementById('_id').value=response._id
+      }
+    })
+  }
+
+ function editProfile(){
+  let name=document.getElementById('firstName').value
+  let email=document.getElementById('Emailaddress').value
+  let currentPassword=document.getElementById('currentPassword').value
+  let newPassword=document.getElementById('newPassword').value
+  let confirmPassword=document.getElementById('confirmPassword').value
+   let flag=1
+  if(name==" "){
+    errormessage('Name  is required')
+    flag=2
+  }
+  if(email==""){
+errormessage('Email is required')
+  }
+else if(!email.match( /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)){
+    errormessage('enter valid email')
+    flag=2
+}
+if(currentPassword==" "){
+    errormessage('Password  field cant be empty')
+    flag=2
+   
+  }
+  if(newPassword!=confirmPassword){
+    errormessage('password do not match')
+    flag=2
+  }
+  function errormessage(message){
+    Swal.fire(message)
+  }
+  if(flag==1)
+{
+    $.ajax({
+        url:'/changeUserDetails',
+        data:{
+            name:name,
+            email:email,
+            currentPassword:currentPassword,
+            newPassword:newPassword
+        },
+        method:'post'
+    }).then((response)=>{
+        if(response.status){
+            Swal.fire('Profile Updated').then(()=>{
+                location.reload()
+            })
+           
+           
+        }
+        else{
+            Swal.fire('Password Not Match')
+        }
+    })
+}
+
+}
+</script>
