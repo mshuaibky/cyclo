@@ -79,10 +79,11 @@ module.exports = {
         })
     },
     check: (number) => {
+        console.log(number,'namma number');
         return new Promise(async (resolve, reject) => {
-            let data = await db.users.find({ phone: number.phone })
+            let data = await db.users.find({ phone: number })
+            console.log(data,'phone number varify');
             resolve(data)
-            console.log(data);
         })
 
     },
@@ -288,8 +289,9 @@ module.exports = {
 
     },
 
-    placeOrder: (order, total) => {
-
+    placeOrder: (order, total,couponId) => {
+    console.log(couponId,'in placeOrder');
+    console.log(order);
         return new Promise(async (resolve, reject) => {
             let components = await db.cart.aggregate([
                 {
@@ -459,10 +461,19 @@ module.exports = {
                 await db.order(orderdata).save()
             }
             db.cart.deleteOne({user:order.userId}).then((res) => {
-               
+               if(couponId){
+                db.users.updateOne({_id:order.userId,'coupon.couponId':couponId},
+                {
+                    $set:{'coupon.$.status':true}
+                }
+                ).then((data)=>{
+                    console.log(data,'datassssssssss');
+                    resolve({status:true})
+                })
+               }
                 resolve({ status: 'success' })
+                
             })
-           
         })
 
     },
@@ -489,7 +500,7 @@ module.exports = {
         })
     },
 
-    cancel: (data) => {
+    cancel: (data,userId) => {
 
 
         let orderIds = data.orderId.trim()
@@ -506,9 +517,47 @@ module.exports = {
                         ['orders.' + orderIndex + '.productDetails.' + productIndex + '.status']: false
                     }
                 }).then((e) => {
-                    console.log(e);
                     resolve({ status: true })
                 })
+               db.order.aggregate([
+                {
+                $match:{userId:ObjectId(userId)}
+               },
+              {
+                $unwind:'$orders'
+              },
+              {
+                $unwind:'$orders.productDetails'
+              },
+              {
+                $match:{$and:[{'orders._id':ObjectId(orderIds),'orders.productDetails._id':ObjectId(data.proId)}]}
+              }
+            ]).then((datas)=>{
+            console.log(datas,'cancelinta order ');
+           
+                db.product.updateOne({_id:data.proId},
+                    {
+                        $inc:{stock:datas[0].orders.productDetails.quantity}
+                    }
+                    ).then((e)=>{
+                        console.log(e,'cancel productinta response');
+                    })
+
+                    if(datas[0].orders.paymentMethod=='paypal'||datas[0].orders.paymentMethod=='Upi'){
+                        let wallets=datas[0].orders.productDetails.productPrice*datas[0].orders.productDetails.quantity
+                        db.users.updateOne({_id:userId},
+                        {
+                            $push:{
+                                wallet:wallets
+                            }
+                        }
+                            
+                            ).then((response)=>{
+                                console.log(response,'response of cancel order');
+                            })
+                    }
+            })
+
             }
         })
 
@@ -582,11 +631,12 @@ module.exports = {
     },
     changePaymentStatus: (orderId1) => {
         let orderId="" +orderId1
-        console.log(orderId);
+       
         return new Promise(async (resolve, reject) => {
             let orders = await db.order.find({ 'orders.$._id': orderId })
-
-            let orderIndex = orders[0].orders.findIndex(order => order._id == orderId)
+            console.log(orders,'ith enja channanam');
+            let orderIndex = orders[0].orders.findIndex((order) => order._id == orderId)
+            console.log(orderIndex,'change payment status');
 
             let updateData = await db.order.updateOne({
                 'orders._id': orderId
@@ -743,19 +793,17 @@ module.exports = {
         let proId=data.proId
         return new Promise(async(resolve,reject)=>{
            let order=await db.order.find({'orders._id':orderId})
-           console.log(order,'myOrders');
+           
            if(order){
             let orderIndex=order[0].orders.findIndex(order=>order._id==orderId)
          let productIndex=order[0].orders[orderIndex].productDetails.findIndex(product=>product._id==proId)
-         console.log(productIndex,'proIndez');
-           db.order.updateOne({'orders.Id':orderId},
+           db.order.updateOne({'orders._id':orderId},
          {
             $set:{
                 ['orders.'+orderIndex+'.productDetails.'+productIndex+'.returnStatus']:true
             }
          }
          ).then((response)=>{
-            console.log(response,'response');
          })
           
           db.order.aggregate([{
@@ -826,5 +874,21 @@ module.exports = {
             resolve(orders)
         })
 
+    },
+
+    offeredProduct:(query)=>{
+        return new Promise(async(resolve,reject)=>{
+            try {
+                console.log(query,'test');
+             let data= await  db.product.find({ Offerprice: '19000' })
+             console.log(data,'querrys data');
+               
+             resolve(data)
+           
+
+            } catch (error) {
+                
+            }
+        })
     }
 }

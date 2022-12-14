@@ -108,8 +108,10 @@
                                         <a href="#"><%= products.catagory %> </a>
                                     </div><!-- End .product-cat -->
                                     <h3 class="product-title"><a href=""><%= products.name %> </a></h3><!-- End .product-title -->
-                                    <div class="product-price">
-                                      <%= products.price %> $
+                                    <div class="product-price ">
+                                        <sup  class="intro-old-price mx-2">RS:<%=  products.price  %>  </sup>
+
+                                      <%= products.Offerprice %> RS
                                     </div><!-- End .product-price -->
                                     <div class="ratings-container">
                                         <div class="ratings">

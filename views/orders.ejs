@@ -29,20 +29,21 @@
     </thead>
 
     <tbody>
+      <% console.log(Orders,'this is my orsdr sdata');  %> 
       <% Orders.reverse().forEach((items)=>{ %> 
       <tr>
-        <td class="price-col"><%= items.orders._id %> </td>
+        <td class="price-col"><%= items.orders?._id %> </td>
 
-        <td class="price-col"><%= items.orders.firstname  %> </td>
-        <td class="price-col"><%=  items.orders.totalPrice  %> </td>
+        <td class="price-col"><%= items.orders?.firstname  %> </td>
+        <td class="price-col"><%=  items.orders?.totalPrice  %> </td>
         
-        <% if(items.orders.paymentStatus==1){ %> 
+        <% if(items.orders?.shippingStatus==4||items.orders?.paymentMethod=='Upi'||items.orders?.paymentMethod=='paypal'){ %> 
         <td class="stock-col"><span class="in-stock">SUCCESS</span></td>
         <% }else{ %> 
           <td class="stock-col"><span class="out-of-stock">PENDING</span></td>
          <% } %> 
         <td class="action-col">
-          <a href="/detailOrder/<%=items.orders._id  %>">
+          <a href="/detailOrder/<%=items.orders?._id  %>">
           <button class="btn btn-block btn-outline-primary-2"><i class="icon-arrows"></i>View More</button></a>
 
           <td  class="remove-col"><button class="btn-remove"><i class="icon-contract"></i></button></td>

@@ -97,10 +97,59 @@ module.exports = {
         })
     },
 
-    findMonthly:()=>{
-        let month=new Date()
-        let thisMonth=month.getMonth()
-        return new Promise((resolve,reject)=>{
+    // findMonthly:()=>{
+    //     let month=new Date()
+    //     let thisMonth=month.getMonth()
+    //     return new Promise((resolve,reject)=>{
+    //         db.order.aggregate([
+    //             {
+    //                 $unwind:'$orders'
+    //             },
+    //             {
+    //                 $unwind:'$orders.productDetails'
+    //             },
+    //             {
+    //                 $match:{'orders.productDetails.shippingStatus':4}
+    //             },
+    //             {
+    //                 $match:{
+                        
+    //                         $expr:{
+    //                             $eq:[
+    //                                 {
+    //                                     $month:'$orders.createdAt'
+    //                                 },
+    //                                 thisMonth+1
+    //                             ]
+    //                         }
+                        
+    //                 }
+                    
+    //             },
+    //             {
+    //                 $group:{
+    //                     _id:null,
+    //                     total:{$sum:'$orders.totalPrice'},
+    //                     orders:{$sum:'$orders.productDetails.quantity'},
+    //                     totalOrders:{$sum:'$orders.totalQuantity'},
+    //                     count:{$sum:1}
+
+    //                 }
+    //             }
+
+    //         ]).then((monthlydata)=>{
+                
+    //             resolve(monthlydata)
+    //         })
+    //     })
+    // },
+
+    findEveryMonthly:()=>{
+        return new Promise(async(resolve,reject)=>{
+            let date=new Date()
+         let thismonth=date.getMonth()
+         let month=thismonth+1
+         let year=date.getFullYear()
             db.order.aggregate([
                 {
                     $unwind:'$orders'
@@ -109,98 +158,23 @@ module.exports = {
                     $unwind:'$orders.productDetails'
                 },
                 {
+                    $match:{'orders.createdAt':{$gt:new Date(`${year}-01-01`),$lt:new Date(`${year}-12-31`)}}
+                },
+                {
                     $match:{'orders.productDetails.shippingStatus':4}
                 },
                 {
-                    $match:{
-                        
-                            $expr:{
-                                $eq:[
-                                    {
-                                        $month:'$orders.createdAt'
-                                    },
-                                    thisMonth+1
-                                ]
-                            }
-                        
-                    }
-                    
-                },
-                {
                     $group:{
-                        _id:null,
-                        total:{$sum:'$orders.totalPrice'},
-                        orders:{$sum:'$orders.productDetails.quantity'},
-                        totalOrders:{$sum:'$orders.totalQuantity'},
-                        count:{$sum:1}
-
+                        _id:{'$month':"$orders.createdAt"},
+                      totalCount:{$sum:{$multiply:['$orders.productDetails.productPrice','$orders.productDetails.quantity']}},
+                      orders:{$sum:1},
+                      totalQuantity:{$sum:'$orders.productDetails.quantity'}
                     }
                 }
-
-            ]).then((monthlydata)=>{
-                
-                resolve(monthlydata)
+            ]).then((data)=>{
+                console.log(data,'kjfjfjfj');
+                resolve(data)
             })
-        })
-    },
-
-    findEveryMonthly:()=>{
-        return new Promise(async(resolve,reject)=>{
-            try{
-                let data=[]
-                for(let i=0;i<12;i++){
-                    await db.order.aggregate([
-                        {
-                            $unwind:'$orders'
-                        },
-                        {
-                            $unwind:'$orders.productDetails'
-                        },
-                        {
-                            $match:{'orders.productDetails.shippingStatus':4}
-                        },
-                        {
-                            $match:{
-                                $expr:{
-                                    $eq:[{
-                                        $month:'$orders.createdAt'
-                                    },
-                                    i+1
-                                    ]
-                                   
-                                }
-                            }
-                        },
-
-                  {
-                    $group:{
-                        _id:null,
-                        total:{$sum:'$orders.totalPrice'},
-                        orders:{$sum:'$orders.productDetails.quantity'},
-                        count:{$sum:1}
-                       }
-                  }
-                    ]).then((monthlydata)=>{
-                     
-                        data[i+1]=monthlydata[0]
-                    })
-                }
-                for(i=0;i<12;i++){
-                    if(data[i+1]==undefined){
-                        data[i+1]={
-                            total:0,
-                            orders:0,
-                            count:0,
-                        }
-                    }else{
-                        data[i]
-                    }
-                }
-                
-                resolve({status:true,data:data})
-            }catch(err){
-
-            }
         })
     },
 
@@ -233,14 +207,14 @@ module.exports = {
                     _id:{'$dayOfMonth':'$orders.createdAt'},
                     totalRevenue:{$sum:{$multiply:['$orders.productDetails.productPrice','$orders.productDetails.quantity']}},
                     orders:{$sum:1},
-                    totalQuantity:{$first:'$orders.totalQuantity'}
+                    totalQuantity:{$sum:'$orders.productDetails.quantity'}
                 }
             },
             {
                 $sort:{'_id':-1}
             }
            ]).then((data)=>{
-                console.log(data);
+        
             resolve(data)
            })
     })
@@ -276,7 +250,7 @@ module.exports = {
                                 _id:{'$year':'$orders.createdAt'},
                                 totalRevenue:{$sum:{$multiply:['$orders.productDetails.productPrice','$orders.productDetails.quantity']}},
                                 orders:{$sum:1},
-                                totalQuantity:{$first:'$orders.totalQuantity'}
+                                totalQuantity:{$sum:'$orders.productDetails.quantity'}
                             }
                         },
                         {
@@ -285,10 +259,10 @@ module.exports = {
                             }
                         }
                     ])
-                    // .then((data)=>{
+                  
                        
                         resolve(data)
-                    // })
+                    
             })
 
         }

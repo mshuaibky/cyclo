@@ -6,6 +6,7 @@ var db = require('../config/connection');
 var otp = require('../config/otp');
 const productHelpers = require('../helpers/productHelpers');
 var client = require('twilio')(otp.accountsId, otp.authToken)
+let couponHelpers=require('../helpers/couponHelpers')
 const { v4: uuidv4 } = require('uuid');
 
 const paypal = require("@paypal/checkout-server-sdk")
@@ -19,13 +20,16 @@ const paypalClient = new paypal.core.PayPalHttpClient(
     process.env.PAYPAL_CLIENT_SECRET
   )
 )
+let couponAmount=0
 module.exports = {
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>   pages   <<<<<<<<<<<<<<<<<<<<<<<<//
 
  
 
   landingPage: async (req, res) => {
-
+    if(req.session.loggedIn){
+      res.locals.loggedIn=true
+    }
     let user = req.session.user
 
     let banners=await   productHelpers.getAllBaners()
@@ -113,7 +117,7 @@ module.exports = {
         req.session.loggedIn = true
         res.locals.loggedIn=true
         req.session.user = response.user
-        res.send({ value: 'success' })
+        res.send({ value: 'success'})
       } else {
         res.send({ value: 'loginfailed' })
       }
@@ -143,7 +147,7 @@ module.exports = {
 
   userLogout: (req, res) => {
     req.session.loggedIn = false
-    res.redirect('/');
+    res.redirect('/userLogin');
   },
 
   userOtpGet: (req, res) => {
@@ -153,13 +157,14 @@ module.exports = {
 
     userHelpers.check(req.query.phonenumber).then((data) => {
 
-      if (data) {
+      if (data.length) {
         client.verify.services(otp.serviceId).verifications.create
           ({
             to: `+91${req.query.phonenumber.trim()}`,
             channel: 'sms'
           }).then((data) => {
-            res.status(200).send(data)
+           
+            // res.status(200).send(data)
             res.send({ value: 'success' })
           })
       } else {
@@ -207,32 +212,38 @@ module.exports = {
   },
 
   checkOut: async (req, res) => {
-   
+    let coupons=await couponHelpers.getAllCoupons()
+      console.log(coupons,'checkout coupons');
     let cartproducts = await userHelpers.getCartProducts(req.session.user?._id)
     let address = await userHelpers.getAddress(req.session.user?._id)
    
     let totalamount = await userHelpers.getTotalAmount(req.session.user?._id)
 
-    res.render('checkout', { totalamount, address, cartproducts,clientId:process.env.PAYPAL_CLIENT_ID })
+    res.render('checkout', {coupons, totalamount, address, cartproducts,clientId:process.env.PAYPAL_CLIENT_ID })
   },
   placeOrder: async (req, res) => {
 
     let totalamount = await userHelpers.getTotalAmount(req.session.user._id)
-    
+    totalamount=totalamount-couponAmount
     req.body.userId = req.session.user._id
-    userHelpers.placeOrder(req.body, totalamount).then(async(response) => {
+    userHelpers.placeOrder(req.body, totalamount,req.session.coupon).then(async(response) => {
      
    
       if (req.body.paymentMethod == 'cash') {
+        couponAmount=0
+        req.session.coupon=''
         res.json({ cod: true })
         
       }else if(req.body.paymentMethod=='paypal'){
+            couponAmount=0
+            req.session.coupon=''
             res.json({paypal:true})
       } 
       else {
         userHelpers.generateRazorpay(req.body,totalamount).then((response) => {
-   
-          res.json({razorpay:true})
+          couponAmount=0
+          req.session.coupon=''
+          res.json(response)
         })
       }
     })
@@ -251,8 +262,9 @@ module.exports = {
   //   })
   },
   cancelOrder: (req, res) => {
-    console.log("data", req.body);
-    userHelpers.cancel(req.body).then((response) => {
+    userId=req.session.user._id
+    console.log(userId,'cancelOrder id ');
+    userHelpers.cancel(req.body,userId).then((response) => {
 
       res.json(response)
     })
@@ -270,16 +282,16 @@ module.exports = {
       res.send(data[0].address)
     })
   },
-  razorpay: (req,res) => {
-    
-    console.log("req.bodyyy",req.body);
+  razorpay:async (req,res) => {
+    let totalamount = await userHelpers.getTotalAmount(req.session.user._id)
+    console.log(totalamount,'total amounttt');
     userHelpers.varifyPayment(req.body).then((response)=>{
       userHelpers.changePaymentStatus(req.body['order[receipt]']).then(()=>{
 
         res.json({status:true})
       })
     }).catch((err)=>{
-      res.json({status:failed})
+      res.json({status:failed,totalamount:totalamount})
     })
     
   },
@@ -382,7 +394,7 @@ module.exports = {
   },
   returnOrder:(req,res)=>{
     userId=req.session.user._id
-    console.log(req.body,'nammaa body');
+    
    userHelpers.orderReturn(req.body,userId).then((response)=>{
     console.log(response,'ith verre response');
     res.send(response)
@@ -393,15 +405,58 @@ module.exports = {
     userId=req.session.user._id
     
    userHelpers.findOrder(req.params).then((data)=>{
-    console.log(data,'nammda daata');
     res.json({data:data[0]})
    })
   },
   detailOrder:async(req,res)=>{
-    console.log(req.params,'namma paarams');
     allOrders=await userHelpers.detailOrder(req.params)
-    console.log(allOrders,'alll orderssssssss');
     res.render('detailOrder',{allOrders })
+  },
+
+  applyCoupon:async(req,res)=>{
+  req.session.coupon=req.body.couponId
+ let couponId=req.body.couponId
+  let totalamount = await userHelpers.getTotalAmount(req.session.user?._id)
+    
+ couponHelpers.couponApply(couponId,totalamount).then((data)=>{
+   
+
+   if(totalamount>=data.minPurchased){
+    couponHelpers.addUserCoupon(req.session.user._id,couponId).then((e)=>{
+      if(totalamount*data.discountPercentage/ 100 <= data.maxCount) {
+        let couponTotal=(totalamount*data.discountPercentage/100)
+        couponAmount=couponTotal
+
+        res.send({status:true,couponAmount:couponAmount,totalamount:totalamount-couponAmount})
+      }
+      else{
+        couponAmount=data.maxCount
+        totalamount=totalamount-couponAmount
+
+        res.send({
+          status:true,
+          couponAmount:couponAmount,
+          totalamount:totalamount
+        })
+      }
+    }).catch((e)=>{
+      res.send({status:false,message:e})
+    })
+   }
+   else{
+    res.send({status:false,message:'Purchase More'})
+   }
+ })
+  },
+  findOfferdProduct:async(req,res)=>{
+   
+   let products=await userHelpers.offeredProduct(req.query)
+   let cartcount = await userHelpers.getCartCount(req.session.user._id)
+
+   let cartproducts = await userHelpers.getCartProducts(req.session.user._id)
+      res.render('shop', { nav: true, footer: true,products,cartproducts,cartcount})
+   
+
   }
 
 }

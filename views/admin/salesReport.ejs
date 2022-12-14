@@ -412,12 +412,7 @@ footer p a:hover{
                   <div class="table-responsive pt-3">
                     <table id="my-table2" class="table table-bordered">
                       <thead>
-                        <% const monthToMonth=(mm)=>{
-                          var month=['jan','feb','march','apr','may','jun','july','aug','sep','oct','nov','dec']
-                          return month[mm-1]
-
-                          return  `${date}-${mm}-${new Date().getFullYear()}`
-                        } %> 
+                       
                         <tr>
                           <th>
                          DATE
@@ -439,29 +434,28 @@ footer p a:hover{
                         </tr>
                       </thead>
                       <tbody>
-                      <% EveryMonthly.data.forEach((monthly,index)=>{ %> 
                      
-                     
+                     <% console.log(EveryMonthly[0],'namma monthly data'); %> 
                         <tr>
                           <td>
-                            <%= monthToMonth(index) %>
+                            <%= EveryMonthly[0]._id %>
                            
                           </td>
                           <td>
-                           <%= monthly.total %> 
+                           <%= EveryMonthly[0].totalCount %> 
                           </td>
                           <td>
-                          <%= monthly.orders  %>  
+                          <%= EveryMonthly[0].orders %>  
                             </td>
                           <td>
-                           <%= monthly.count %> 
+                           <%= EveryMonthly[0].totalQuantity %> 
                           </td>
                         
                          
                          
                         
                         </tr>
-                        <% }) %> 
+                       
                       </tbody>
                     </table>
                   </div>

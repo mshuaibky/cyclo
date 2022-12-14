@@ -4,15 +4,25 @@ const db=require('../config/connection')
 module.exports={
 addUsers:(userData)=>{
     return new Promise(async(resolve,reject)=>{
-        let users= await db.users(userData)
-        users.save()
-        resolve(users)
+        try {
+            let users= await db.users(userData)
+            users.save()
+            resolve(users)
+            
+        } catch (error) {
+            reject(error)
+        }
     })
 },
 getAllUsers:()=>{
     return new Promise(async(resolve,reject)=>{
-      let Users=await db.users.find({})
-      resolve(Users)
+        try {
+            
+            let Users=await db.users.find({})
+            resolve(Users)
+        } catch (error) {
+         reject(error)   
+        }
   
     })
   },

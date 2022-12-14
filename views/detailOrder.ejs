@@ -202,12 +202,10 @@
                                       <% if(items.orders.productDetails.shippingStatus<=3){ %>
                                       <button onclick="cancelOrder('<%= items.orders._id %>','<%= items.orders.productDetails._id %>')" class="cancel btn text-white  mx-3" style="border-radius: 10px; width: 160px; background-color: rgb(234, 34, 4);">Cancel Order</button>
                                       <% }else if(items.orders.productDetails.returnStatus ){ %>
-                                        <% console.log(items.orders.productDetails.returnStatus,'namma status');%>
                                         <button disabled  class="cancel btn text-white  mx-3" style="border-radius: 10px; width: 160px;background-color: rgb(89, 218, 218); ">Return Order</button>
 
                                       <% }else if(items.orders.productDetails.shippingStatus==4) { %>
-                                        <%console.log(items.orders.productDetails.shippingStatus);%>
-                                        <% console.log(items.orders.productDetails.returnStatus,'namma status');%>
+                                      
 
                                         <button onclick="returnOrder('<%= items.orders._id %>','<%= items.orders.productDetails._id %>')" class="cancel btn text-white  mx-3" style="border-radius: 10px; width: 160px;background-color: rgb(89, 218, 218); ">Return Order</button>
 
@@ -218,9 +216,11 @@
                                     </div>
                                    
                                   <br>
-                                  <% if(items.orders.productDetails.returnStatus==false){%>
+                                  <% if(items.orders.productDetails.shippingStatus==4&&items.orders.productDetails.returnStatus==false){%>
+                                 
                                     <button style="border-radius: 15px; width: 160px;" class="btn btn-success mx-3 " onclick="downloadInvoice('<%= items.orders._id%>','<%= index%>')">Download Invoice</button>
-                                    <%}%>
+                                   <%}%>
+
                                   </div>
                                   <% } %>
                                 </div>
@@ -275,19 +275,24 @@
                                         </b> </p>
                                       <div>
                                         <h6 class="mt-2 mx-4 ">Payment Status</h6>
-                                        <% if(allOrders[0].orders.paymentStatus==1 ){ %>
+                                        <% if(allOrders[0].orders.shippingStatus==4||allOrders[0].orders.paymentMethod=='Upi'||allOrders[0].orders.paymentMethod=='paypal' ){ %>
                                           <p class="mx-4 mt-1 text-success "><b>SUCCESS</b> </p>
-                                          <% }else if(allOrders[0].orders.productDetails.shippingStatus==4){ %>
-                                            <p class="mx-4 mt-1 text-success"><b></>SUCCESS </p>
-                                            <% }else{ %>
+                                         <%}else{%>
                                                 <p class="mx-4 mt-1 text-danger"><b></>PENDING </p>
                                            <%}%>
 
                                       </div>
                                     </div>
                                     <div >
+                                      <h6 class="mt-2 mx-4 ">You Saved</h6>
+                                      
+                                      <span class="mx-4 mt-2 "
+                                        style="color: #fb6400; font-size: x-large !important; font-weight: 500; ">
+                                        <%=allOrders[0].orders.totalPrice %>
+                                      </span>
   
                                       <h6 class="mt-2 mx-4 ">Total Price</h6>
+
                                       <span class="mx-4 mt-2 "
                                         style="color: #fb6400; font-size: x-large !important; font-weight: 500; ">
                                         <%=allOrders[0].orders.totalPrice %>
@@ -347,7 +352,7 @@
   }
 
   function returnOrder(orderId, proId) {
-
+  console.log('calling');
     $.ajax({
       url: '/returnOrder',
       method: 'post',

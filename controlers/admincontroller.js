@@ -18,13 +18,10 @@ module.exports = {
     //>>>>>>>>>>>>>>   adminpages    <<<<<<<<<<<<<<<<<//
 
     adminDashBoard: (req, res, next) => {
-        if (req.session.adminlogin) {
+        
             res.render('admin/admindash', { layout: 'admin/adminLayout', nav: true, sidebar: true });
 
-        }
-        else {
-            res.redirect('/admin/adminlogin')
-        }
+     
     },
 
 
@@ -33,18 +30,22 @@ module.exports = {
 
             res.render('admin/allProduct', { layout: 'admin/adminLayout', products, nav: true, sidebar: true });
 
+        }).catch((error)=>{
+            res.render('error',{error:error.message})
         })
     },
 
 
     adminAddProductGet: (req, res, next) => {
-        if (req.session.adminlogin) {
+      
             productHelpers.getallCatagory().then((catagory) => {
 
                 res.render('admin/addProduct', { catagory, layout: 'admin/adminLayout', nav: true, sidebar: true });
 
-            });
-        }
+            }).catch((error)=>{
+                res.render('error',{error:error.message})
+            })
+      
     },
 
     adminAddProductsPost: (req, res) => {
@@ -64,6 +65,8 @@ module.exports = {
          // let Image = req.files.Image
         
      res.redirect('/admin/allProduct')
+ }).catch((error)=>{
+    res.render('error',{error:error.message})
  })
 
       
@@ -71,29 +74,33 @@ module.exports = {
     },
 
     adminUsers: (req, res) => {
-        if (req.session.adminlogin) {
+       
             adduserHelpers.getAllUsers().then((users) => {
                 res.render('admin/allUsers', { layout: 'admin/adminLayout', users, nav: true, sidebar: true });
+            }).catch((error)=>{
+                res.render('error',{error:error.message})
             })
-        }
+        
     },
 
 
     adminAddUsersGet: (req, res, next) => {
-        if (req.session.adminlogin) {
+       
             res.render('admin/addUser', { layout: 'admin/adminLayout', nav: true, sidebar: true });
-        }
+        
     },
 
     adminAddUsersPost: (req, res) => {
         adduserHelpers.addUsers(req.body).then((userData) => {
             console.log(userData);
             res.redirect('/admin/allusers')
+        }).catch((error)=>{
+         res.render('error',{error:error.message})
         })
     },
 
     editProducts: async (req, res, next) => {
-        if (req.session.adminlogin) {
+      
             let product = await productHelpers.getproductdetails(req.params.id)
             console.log(product);
             productHelpers.getallCatagory().then((catagory) => {
@@ -102,15 +109,14 @@ module.exports = {
 
                 res.render('admin/editProduct', { layout: 'admin/adminLayout', product, catagory, nav: true, sidebar: true });
             })
-        }
+        
 
     },
 
     editProductsPost: (req, res) => {
 
-
-        productHelpers.updateProduct(req.params.id, req.body).then(() => {
-           
+     console.log(req.params.id,req.boby,'ith vanjandaaa');
+       
 
             const files=req.files
              const filename=files.map((file)=>{
@@ -119,11 +125,11 @@ module.exports = {
 
              const product=req.body
              product.image=filename
-             productHelpers.addproduct(product).then((insertedId)=>{
-               
+             productHelpers.updateProduct(req.params.id, req.body).then(() => {
+                          
                 res.redirect('/admin/allproduct')
              })
-        })
+    
 
 
     },
@@ -154,13 +160,13 @@ module.exports = {
     },
 
     catagory: (req, res) => {
-        if (req.session.adminlogin) {
+      
             productHelpers.getallCatagory().then((catagory) => {
                 //   console.log(catagory);
                 res.render('admin/catagory', { layout: 'admin/adminLayout', catagory, nav: true, sidebar: true })
 
             })
-        }
+        
     },
 
     addCatagoryGet: (req, res) => {
@@ -297,8 +303,7 @@ module.exports = {
      },
 
      banermainpost:(req,res)=>{
-          console.log(req.files,'photosos');
-        console.log(req.body,'ith namma bodyyyyyyyy');
+        
         const files=req.files
         const filesname=files.map((file)=>{
             return file.filename
@@ -306,9 +311,7 @@ module.exports = {
         const baner=req.body
         
         baner.image=filesname
-        console.log(baner,'banerrrrrrr');
         productHelpers.addbaners(baner).then((insertedId)=>{
-            console.log(insertedId,'insertedId');
             res.redirect('/admin/banermainTable')
         })
      },

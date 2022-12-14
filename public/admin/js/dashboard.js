@@ -6,12 +6,9 @@
     },
   }).then(res => res.json())
     .then((res) => {
-     console.log(res.yearlyData,'res.yearly');
-    
-      let price = res.EveryMonthly.data
+      let price = res.EveryMonthly
       let daily=res.dailydata
       let yearly=res.yearlyData
-     console.log(yearly,'yearly');
     
    let dailyArr=[]
    for(i=1;i<=30;i++){
@@ -25,99 +22,41 @@
     }
    }
 
-
+   let monthlyarr=[]
+   for(i=1;i<=12;i++){
+    for(j=0;j<=12;j++){
+      if(price[j]?._id==i){
+        monthlyarr[i]=price[j]?.totalCount
+        break;
+      }else{
+        monthlyarr[0]=0
+        monthlyarr[i]=0
+      }
+    }
+   }
+ 
       graphChart(jQuery)
       function graphChart($) {
         'use strict';
         $(function () {
-          if ($("#order-chart").length) {
-            var areaData = {
-              labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-              datasets: [
-                {
-                  data: [price[1].total , price[2].total, price[3].total, price[4].total, price[5].total, price[6].total, price[7].total, price[8].total, price[9].total, price[10].total, price[11].total, price[12].total],
-                  borderColor: [
-                    '#4747A1'
-                  ],
-                  borderWidth: 2,
-                  fill: false,
-                  label: "Orders"
-                },
-                {
-                  data: [400, 450, 410, 500, 480, 600, 450, 550, 460, "560", "450", "700", "450", "640", "550", "650", "400", "850", "800"],
-                  borderColor: [
-                    '#F09397'
-                  ],
-                  borderWidth: 2,
-                  fill: false,
-                  label: "Downloads"
-                }
-              ]
-            };
-            var areaOptions = {
-              responsive: true,
-              maintainAspectRatio: true,
-              plugins: {
-                filler: {
-                  propagate: false
-                }
-              },
-              scales: {
-                xAxes: [{
-                  display: true,
-                  ticks: {
-                    display: true,
-                    padding: 10,
-                    fontColor: "#6C7383"
-                  },
-                  gridLines: {
-                    display: false,
-                    drawBorder: false,
-                    color: 'transparent',
-                    zeroLineColor: '#eeeeee'
-                  }
-                }],
-                yAxes: [{
-                  display: true,
-                  ticks: {
-                    display: true,
-                    autoSkip: false,
-                    maxRotation: 0,
-                    stepSize: 100000,
-                    min: 0,
-                    max: 500000,
-                    padding: 18,
-                    fontColor: "#6C7383"
-                  },
-                  gridLines: {
-                    display: true,
-                    color: "#f2f2f2",
-                    drawBorder: false
-                  }
-                }]
-              },
-              legend: {
-                display: false
-              },
-              tooltips: {
-                enabled: true
-              },
-              elements: {
-                line: {
-                  tension: .35
-                },
-                point: {
-                  radius: 0
-                }
-              }
-            }
-            var revenueChartCanvas = $("#order-chart").get(0).getContext("2d");
-            var revenueChart = new Chart(revenueChartCanvas, {
-              type: 'line',
-              data: areaData,
-              options: areaOptions
-            });
-          }
+          var xValues = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+
+new Chart("mymonthlyChart", {
+  type: "line",
+  data: {
+    labels: xValues,
+    datasets: [
+     { 
+      data: [monthlyarr[1],monthlyarr[2],monthlyarr[3],monthlyarr[4],monthlyarr[5],monthlyarr[6],monthlyarr[7],monthlyarr[8],monthlyarr[9],monthlyarr[10],monthlyarr[11],monthlyarr[12]],
+      borderColor: "blue",
+      fill: false
+    }]
+  },
+  options: {
+    legend: {display: false}
+  }
+});
+// end month//////////////////////////
           //daily
           if ($("#dailychart").length) {
           var xValues = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','29','30','31'];
@@ -145,6 +84,7 @@
 
 
           if ($("#yearlychart").length) {
+            console.log(yearly[0],'aahaha');
             var xValues = [2018,2019,2020,2021,2022,2023,2024,2025,2026,2027];
   
             new Chart("yearlychart", {

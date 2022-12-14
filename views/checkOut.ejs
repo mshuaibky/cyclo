@@ -8,7 +8,7 @@
 }
 .coupon{
     width: 100%;
-    height: 100vh;
+    height: 50vh;
     background: #f0fff3;
     display: flex;
     align-items: center;
@@ -16,7 +16,7 @@
 
 }
 .coupon-card{
-    background: linear-gradient(135deg, #7158fe, #9d4de6);
+    background: linear-gradient(135deg, #c8c2eb, #392b46);
     color: #fff;
     text-align: center;
     padding: 40px 80px;
@@ -82,7 +82,7 @@
 
 
 <main class="main">
-    <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+    <div  class="page-header text-center " style="background-image: url('assets/images/page-header-bg.jpg')">
         <div class="container">
             <h1 class="page-title">Checkout<span>Shop</span></h1>
         </div><!-- End .container -->
@@ -111,32 +111,32 @@
   
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div id="custom-target" class="modal-dialog">
       <div class="modal-content">
-        <div class="modal-header">
+        <div  class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Your Coupons</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
+        <div  class="modal-body">
             <!--..................... modal body,,,,,,,,,,,,,,,,,,,,,,,,,, -->
 
             
-            <body>
-                <div class="container coupon">
-                    <div class="coupon-card">
-                        <img src="https://i.postimg.cc/KvTqpZq9/uber.png" class="logo">
-                        <h3>20% flat off on all rides within the city<br>using HDFC Credit Card</h3>
-                        <di class="coupon-row">
-                            <span id="cpnCode">STEALDEAL20</span>
-                            <span id="cpnBtn">Copy Code</span>
-                        </di>
-                        <p>Valid Till: 20Dec, 2021</p>
-                        <div class="circle1"></div>
-                        <div class="circle2"></div>
+            <body    >
+                <% coupons.forEach((details)=>{ %> 
+                <div  class="container coupon">
+                    <div    class="coupon-card">
+                        <h3><%=details.description  %> </h3>
+                        <div  class="coupon-row">
+                            <span  id="cpnCode" class="couponName"><%= details.couponName  %> </span>
+                            <button class="couponButton" onclick="applycoupon(this,'<%= details._id%>')" id="cpnBtn">apply code</button>
+                        </div>
+                        <p class="text-dark">Valid Till: 20Dec, 2021</p>
+                       
                     </div>
                 </div>
+                <% }) %> 
             </body>
         </div>
         <div class="modal-footer">
@@ -296,17 +296,18 @@
                                         <tr>
                                             <th>Product</th>
                                             <th>Total</th>
+                                            
                                         </tr>
                                     </thead>
 
                                     <tbody>
                                         
-                                        
+                                        <% console.log(cartproducts,'namma cart products'); %> 
                                         <% cartproducts.forEach((cartproducts)=>{%> 
                                         <tr>
                                             <td ><%= cartproducts.product?.name%>   <br> Qty:<%= cartproducts.quantity  %>  </td>
                                             
-                                            <td ><%= cartproducts.product?.price* cartproducts.quantity  %></td>
+                                            <td ><%= cartproducts.product?.Offerprice* cartproducts.quantity  %></td>
                                          
                                             
                                             </tr>
@@ -317,12 +318,13 @@
                                             <td><%= totalamount %> </td>
                                         </tr><!-- End .summary-subtotal -->
                                         <tr>
-                                            <td>Shipping:</td>
-                                            <td>Free shipping</td>
+                                            
+                                            <td >Offer Applied :</td>
+                                            <td id="offerapplied"></td>
                                         </tr>
                                         <tr class="summary-total">
                                             <td>Total:</td>
-                                            <td><%= totalamount %> </td>
+                                            <td id="totalAmount"><%= totalamount %> </td>
                                         </tr><!-- End .summary-total -->
                                      
                                     </tbody>
@@ -408,16 +410,70 @@
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
-     var cpnBtn = document.getElementById("cpnBtn");
-            var cpnCode = document.getElementById("cpnCode");
+    function applycoupon(input,id){
+        console.log(id,'coupon id');
+       let cpnBtn=input
+       let cpnCode=input.parentElement.querySelector('span.couponName')
+        var btns=document.getElementsByClassName('couponButton')
+        for( var i=0;i<btns.length;i++){
+            btns[i].disabled=true;
+        }
+            $.ajax({
+              url:'/applycoupon',
+              data:{
+                couponId:id
+              },
+              method:'post',
+              success:(response)=>{
 
-            cpnBtn.onclick = function(){
-                navigator.clipboard.writeText(cpnCode.innerHTML);
-                cpnBtn.innerHTML ="COPIED";
-                setTimeout(function(){
-                    cpnBtn.innerHTML="COPY CODE";
-                }, 3000);
-            }
+                 if(response.status){
+                   coupontoast1()
+                   cpnBtn.innerHTML="applied"
+
+                document.getElementById('offerapplied').innerText=response.couponAmount
+                let total=document.getElementById('totalAmount').innerText
+                document.getElementById('totalAmount').innerText=total-response.couponAmount
+              
+                
+                 }else{
+                    coupontoast2(response.message)
+                 }
+              }
+            })
+        }
+
+        async  function  coupontoast1(){
+            await Swal.fire({
+  title: 'Coupon Applied 👍',
+  position: 'top',
+  showClass: {
+    popup: `
+      animate__animated
+      animate__fadeInDown
+      animate__faster
+    `
+  },
+  hideClass: {
+    popup: `
+      animate__animated
+      animate__fadeOutUp
+      animate__faster
+    `
+  },
+  grow: 'row',
+  showConfirmButton: false,
+  showCloseButton: true
+})
+        }
+
+   async  function  coupontoast2(m){
+   await     Swal.fire({
+  icon: 'Purchase more',
+  title: m,
+  text: 'Sorry Not Applicable!',
+  footer: '<a href="">Why do I have this issue?</a>'
+})
+        }
 </script>
 <script>
 
@@ -601,7 +657,7 @@ function submit(
         }
         else{
             razorpaypayment(response)
-            console.log(response);
+            console.log(response,'razorpay');
         }
 
         
@@ -763,3 +819,4 @@ function varifyPayment(payment,order){
     }
 
 </script>
+

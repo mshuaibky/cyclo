@@ -41,6 +41,52 @@ module.exports = {
             
         }
 
+    },
+    couponApply:(couponId,total)=>{
+        try {
+          return new Promise(async(resolve,reject)=>{
+          let coupon=await db.coupon.findOne({_id:couponId})
+          
+           
+            resolve(coupon)
+         
+        
+          })  
+        } catch (error) {
+            
+        }
+    },
+    addUserCoupon:(userId,coupId)=>{
+        return new Promise((resolve,reject)=>{
+            db.users.findOne({_id:userId,'coupon.couponId':coupId}).then((data)=>{
+                console.log(data,'users applied coupon');
+                   if(!data){
+                    let couponObj={
+                        couponId:coupId,
+                        status:false
+                    }
+                    db.users.updateOne({_id:userId},
+                        {
+                            $push:{coupon:couponObj},
+                        }
+                        ).then((response)=>{
+                          console.log(response,'namma response');
+                            resolve()
+                        }).catch(()=>{
+                            reject()
+                        })
+                   }
+                   else{
+                   
+                    let couponIndex=data.coupon.findIndex(data=>data.couponId==""+coupId)
+                  if(data.coupon[couponIndex].status){
+                    reject('this coupon is already applied')
+                  }else{
+                    resolve()
+                  }
+                   }
+            })
+        })
     }
 
 }

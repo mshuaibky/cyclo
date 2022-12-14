@@ -34,7 +34,14 @@ const Userschema= new mongoose.Schema({
         type:Boolean,
         default:true
     },
-    
+    coupon:[
+        {
+        couponId:mongoose.Types.ObjectId,
+        status:{
+            type:Boolean
+        }
+    }
+    ]
     
 })
 
@@ -73,6 +80,7 @@ const bannerschema=new mongoose.Schema({
     description:String,
     marketprice:Number,
     offeredprice:Number,
+    Url:String,
     image:Array,
 
 })

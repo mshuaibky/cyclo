@@ -144,6 +144,7 @@
                                                 items.orders.productDetails.productPrice %> </span> </div>
                                           <div class="text-center h6"><span>Qty:<%= items.orders.productDetails.quantity
                                                 %> </span></div>
+                                                <%if(items.orders.productDetails.returnStatus==false){%>
                                           <% if(items.orders.productDetails.status){ %>
                                             <div class="text-center text-white mt-1 "
                                               style="padding-top: 3px; width: 100px;height:23px; border-radius: 10px; background-color: rgb(109, 176, 85); font-size: small; font-weight: 600;">
@@ -155,7 +156,9 @@
                                                 Cancelled
                                               </div>
                                               <% } %>
+                                              <%}%>
                                         </div>
+                                        <%if(items.orders.productDetails.returnStatus==false){%>
                                         <div  style=" margin-top: 50px;padding-left: 33px;">
                                           <% if(items.orders.productDetails.status){ %>
                                           <select onchange="delivery(this,'<%= items.orders._id %>','<%= items.orders.productDetails._id %>','<%= items.userId%>')" style="padding-right: 283px; border-radius:15px;" >
@@ -169,7 +172,11 @@
                                           </select>
                                         <%} %>
                                         </div>
-
+                                            <%}else{%>
+                                            <div  style=" margin-top: 50px;padding-left: 160px;" >
+                                              <strong class="text-danger"> Returned</strong>
+                                              </div>
+                                              <%}%>
                                         <div class="col-5 ">
                                         <% if(items.orders.productDetails.status) {%>
                                           <div class="ml-5">
@@ -237,10 +244,10 @@
                                       </b> </p>
                                     <div>
                                       <h6 class="mt-2 mx-4 ">Payment Status</h6>
-                                      <% if(allOrders[0].orders.paymentStatus==0){ %>
-                                        <p class="mx-4 mt-1 text-danger "><b>PENDING</b> </p>
+                                      <% if(allOrders[0].orders.paymentStatus==4||allOrders[0].orders.paymentMethod=='Upi'||allOrders[0].orders.paymentMethod=='paypal'){ %>
+                                        <p class="mx-4 mt-1 text-success "><b>SUCCESS</b> </p>
                                         <% }else{ %>
-                                          <p class="mx-4 mt-1 text-success"><b>SUCCESS</b> </p>
+                                          <p class="mx-4 mt-1 text-danger"><b>PENDING</b> </p>
                                           <% } %>
                                     </div>
                                   </div>

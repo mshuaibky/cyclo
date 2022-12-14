@@ -16,6 +16,7 @@
                     }'>
 
                     <% banners.forEach((items)=>{ %> 
+                        <% console.log(items,'index items'); %> 
                 <div class="intro-slide"  style="background-image:url('/assets/banner-images/<%= items.image[0]%>') ;"  >
                     <div class="container intro-content">
                         <div class="row justify-content-end">
@@ -32,7 +33,7 @@
                                     </span>
                                 </div><!-- End .intro-price -->
 
-                                <a href="/shop" class="btn btn-primary btn-round">
+                                <a href="/Shopnow?<%= items.Url %> " class="btn btn-primary btn-round">
                                     <span>Shop More</span>
                                     <i class="icon-long-arrow-right"></i>
                                 </a>

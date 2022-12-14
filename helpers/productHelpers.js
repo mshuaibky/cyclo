@@ -10,18 +10,28 @@ module.exports={
 
 addproduct:(product)=>{
     return new Promise(async(resolve,reject)=>{
-      let data=await db.product(product)
-    
-      data.save()
-      resolve(data)
+      try {
+        
+        let data=await db.product(product)
+      
+        data.save()
+        resolve(data)
+      } catch (error) {
+        reject(error)
+      }
     })
 },
 
 
  getAllProducts:()=>{
   return new Promise(async(resolve,reject)=>{
-    let Products=await db.product.find({})
-    resolve(Products)
+    try {
+      let Products=await db.product.find({})
+      resolve(Products)
+      
+    } catch (error) {
+      reject(error)
+    }
 
   })
 },
@@ -44,18 +54,29 @@ deleteProducts:(proId)=>{
 },
 
 updateProduct:(proId,proDetails)=>{
+  console.log(proId,proDetails,'heehee');
   return new Promise(async(resolve,reject)=>{
+    let dropdata=await db.product.findOne({_id:proId})
+    console.log(dropdata,'dropdata');
+    if(proDetails.image?.length==0){
+      proDetails.image=dropdata?.image
+    }
    await db.product.updateOne({_id:proId},
      {
       $set:{
         name:proDetails.name,
-        discription:proDetails.description,
+        description:proDetails.description,
         catagory:proDetails.catagory,
         price:proDetails.price,
+        offerPercentage:proDetails.offerPercentage,
+        Offerprice:proDetails.Offerprice,
+        stock:proDetails.stock,
+        image:proDetails.image
       }
      } 
       )
-      console.log(proDetails);
+      
+    
       resolve()
   })
 },
@@ -89,9 +110,14 @@ addCatagory:(catagoryFromUser)=>{
 },
 
 getallCatagory:()=>{
-  return new Promise((resolve,rejuct)=>{
-    let cata=db.catagory.find({})
-    resolve(cata)
+  return new Promise((resolve,reject)=>{
+    try {
+      
+      let cata=db.catagory.find({})
+      resolve(cata)
+    } catch (error) {
+      reject(error)
+    }
   })
 },
 
@@ -128,7 +154,6 @@ return new Promise(async(resolve,reject)=>{
 addbaners:(data)=>{
   return new Promise(async(resolve,reject)=>{
     let baner=await db.banner(data)
-    console.log(baner,'banerssssssssss');
     baner.save()
     resolve(baner)
   })

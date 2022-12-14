@@ -73,7 +73,9 @@
                                 </div><!-- End .rating-container -->
 
                                 <div class="product-price">
-                                  <%= productid.price %> 
+                                    <sup class="intro-old-price mx-2"><%= productid.price  %>  </sup>
+
+                                  <%= productid.Offerprice %> 
                                 </div><!-- End .product-price -->
 
                                 <div class="product-content">
@@ -106,7 +108,7 @@
                                 <div class="product-details-footer">
                                     <div class="product-cat">
                                         <span>Category:</span>
-                                        <a href="#">sports</a>,
+                                        <a href="/shop"><%= productid.catagory  %> </a>,
                                         <!-- <a href="#">Dresses</a>,
                                         <a href="#">Yellow</a> -->
                                     </div><!-- End .product-cat -->

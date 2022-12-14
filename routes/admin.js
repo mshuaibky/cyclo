@@ -40,19 +40,25 @@ const storage2 = multer.diskStorage({
 });
 const upload2 = multer({ storage: storage2 })
 
-
+const adminLogin=(req,res,next)=>{
+    if(req.session?.adminlogin){
+        next()
+    }else{
+        res.redirect('/admin/adminlogin')
+    }
+}
 
 /* GET users listing. */
-router.get('/', adminController.adminDashBoard);
+router.get('/',adminLogin,adminController.adminDashBoard);
 
 
-router.get('/allProduct', adminController.adminAllProducts);
+router.get('/allProduct',adminLogin, adminController.adminAllProducts);
 
 
-router.get('/allUsers', adminController.adminUsers);
+router.get('/allUsers',adminLogin, adminController.adminUsers);
 
 
-router.get('/addUser', adminController.adminAddUsersGet);
+router.get('/addUser',adminLogin, adminController.adminAddUsersGet);
 
 
 
@@ -62,7 +68,7 @@ router.post('/adduser', adminController.adminAddUsersPost)
 
 
 // add products form 
-router.get('/addProduct', adminController.adminAddProductGet)
+router.get('/addProduct',adminLogin, adminController.adminAddProductGet)
 
 
 
@@ -90,16 +96,16 @@ router.get('/unblockUser/:id', adminController.unblockUser)
 
 // ..................catagory managment..................................>
 
-router.get('/catagory', adminController.catagory)
+router.get('/catagory',adminLogin, adminController.catagory)
 
-router.get('/addCatagory', adminController.addCatagoryGet)
+router.get('/addCatagory',adminLogin, adminController.addCatagoryGet)
 
 router.post('/addCatagory', adminController.addCatagoryPost)
 
 
 router.get('/deleteCatagory/:id', adminController.deleteCatagry)
 
-router.get('/editCatagory/:id', adminController.editCatagoryGet)
+router.get('/editCatagory/:id',adminLogin, adminController.editCatagoryGet)
 
 router.post('/editCatagory/:id', adminController.editCatagoryPost)
 
@@ -111,31 +117,31 @@ router.post('/adminlogin', adminController.adminLoginPost)
 
 router.get('/adminlogout', adminController.adminLogout)
 
-router.get('/adminOrders', adminController.adminOrders)
+router.get('/adminOrders',adminLogin, adminController.adminOrders)
 
-router.get('/viewmore/:_id', adminController.viewMore)
+router.get('/viewmore/:_id',adminLogin, adminController.viewMore)
 
 router.post('/shippingStatus', adminController.changeShippingStatus)
 
-router.get('/salesReport',adminController.salesReport)
+router.get('/salesReport',adminLogin, adminController.salesReport)
 
-router.get('/chartGraph',adminController.yearlyreport)
+router.get('/chartGraph',adminLogin, adminController.yearlyreport)
 
-router.get('/couponmanagment',adminController.coupon)
+router.get('/couponmanagment',adminLogin, adminController.coupon)
 
-router.get('/addcoupon',adminController.addCoupon)
+router.get('/addcoupon',adminLogin,adminController.addCoupon)
 
 router.post('/addcoupons',adminController.addCouponPost)
 
 router.get('/deleteCoupon/:id',adminController.deleteCoupon)
 
-router.get('/banermanagment',adminController.banermanagment)
+router.get('/banermanagment',adminLogin,adminController.banermanagment)
 
-router.get('/banermain',adminController.banermain)
+router.get('/banermain',adminLogin,adminController.banermain)
 
 router.post('/banersmain',upload2.array('image'),adminController.banermainpost)
 
-router.get('/banermainTable',adminController.banertable)
+router.get('/banermainTable',adminLogin,adminController.banertable)
 
 router.get('/deletebanner/:id',adminController.deleteBanner)
 

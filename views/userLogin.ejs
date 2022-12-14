@@ -117,10 +117,11 @@
           })
         }).then((res)=>res.json())
            .then((res)=>{
-            if(res.value=='success' &&status){
+            if(res.value=='success' ){
                 window.location.href='/'
             }else{
-                window.location.reload()
+                alert('err')
+               
             }
            })
 

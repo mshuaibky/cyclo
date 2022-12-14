@@ -21,7 +21,7 @@ var client=require('twilio')(otp.accountsId,otp.authToken)
 }
 
 
-router.get('/',varifyLogin,controller.landingPage);
+router.get('/',controller.landingPage);
 
 
 router.get('/shop',controller.shopPage);
@@ -94,5 +94,9 @@ router.post('/returnOrder',controller.returnOrder)
 router.post('/downloadInvoice/:id',controller.findOrder)
 
 router.get('/detailOrder/:id',controller.detailOrder)
+
+router.post('/applycoupon',controller.applyCoupon)
+
+router.get('/Shopnow',controller.findOfferdProduct)
 
 module.exports = router;
