@@ -368,7 +368,7 @@ try {
 
   userAccount:async(req,res)=>{
     try {
-      userId = req.session.user._id
+      userId = req?.session?.user?._id
     let userDetails=await userHelpers.getUser(userId)
      userHelpers.userAddress(userId).then((address)=>{
        res.render('user',{address:address[0],userDetails})
