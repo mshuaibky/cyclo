@@ -385,7 +385,7 @@ try {
   deleteAddress:(req,res)=>{
     try {
       
-      userId = req.session.user._id
+      userId = req?.session?.user?._id
       userHelpers.addressRemove(req.body.addressId,userId).then((response)=>{
        res.json({status:true})
       }).catch((error)=>{
@@ -398,7 +398,7 @@ try {
   },
   addressEdit:(req,res)=>{
     try {
-      userId=req.session.user._id
+      userId=req?.session?.user?._id
       
       userHelpers.editAddress(userId,req.body).then(()=>{
         res.json({status:true})
@@ -412,7 +412,7 @@ try {
 
   },
   addAddress:(req,res)=>{
-    userId=req.session.user._id
+    userId=req?.session?.user?._id
     userHelpers.addressAdd(req.body,userId).then((response)=>{
     res.json(response)
     })
@@ -421,7 +421,7 @@ try {
   changeUserDetails:async(req,res)=>{
   
      
-    user= await db.users.findOne({_id:req.session.user._id})
+    user= await db.users.findOne({_id:req?.session?.user?._id})
     console.log(user,'our user');
     userHelpers.editUserDetails(req.body,user).then((response)=>{
       if(response?.acknowledged){
