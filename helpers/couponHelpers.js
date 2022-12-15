@@ -25,7 +25,7 @@ module.exports = {
             resolve(allcoupons)
           })  
         } catch (error) {
-            console.log(error);
+            reject(error)
             
         }
     },

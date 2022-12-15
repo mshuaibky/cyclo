@@ -246,6 +246,18 @@
         if (response.removeProduct) {
           alert('product removed')
           location.reload()
+         }else if(response.error){
+          console.log(response.error,'jjjj');
+          Swal.fire({
+  title: response.error,
+  showClass: {
+    popup: 'animate__animated animate__fadeInDown'
+  },
+  hideClass: {
+    popup: 'animate__animated animate__fadeOutUp'
+  }
+})
+          
         } else {
           input.value = quantity + count
         }
@@ -275,7 +287,17 @@
   }
 
   function remove(cartsId, productsId) {
-
+   
+    Swal.fire({
+  title: 'Are you sure?',
+  text: "You won't be able to revert this!",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, delete it!'
+}).then((result) => {
+  if (result.isConfirmed) {
     $.ajax({
       url: '/deleteCartProduct',
       data: {
@@ -283,14 +305,25 @@
         productid: productsId,
       },
       method: 'post',
-      beforeSend: () => {
-        return confirm('do you want to remove this product?')
-      },
+     
       success: (response) => {
-
-        location.reload()
+       
+        if(response){
+          Swal.fire(
+            'Deleted!',
+            'Your file has been deleted.',
+      'success',
+      )
+      location.reload()
+    }
       }
     })
+
+   
+  }
+})
+    
+    
 
 
   }

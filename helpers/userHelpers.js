@@ -89,97 +89,109 @@ module.exports = {
     },
 
     addToCart: (proId, userId) => {
-        let proObj = {
-            item: proId,
-            quantity: 1
-        }
         return new Promise(async (resolve, reject) => {
-            let usercart = await db.cart.findOne({ user: userId })
-            if (usercart) {
-                let proExist = usercart.products.findIndex(products => products.item == proId)
-                console.log(proExist);
-                if (proExist != -1) {
-
-                    db.cart.updateOne({ user: userId, 'products.item': proId },
-                        {
-                            $inc: { 'products.$.quantity': 1 }
-                        }
-                    ).then(() => {
-                        resolve()
-                    })
-                } else {
-                    db.cart.updateOne({ user: userId },
-                        {
-
-                            $push: { products: proObj }
-
-                        }
-                    ).then((response) => {
-                        resolve()
-                    })
-
+            try {
+                let proObj = {
+                    item: proId,
+                    quantity: 1
                 }
-            }
-            else {
-                let cartobj = {
-                    user: userId,
-                    products: [proObj]
-
-
+                let usercart = await db.cart.findOne({ user: userId })
+                if (usercart) {
+                    let proExist = usercart.products.findIndex(products => products.item == proId)
+                    console.log(proExist);
+                    if (proExist != -1) {
+    
+                        db.cart.updateOne({ user: userId, 'products.item': proId },
+                            {
+                                $inc: { 'products.$.quantity': 1 }
+                            }
+                        ).then(() => {
+                            resolve()
+                        })
+                    } else {
+                        db.cart.updateOne({ user: userId },
+                            {
+    
+                                $push: { products: proObj }
+    
+                            }
+                        ).then((response) => {
+                            resolve()
+                        })
+    
+                    }
                 }
-                let data = db.cart(cartobj)
-
-                data.save((err, data) => {
-                    if (err) {
-                        console.log(err);
+                else {
+                    let cartobj = {
+                        user: userId,
+                        products: [proObj]
+    
+    
                     }
-                    else {
-                        resolve(data)
-                    }
-                })
-
+                    let data = db.cart(cartobj)
+    
+                    data.save((err, data) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            resolve(data)
+                        }
+                    })
+    
+                }
+                
+            } catch (error) {
+              reject(error)  
             }
         })
     },
     getCartProducts: (userId) => {
 
         return new Promise((resolve, reject) => {
-
-            db.cart.aggregate([
-                {
-                    $match: { "user": userId }
-                },
-                {
-                    $unwind: '$products'
-                },
-                {
-                    $project: {
-                        item: '$products.item',
-                        quantity: '$products.quantity',
-
+            try {
+                
+                db.cart.aggregate([
+                    {
+                        $match: { "user": userId }
+                    },
+                    {
+                        $unwind: '$products'
+                    },
+                    {
+                        $project: {
+                            item: '$products.item',
+                            quantity: '$products.quantity',
+    
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: 'products',
+                            localField: 'item',
+                            foreignField: '_id',
+                            as: 'product'
+                        }
+                    },
+                    {
+                        $project: {
+                            item: 1,
+                            quantity: 1,
+                            product: { $arrayElemAt: ['$product', 0] },
+                            image:1
+                        }
                     }
-                },
-                {
-                    $lookup: {
-                        from: 'products',
-                        localField: 'item',
-                        foreignField: '_id',
-                        as: 'product'
-                    }
-                },
-                {
-                    $project: {
-                        item: 1,
-                        quantity: 1,
-                        product: { $arrayElemAt: ['$product', 0] },
-                        image:1
-                    }
-                }
+    
+                ]).then((cartItems) => {
+    
+                    resolve(cartItems)
+                }).catch((error)=>{
+                    reject(error)
+                })
+            } catch (error) {
+                reject(error)
+            }
 
-            ]).then((cartItems) => {
-
-                resolve(cartItems)
-            })
 
 
 
@@ -189,37 +201,48 @@ module.exports = {
         })
     },
     getCartCount: (userId) => {
-        console.log(userId);
+       
         return new Promise(async (resolve, reject) => {
-            let cart = await db.cart.findOne({ user: userId })
-            let count = 0
-            if (cart) {
-                for (i = 0; i < cart.products.length; i++) {
-                    count += cart.products[i].quantity
+            try {
+                let cart = await db.cart.findOne({ user: userId })
+                let count = 0
+                if (cart) {
+                    for (i = 0; i < cart.products.length; i++) {
+                        count += cart.products[i].quantity
+                    }
                 }
+                count = parseInt(count)
+                resolve(count)
+                
+            } catch (error) {
+                reject(error)
             }
-            count = parseInt(count)
-            resolve(count)
 
         })
     },
 
     changeProductCount: (details) => {
-
-        count = parseInt(details.count)
-        details.quantity = parseInt(details.quantity)
-
+        
         return new Promise((resolve, reject) => {
-
-
-            db.cart.updateOne({ _id: details.cart, 'products.item': (details.product) },
-                {
-                    $inc: { 'products.$.quantity': count }
-                }
-            ).then((data) => {
-
-                resolve({ status: true })
-            })
+            try {
+                
+                count = parseInt(details.count)
+                details.quantity = parseInt(details.quantity)
+                      
+    
+                db.cart.updateOne({ _id: details.cart, 'products.item': (details.product) },
+                    {
+                        $inc: { 'products.$.quantity': count }
+                    }
+                ).then((data) => {
+    
+                    resolve({ status: true })
+                }).catch((error)=>{
+                    reject(error)
+                })
+            } catch (error) {
+                reject(error)
+            }
 
         })
     },
@@ -227,61 +250,72 @@ module.exports = {
     deleteProductInCart: (data) => {
 
         return new Promise((resolve, reject) => {
-            db.cart.updateOne({ _id: data.cartid },
-                {
-                    $pull: { products: { item: data.productid } }
-                }).then((response) => {
-                    resolve(response)
-                })
+            try {
+                
+                db.cart.updateOne({ _id: data.cartid },
+                    {
+                        $pull: { products: { item: data.productid } }
+                    }).then((response) => {
+                        resolve(response)
+                    })
+            } catch (error) {
+                reject(error)
+            }
         })
     },
     getTotalAmount: (userId) => {
         return new Promise((resolve, reject) => {
+      try {
+        
+          db.cart.aggregate([
+              {
+                  $match: { user: userId }
+              },
+              {
+                  $unwind: '$products'
+              },
+              {
+                  $project: {
+                      item: '$products.item',
+                      quantity: '$products.quantity',
+                      name: '$products.name',
+                      price: '$product.Offerprice'
 
-            db.cart.aggregate([
-                {
-                    $match: { user: userId }
-                },
-                {
-                    $unwind: '$products'
-                },
-                {
-                    $project: {
-                        item: '$products.item',
-                        quantity: '$products.quantity',
-                        name: '$products.name',
-                        price: '$product.Offerprice'
-
-                    }
-                },
-                {
-                    $lookup: {
-                        from: 'products',
-                        localField: 'item',
-                        foreignField: '_id',
-                        as: 'product'
-                    }
-                },
-                {
-                    $project: {
-                        item: 1,
-                        quantity: 1,
-                        product: { $arrayElemAt: ['$product', 0] }
-                    }
-                },
-                {
-                    $group: {
-                        _id: null,
-                        total: { $sum: { $multiply: ['$quantity', '$product.Offerprice'] } }
-                    }
-                }
+                  }
+              },
+              {
+                  $lookup: {
+                      from: 'products',
+                      localField: 'item',
+                      foreignField: '_id',
+                      as: 'product'
+                  }
+              },
+              {
+                  $project: {
+                      item: 1,
+                      quantity: 1,
+                      product: { $arrayElemAt: ['$product', 0] }
+                  }
+              },
+              {
+                  $group: {
+                      _id: null,
+                      total: { $sum: { $multiply: ['$quantity', '$product.Offerprice'] } }
+                  }
+              }
 
 
-            ]).then((totalamount) => {
+          ]).then((totalamount) => {
 
-                resolve(totalamount[0]?.total)
-            })
+              resolve(totalamount[0]?.total)
+          }).catch((error)=>{
+            reject(error)
+          })
 
+      } catch (error) {
+        reject(error)
+      }
 
 
         })
@@ -487,15 +521,20 @@ module.exports = {
     // },
 
     getOneOrder: () => {
-
+    
         return new Promise(async (resolve, reject) => {
-            let orders = await db.order.aggregate([
-                {
-                    $unwind: '$orders'
-                }
-            ])
-           
-            resolve(orders)
+            try {
+                
+                let orders = await db.order.aggregate([
+                    {
+                        $unwind: '$orders'
+                    }
+                ])
+               
+                resolve(orders)
+            } catch (error) {
+                reject(error)
+            }
 
         })
     },
@@ -503,61 +542,69 @@ module.exports = {
     cancel: (data,userId) => {
 
 
-        let orderIds = data.orderId.trim()
         return new Promise(async (resolve, reject) => {
-            let order = await db.order.find({ 'orders._id': `${orderIds}` })
-
-            if (order) {
-                let orderIndex = order[0].orders.findIndex(order => order._id == `${orderIds}`)
-                let productIndex = order[0].orders[orderIndex].productDetails.findIndex(product => product._id == data.proId)
-
-
-                db.order.updateOne({ 'orders._id': `${orderIds}` }, {
-                    $set: {
-                        ['orders.' + orderIndex + '.productDetails.' + productIndex + '.status']: false
-                    }
-                }).then((e) => {
-                    resolve({ status: true })
-                })
-               db.order.aggregate([
-                {
-                $match:{userId:ObjectId(userId)}
-               },
-              {
-                $unwind:'$orders'
-              },
-              {
-                $unwind:'$orders.productDetails'
-              },
-              {
-                $match:{$and:[{'orders._id':ObjectId(orderIds),'orders.productDetails._id':ObjectId(data.proId)}]}
-              }
-            ]).then((datas)=>{
-            console.log(datas,'cancelinta order ');
-           
-                db.product.updateOne({_id:data.proId},
-                    {
-                        $inc:{stock:datas[0].orders.productDetails.quantity}
-                    }
-                    ).then((e)=>{
-                        console.log(e,'cancel productinta response');
-                    })
-
-                    if(datas[0].orders.paymentMethod=='paypal'||datas[0].orders.paymentMethod=='Upi'){
-                        let wallets=datas[0].orders.productDetails.productPrice*datas[0].orders.productDetails.quantity
-                        db.users.updateOne({_id:userId},
-                        {
-                            $push:{
-                                wallet:wallets
-                            }
+            try {
+                
+                let orderIds = data.orderId.trim()
+                
+                let order = await db.order.find({ 'orders._id': `${orderIds}` })
+    
+                if (order) {
+                    let orderIndex = order[0].orders.findIndex(order => order._id == `${orderIds}`)
+                    let productIndex = order[0].orders[orderIndex].productDetails.findIndex(product => product._id == data.proId)
+    
+    
+                    db.order.updateOne({ 'orders._id': `${orderIds}` }, {
+                        $set: {
+                            ['orders.' + orderIndex + '.productDetails.' + productIndex + '.status']: false
                         }
-                            
-                            ).then((response)=>{
-                                console.log(response,'response of cancel order');
-                            })
-                    }
-            })
-
+                    }).then((e) => {
+                        resolve({ status: true })
+                    })
+                   db.order.aggregate([
+                    {
+                    $match:{userId:ObjectId(userId)}
+                   },
+                  {
+                    $unwind:'$orders'
+                  },
+                  {
+                    $unwind:'$orders.productDetails'
+                  },
+                  {
+                    $match:{$and:[{'orders._id':ObjectId(orderIds),'orders.productDetails._id':ObjectId(data.proId)}]}
+                  }
+                ]).then((datas)=>{
+                console.log(datas,'cancelinta order ');
+               
+                    db.product.updateOne({_id:data.proId},
+                        {
+                            $inc:{stock:datas[0].orders.productDetails.quantity}
+                        }
+                        ).then((e)=>{
+                            console.log(e,'cancel productinta response');
+                        })
+    
+                        if(datas[0].orders.paymentMethod=='paypal'||datas[0].orders.paymentMethod=='Upi'){
+                            let wallets=datas[0].orders.productDetails.productPrice*datas[0].orders.productDetails.quantity
+                            db.users.updateOne({_id:userId},
+                            {
+                                $push:{
+                                    wallet:wallets
+                                }
+                            }
+                                
+                                ).then((response)=>{
+                                    console.log(response,'response of cancel order');
+                                })
+                        }
+                }).catch((error)=>{
+                    reject(error)
+                })
+    
+                }
+            } catch (error) {
+                reject(error)
             }
         })
 
@@ -565,31 +612,40 @@ module.exports = {
     getAddress: (userId) => {
        
         return new Promise(async (resolve, reject) => {
-            let data = await db.address.findOne({ user: userId })
-            
-            resolve(data)
+            try {
+                
+                let data = await db.address.findOne({ user: userId })
+                
+                resolve(data)
+            } catch (error) {
+                reject(error)
+            }
 
         })
     },
 
     addressFill: (userId, addressId) => {
         return new Promise((resolve, reject) => {
+   try {
+       db.address.aggregate([
+           {
+               $match: { user: userId }
+           },
 
-            db.address.aggregate([
-                {
-                    $match: { user: userId }
-                },
+           {
+               $unwind: '$address'
+           },
+           {
+               $match: { 'address._id': ObjectId(addressId) }
+           }
+       ]).then((data) => {
 
-                {
-                    $unwind: '$address'
-                },
-                {
-                    $match: { 'address._id': ObjectId(addressId) }
-                }
-            ]).then((data) => {
-
-                resolve(data)
-            })
+           resolve(data)
+       })
+    
+   } catch (error) {
+    reject(error)
+   }
         })
     },
 
@@ -654,14 +710,20 @@ module.exports = {
     },
     userAddress: (userId) => {
         return new Promise(async (resolve, reject) => {
-            let address = await db.address.find({ user: userId })
-            console.log(address, 'address');
-            resolve(address)
+            try {
+                let address = await db.address.find({ user: userId })
+                console.log(address, 'address');
+                resolve(address)
+                
+            } catch (error) {
+                reject(error)
+            }
         })
     },
     addressRemove: (addressId, userId) => {
 
         return new Promise(async (resolve, reject) => {
+            
             db.address.updateOne({ user: userId }, {
 
                 $pull: {
@@ -671,46 +733,54 @@ module.exports = {
             }).then((e) => {
                 console.log(e);
                 resolve(e)
+            }).catch((error)=>{
+                reject(error)
             })
         })
     },
     editAddress: (userId, data) => {
-        console.log(data, 'hkjhkjhkkj');
+      
         return new Promise(async (resolve, reject) => {
-
-            let addresses = await db.address.findOne({ user: userId })
-            console.log(addresses, 'sdddddd');
-            let addressIndex = addresses.address.findIndex(addr => addr._id == data.addressId)
-
-            console.log(addressIndex, 'fdgfdgfd');
-
-
-            let addressData = {
-                firstname: data.firstname,
-                lastname: data.lastname,
-                country: data.country,
-                street: data.street,
-                city: data.city,
-                state: data.state,
-                pincode: data.pincode,
-                phone: data.phone,
-                email: data.email
+            try {
+                
+                            let addresses = await db.address.findOne({ user: userId })
+                            let addressIndex = addresses.address.findIndex(addr => addr._id == data.addressId)
+                
+                
+                
+                            let addressData = {
+                                firstname: data.firstname,
+                                lastname: data.lastname,
+                                country: data.country,
+                                street: data.street,
+                                city: data.city,
+                                state: data.state,
+                                pincode: data.pincode,
+                                phone: data.phone,
+                                email: data.email
+                            }
+                
+                            db.address.updateOne({ user: userId },
+                                {
+                                    $set: {
+                                        ['address.' + addressIndex]: addressData
+                                    }
+                                }).then((res) => {
+                                    console.log(res);
+                                    resolve(res)
+                
+                                }).catch((error)=>{
+                                    reject(error)
+                                })
+                
+            } catch (error) {
+                reject(error)
             }
-
-            db.address.updateOne({ user: userId },
-                {
-                    $set: {
-                        ['address.' + addressIndex]: addressData
-                    }
-                }).then((res) => {
-                    console.log(res);
-                    resolve(res)
-
-                })
         })
     },
     addressAdd: (data, userId) => {
         return new Promise(async (resolve, reject) => {
+            
             addressExist = await db.address.find({ user: userId })
             if (addressExist) {
                 db.address.find({ 'address.pincode': data.pincode, 'address.phone': data.phone }).then((res) => {
@@ -738,34 +808,44 @@ module.exports = {
     },
     getUser:(userId)=>{
         return new Promise(async(resolve,reject)=>{
-       let user=await db.users.findOne({_id:userId})
-       resolve(user)
+            try {
+                
+                let user=await db.users.findOne({_id:userId})
+                resolve(user)
+            } catch (error) {
+             reject(error)   
+            }
         })
     },
     editUserDetails:(data,user)=>{
       
         return new Promise((resolve,reject)=>{
-         bcrypt.compare(data.currentPassword,user.password).then(async(checkPassword)=>{
-            if(checkPassword){
-                data.newPassword=await bcrypt.hash(data.newPassword,10)
-
-                db.users.updateOne({_id:user._id},
-                    {
-                        $set:{
-                            password:data.newPassword,
-                            name:data.name,
-                            email:data.email
-                        }
-                    }).then((response)=>{
-                        console.log(response);
-                        resolve(response)
-                    })
+            try {
+                bcrypt.compare(data.currentPassword,user.password).then(async(checkPassword)=>{
+                   if(checkPassword){
+                       data.newPassword=await bcrypt.hash(data.newPassword,10)
+       
+                       db.users.updateOne({_id:user._id},
+                           {
+                               $set:{
+                                   password:data.newPassword,
+                                   name:data.name,
+                                   email:data.email
+                               }
+                           }).then((response)=>{
+                               console.log(response);
+                               resolve(response)
+                           })
+                   }
+                   else{
+                       resolve()
+                       console.log('password not match');
+                   }
+                })
+                
+            } catch (error) {
+                reject(error)
             }
-            else{
-                resolve()
-                console.log('password not match');
-            }
-         })
         })
     },
 
@@ -880,8 +960,7 @@ module.exports = {
         return new Promise(async(resolve,reject)=>{
             try {
                 console.log(query,'test');
-             let data= await  db.product.find({ Offerprice: '19000' })
-             console.log(data,'querrys data');
+             let data= await  db.product.find(query)
                
              resolve(data)
            
@@ -889,6 +968,120 @@ module.exports = {
             } catch (error) {
                 
             }
+        })
+    },
+
+    addWishlist:(proId,userId)=>{
+        return new Promise(async(resolve,reject)=>{
+            try {
+               let proObj={
+                item:proId
+               } 
+               let userWishlist=await db.wishlist.findOne({user:userId})
+               if(userWishlist){
+                let proExist=userWishlist.products.findIndex(products=>products.item==proId)
+                console.log(proExist,'product exist');
+                if(proExist==-1){
+                    db.wishlist.updateOne({user:userId},
+                        {
+                        $push:{products: proObj}
+                    }
+                    ).then((response)=>{
+
+                        resolve({status:true})
+                    }).catch((error)=>{
+                        console.log(error);
+                        reject(error)
+                    })
+                }else{
+                    resolve({status:false})
+
+                }
+               }else{
+                let wishobj={
+                    user:userId,
+                    products:[proObj]
+                }
+                let data= db.wishlist(wishobj)
+                data.save((err,data)=>{
+                    if(err){
+                        console.log(err);
+                    }else{
+                        resolve(data)
+                    }
+                })
+               }
+            } catch (error) {
+                reject(error)
+            }
+        })
+    },
+
+    getwishCount:(userId)=>{
+        return new Promise((resolve,reject)=>{
+            try {
+                db.wishlist.aggregate([
+                    {
+                        $match:{"user":userId}
+                    },
+                    {
+                        $unwind:'$products'
+                    },
+                    {
+                        $project:{
+                            item:'$products.item',
+                            quantity:'$products.quantity'
+                        }
+                    },
+                    {
+                        $lookup:{
+                            from:'products',
+                            localField:'item',
+                            foreignField:'_id',
+                            as:'product'
+                        }
+                    },
+                    {
+                        $project:{
+                            item:1,
+                            quantity:1,
+                            product:{$arrayElemAt: ['$product',0]},
+                            image:1,
+                        }
+                    }
+                ]).then((wishItems)=>{
+                    resolve(wishItems)
+                }).catch((error)=>{
+                    reject(error)
+                })
+            } catch (error) {
+                reject(error)
+            }
+        })
+    },
+
+    deleteWishpro:(data)=>{
+        return new Promise((resolve,reject)=>{
+            try {
+                let wishId=data.wishId
+                let proId=data.proId
+
+                db.wishlist.updateOne({_id:wishId},
+                    {
+                        $pull:{products:{item:proId}}
+                    }
+                    ).then((response)=>{
+                        console.log(response);
+                        resolve()
+                    }).catch((error)=>{
+                        reject(error)
+                    })
+                
+            } catch (error) {
+                reject(error) 
+            }
+
+
         })
     }
 }

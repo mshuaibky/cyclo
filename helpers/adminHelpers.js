@@ -29,70 +29,85 @@ module.exports = {
             })
             
         } catch (error) {
-            
+            reject(error)
         }
     },
     getorders: () => {
 
         return new Promise(async (resolve, reject) => {
-            let orders = await db.order.aggregate([
-                {
-                    $unwind: '$orders'
-                }
-            ])
-            resolve(orders)
+
+            try {
+                let orders = await db.order.aggregate([
+                    {
+                        $unwind: '$orders'
+                    }
+                ])
+                resolve(orders)
+                
+            } catch (error) {
+                reject(error)
+            }
 
         })
     },
 
     orderDetails: (orderId) => {
         return new Promise(async (resolve, reject) => {
-            let order = await db.order.aggregate([
-                {
-                    $unwind: '$orders'
-                },
-                {
-                    $unwind: '$orders.productDetails'
-                },
-                {
-                    $match: { 'orders._id': ObjectId(orderId) }
-                }
-            ])
-            resolve(order)
+            try {
+                let order = await db.order.aggregate([
+                    {
+                        $unwind: '$orders'
+                    },
+                    {
+                        $unwind: '$orders.productDetails'
+                    },
+                    {
+                        $match: { 'orders._id': ObjectId(orderId) }
+                    }
+                ])
+                resolve(order)
+                
+            } catch (error) {
+                reject(error)
+            }
         })
 
     },
     shippingStatus: async (details) => {
-        console.log(details,'detailsnnnnn');
-        let orderId = details.orderId
-        let value = parseInt(details.value)
         return new Promise(async (resolve, reject) => {
-            let order = await db.order.find({ userId:details.userId })
-            console.log(order,'myOrdersid');
-            if (order) {
-                let orderIndex = order[0].orders.findIndex(order => order._id == orderId)
-                let productIndex = order[0]?.orders[orderIndex]?.productDetails.findIndex(product => product._id == details.proId)
-                console.log(orderIndex, productIndex, 'itgaaanu');
-                await db.order.updateOne({ 'orders._id': `${orderId}` },
-                    {
-                        $set: {
-                            ['orders.' + orderIndex + '.productDetails.' + productIndex + '.shippingStatus']: value
-                        }
-                    })
-                if (value == 4) {
-                    db.order.updateOne({ 'orders.id': `${orderId}` },
+            try {
+                
+                let orderId = details.orderId
+                let value = parseInt(details.value)
+    
+                let order = await db.order.find({ userId:details.userId })
+    
+                if (order) {
+                    let orderIndex = order[0].orders.findIndex(order => order._id == orderId)
+                    let productIndex = order[0]?.orders[orderIndex]?.productDetails.findIndex(product => product._id == details.proId)
+                    await db.order.updateOne({ 'orders._id': `${orderId}` },
                         {
                             $set: {
-                                ['orders.' + orderIndex + '.productDetails.' + productIndex + '.deliveredAt']: new Date()
+                                ['orders.' + orderIndex + '.productDetails.' + productIndex + '.shippingStatus']: value
                             }
-                        }).then((response) => {
-                            console.log(response, 'habeeebyy');
-                            resolve({status:true})
                         })
+                    if (value == 4) {
+                        db.order.updateOne({ 'orders.id': `${orderId}` },
+                            {
+                                $set: {
+                                    ['orders.' + orderIndex + '.productDetails.' + productIndex + '.deliveredAt']: new Date()
+                                }
+                            }).then((response) => {
+                               
+                                resolve({status:true})
+                            })
+                    }
+                    else {
+                        resolve({ status: true })
+                    }
                 }
-                else {
-                    resolve({ status: true })
-                }
+            } catch (error) {
+               reject(error) 
             }
         })
     },
@@ -146,46 +161,51 @@ module.exports = {
 
     findEveryMonthly:()=>{
         return new Promise(async(resolve,reject)=>{
-            let date=new Date()
-         let thismonth=date.getMonth()
-         let month=thismonth+1
-         let year=date.getFullYear()
-            db.order.aggregate([
-                {
-                    $unwind:'$orders'
-                },
-                {
-                    $unwind:'$orders.productDetails'
-                },
-                {
-                    $match:{'orders.createdAt':{$gt:new Date(`${year}-01-01`),$lt:new Date(`${year}-12-31`)}}
-                },
-                {
-                    $match:{'orders.productDetails.shippingStatus':4}
-                },
-                {
-                    $group:{
-                        _id:{'$month':"$orders.createdAt"},
-                      totalCount:{$sum:{$multiply:['$orders.productDetails.productPrice','$orders.productDetails.quantity']}},
-                      orders:{$sum:1},
-                      totalQuantity:{$sum:'$orders.productDetails.quantity'}
+            try {
+                
+                let date=new Date()
+             let thismonth=date.getMonth()
+             let month=thismonth+1
+             let year=date.getFullYear()
+                db.order.aggregate([
+                    {
+                        $unwind:'$orders'
+                    },
+                    {
+                        $unwind:'$orders.productDetails'
+                    },
+                    {
+                        $match:{'orders.createdAt':{$gt:new Date(`${year}-01-01`),$lt:new Date(`${year}-12-31`)}}
+                    },
+                    {
+                        $match:{'orders.productDetails.shippingStatus':4}
+                    },
+                    {
+                        $group:{
+                            _id:{'$month':"$orders.createdAt"},
+                          totalCount:{$sum:{$multiply:['$orders.productDetails.productPrice','$orders.productDetails.quantity']}},
+                          orders:{$sum:1},
+                          totalQuantity:{$sum:'$orders.productDetails.quantity'}
+                        }
                     }
-                }
-            ]).then((data)=>{
-                console.log(data,'kjfjfjfj');
-                resolve(data)
-            })
+                ]).then((data)=>{
+                    console.log(data,'data namma data');
+                    resolve(data)
+                })
+            } catch (error) {
+                reject(error)
+            }
         })
     },
 
     dailyData:()=>{
-       try{
-        let date=new Date()
-         let thismonth=date.getMonth()
-         let month=thismonth+1
-         let year=date.getFullYear()
         
-    return new Promise(async(resolve,reject)=>{
+        return new Promise(async(resolve,reject)=>{
+        try{
+         let date=new Date()
+          let thismonth=date.getMonth()
+          let month=thismonth+1
+          let year=date.getFullYear()
            await db.order.aggregate([
             {   
                 $unwind:'$orders'
@@ -217,10 +237,10 @@ module.exports = {
         
             resolve(data)
            })
+        }catch(err){
+           reject(err)
+        }
     })
-         }catch(err){
-            console.log(err);
-         }
     },
     yeardata:()=>{
         try{

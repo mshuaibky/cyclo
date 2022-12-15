@@ -40,7 +40,7 @@ getAllUsers:()=>{
                 resolve(data)
             })
     }catch(error){
-        console.log(error);
+        reject(error)
     }
    })
   },
@@ -58,7 +58,7 @@ getAllUsers:()=>{
                     resolve(data)
                 })
         }catch(error){
-           console.log(error);
+         reject(error)
         }
     })
   }

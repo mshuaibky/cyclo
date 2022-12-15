@@ -346,7 +346,17 @@
         return confirm('Are you sure want to cancel this order?')
       },
       success: (response) => {
-        location.reload()
+        if(response.error){
+          Swal.fire({
+  icon: 'error',
+  title: 'Oops...',
+  text: 'Something went wrong!',
+  footer: '<a href="">Why do I have this issue?</a>'
+})
+        }else{
+
+          location.reload()
+        }
       }
     })
   }
@@ -367,8 +377,7 @@
   }
 
   function downloadInvoice(orderId,index) {
-    console.log('fkjfkfdj');
-    console.log(orderId,'eethoo id');
+    
     $.ajax({
       url: '/downloadInvoice/' + orderId,
       method: 'post',

@@ -1,6 +1,6 @@
 <style>
     .colored-toast.swal2-icon-success {
-  background-color: #8bf051 !important;
+  background-color: #7fe046 !important;
 }
 
 .colored-toast.swal2-icon-error {
@@ -91,7 +91,7 @@
                                     </a>
 
                                     <div class="product-action-vertical">
-                                        <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+                                        <button onclick="addtoWishlist('<%= products._id%>')" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></button>
                                     </div><!-- End .product-action -->
 
                                     <div class="product-action action-icon-top">
@@ -482,6 +482,60 @@ async function toast1(){
 await Toast.fire({
   icon: 'success',
   title: 'Added TO Cart'
+})
+}
+
+function addtoWishlist(proId){
+    $.ajax({
+        url:'/addtowishlist/'+proId,
+        method:'get',
+        success:(response)=>{
+           if(response.error){
+            alert(response.error)
+           }
+           else if(response.status){
+            wishlistSuccess()
+           }
+           else{
+            wishlistFailed()
+        }
+        }
+        
+    })
+}
+
+async function wishlistSuccess(){
+    const Toast = Swal.mixin({
+  toast: true,
+  position: 'bottom',
+  iconColor: 'white',
+  customClass: {
+    popup: 'colored-toast'
+  },
+  showConfirmButton: false,
+  timer: 1500,
+  timerProgressBar: true
+})
+await Toast.fire({
+  icon: 'success',
+  title: 'Added TO Wishlist'
+})
+}
+async function wishlistFailed(){
+    const Toast = Swal.mixin({
+  toast: true,
+  position: 'bottom',
+  iconColor: 'white',
+  customClass: {
+    popup: 'colored-toast'
+  },
+  showConfirmButton: false,
+  timer: 1500,
+  timerProgressBar: true
+})
+await Toast.fire({
+  icon: 'error',
+  title: 'Item already Exist'
 })
 }
 </script>

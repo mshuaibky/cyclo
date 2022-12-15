@@ -59,6 +59,16 @@ products:[{
 }]
 })
 
+const wishlistschema=new mongoose.Schema({
+    user : mongoose.Types.ObjectId,
+    products:[{
+        item: mongoose.Types.ObjectId,
+        quantity: Number,
+        name:String
+    
+    }]
+})
+
 
 const addressschema=new mongoose.Schema({
   user:mongoose.Types.ObjectId,
@@ -130,6 +140,7 @@ module.exports={
     users:db.model('Users',Userschema),
     catagory:db.model('catagory',catagoryschema),
     cart:db.model('cart',cartschema),
+    wishlist:db.model('wishlist',wishlistschema),
     address:db.model('address',addressschema),
     order:db.model('order',orderschema),
     banner:db.model('banner',bannerschema),

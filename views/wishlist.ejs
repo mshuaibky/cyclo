@@ -1,0 +1,267 @@
+<style>
+  .colored-toast.swal2-icon-success {
+    background-color: #73e432 !important;
+  }
+
+  .colored-toast.swal2-icon-error {
+    background-color: #eb4141 !important;
+  }
+
+  .colored-toast.swal2-icon-warning {
+    background-color: #f8bb86 !important;
+  }
+
+  .colored-toast.swal2-icon-info {
+    background-color: #3fc3ee !important;
+  }
+
+  .colored-toast.swal2-icon-question {
+    background-color: #87adbd !important;
+  }
+
+  .colored-toast .swal2-title {
+    color: white;
+  }
+
+  .colored-toast .swal2-close {
+    color: white;
+  }
+
+  .colored-toast .swal2-html-container {
+    color: white;
+  }
+</style>
+
+
+<main class="main">
+  <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+    <div class="container">
+      <h1 class="page-title">WISHLIST<span>Shop</span></h1>
+    </div><!-- End .container -->
+  </div><!-- End .page-header -->
+  <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
+    <div class="container">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="/shop">Shop</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Wishlist</li>
+      </ol>
+    </div><!-- End .container -->
+  </nav><!-- End .breadcrumb-nav -->
+
+  <div class="page-content">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <% console.log(wishProducts,'ejs product'); %>
+
+          <% wishProducts.forEach((wish)=>{ %>
+
+          <div class="products mb-3">
+
+            <div class="product product-list">
+              <div class="row">
+                <div class="col-6 col-lg-3">
+                  <figure class="product-media">
+                    <% if(wish.product.stock==0) {%>
+                    <span class="product-label label-out">Out of Stock</span>
+                    <% } %>
+                    <a href="product.html">
+                      <img src="/product-images/<%= wish.product.image[0]  %> " alt="Product image" class="product-image">
+                    </a>
+                  </figure><!-- End .product-media -->
+                </div><!-- End .col-sm-6 col-lg-3 -->
+
+                <div class="col-6 col-lg-3 order-lg-last">
+                  <div class="product-list-action">
+
+                    <div>
+                      <span class="intro-old-price">RS:<%= wish.product.price  %> </span>
+                      <span class="text-third">
+                        RS: <%= wish.product.Offerprice  %>
+                      </span>
+                    </div><!-- End .intro-price -->
+                    <div class="ratings-container">
+                      <div class="ratings">
+                        <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
+                      </div><!-- End .ratings -->
+                      <span class="ratings-text">( 6 Reviews )</span>
+                    </div><!-- End .rating-container -->
+
+                    <div class="product-action">
+                      <a href="popup/quickView.html" class="btn-product btn-quickview" title="Quick view"><span>quick view</span></a>
+                      <a href="#" class="btn-product btn-compare" title="Compare"><span>compare</span></a>
+                    </div><!-- End .product-action -->
+
+                    <% if(wish.product.stock==0){ %>
+                    <button class="btn btn-success disabled"><span>add to cart</span></button>
+                    <% }else{ %>
+                    <button class="btn btn-success  " onclick="addtocart('<%= wish.product._id%>','<%= wish.product.stock%>')" class=" btn-product btn-cart "><span>add to cart</span></button>
+                    <% } %>
+                    <div class="pt-3">
+                      <button onclick="removeWish('<%= wish._id%>','<%= wish.product._id%>')" class="btn btn-dark "><span>Remove</span> </button>
+
+                    </div>
+                  </div><!-- End .product-list-action -->
+                </div><!-- End .col-sm-6 col-lg-3 -->
+
+                <div class="col-lg-6">
+                  <div class="product-body product-action-inner">
+                    <!-- <a href="#" title="Add to wishlist" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a> -->
+
+                    <div class="product-cat">
+
+                      <a href="#"><%= wish.product.catagory %> </a>
+                    </div><!-- End .product-cat -->
+                    <h3 class="product-title"><a href="product.html"><%= wish.product.name  %> </a></h3><!-- End .product-title -->
+
+                    <div class="product-content">
+                      <p><%= wish.product.description  %> </p>
+                    </div><!-- End .product-content -->
+                  </div><!-- End .product-body -->
+                </div><!-- End .col-lg-6 -->
+              </div><!-- End .row -->
+            </div><!-- End .product -->
+          </div><!-- End .products -->
+          <% }) %>
+        
+        </div><!-- End .col-lg-9 -->
+        <aside class="col-lg-3 order-lg-first">
+          <div class="sidebar sidebar-shop">
+
+
+
+
+
+          </div><!-- End .sidebar sidebar-shop -->
+        </aside><!-- End .col-lg-3 -->
+      </div><!-- End .row -->
+    </div><!-- End .container -->
+  </div><!-- End .page-content -->
+</main><!-- End .main -->
+
+<script>
+  function addtocart(proId, stock) {
+    console.log(proId, stock, 'calling');
+
+    $.ajax({
+
+      url: '/produnct-quantity/' + proId,
+      method: 'get',
+
+    }).then((response) => {
+      console.log(response);
+      if (response.status) {
+        if (stock - response.quantity <= 0) {
+          toast()
+        } else {
+          $.ajax({
+            url: '/addtocart/' + proId,
+            method: 'get',
+            success: (response) => {
+              if (response.status) {
+                toast1()
+                console.log('test status');
+                let count = $('#cart').html()
+                count = parseInt(count) + 1
+                $("#cart").html(count)
+              }
+
+            }
+          })
+        }
+      } else if (!response.status && stock == 0) {
+        toast()
+      } else {
+        $.ajax({
+          url: '/addtocart/' + proId,
+          method: 'get',
+          success: (response) => {
+            if (response.status) {
+              toast1()
+              console.log('test status');
+              let count = $('#cart').html()
+              count = parseInt(count) + 1
+              $("#cart").html(count)
+            }
+
+          }
+        })
+      }
+    })
+
+  }
+  async function toast() {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'bottom',
+      iconColor: 'white',
+      customClass: {
+        popup: 'colored-toast'
+      },
+      showConfirmButton: false,
+      timer: 1500,
+      timerProgressBar: true
+    })
+    await Toast.fire({
+      icon: 'error',
+      title: 'Out Of Stock'
+    })
+  }
+  async function toast1() {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'bottom',
+      iconColor: 'white',
+      customClass: {
+        popup: 'colored-toast'
+      },
+      showConfirmButton: false,
+      timer: 1500,
+      timerProgressBar: true
+    })
+    await Toast.fire({
+      icon: 'success',
+      title: 'Added TO Cart'
+    })
+  }
+
+  function removeWish(wishId, proId) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+        $.ajax({
+          url: '/deletewish',
+          data: {
+            wishId: wishId,
+            proId: proId
+          },
+          method: 'post',
+          success: (response) => {
+
+            if (response.status) {
+              Swal.fire(
+                'Deleted!',
+                'Your file has been deleted.',
+                'success'
+              )
+              location.reload()
+            } else {
+              alert(respone.error)
+            }
+          }
+        })
+
+      }
+    })
+
+  }
+</script>

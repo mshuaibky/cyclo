@@ -38,46 +38,60 @@ addproduct:(product)=>{
 
 getproductdetails:(proId)=>{
   return new Promise((resolve,reject)=>{
+    
    db.product.findOne({_id:proId}).then((product)=>{
     resolve(product)  
+   }).catch((error)=>{
+    reject(error)
    })
   })
 },
 
 
 deleteProducts:(proId)=>{
+
   return new Promise((resolve,reject)=>{
-    db.product.deleteOne({_id:proId}).then(()=>{
-      resolve()
-    })
+    try {
+      
+      db.product.deleteOne({_id:proId}).then(()=>{
+        resolve()
+      }).catch((error)=>{
+        reject(error)
+      })
+    } catch (error) {
+     reject(error) 
+    }
   })
 },
 
 updateProduct:(proId,proDetails)=>{
-  console.log(proId,proDetails,'heehee');
   return new Promise(async(resolve,reject)=>{
-    let dropdata=await db.product.findOne({_id:proId})
-    console.log(dropdata,'dropdata');
-    if(proDetails.image?.length==0){
-      proDetails.image=dropdata?.image
-    }
-   await db.product.updateOne({_id:proId},
-     {
-      $set:{
-        name:proDetails.name,
-        description:proDetails.description,
-        catagory:proDetails.catagory,
-        price:proDetails.price,
-        offerPercentage:proDetails.offerPercentage,
-        Offerprice:proDetails.Offerprice,
-        stock:proDetails.stock,
-        image:proDetails.image
+    try {
+      let dropdata=await db.product.findOne({_id:proId})
+      if(proDetails.image?.length==0){
+        proDetails.image=dropdata?.image
       }
-     } 
-      )
+     await db.product.updateOne({_id:proId},
+       {
+        $set:{
+          name:proDetails.name,
+          description:proDetails.description,
+          catagory:proDetails.catagory,
+          price:proDetails.price,
+          offerPercentage:proDetails.offerPercentage,
+          Offerprice:proDetails.Offerprice,
+          stock:proDetails.stock,
+          image:proDetails.image
+        }
+       } 
+        )
+        
       
-    
-      resolve()
+        resolve()
+      
+    } catch (error) {
+      reject(error)
+    }
   })
 },
 
@@ -85,27 +99,31 @@ addCatagory:(catagoryFromUser)=>{
 
   catagoryFromUser.name= catagoryFromUser.name.toLowerCase()
  return new Promise(async(resolve,reject)=>{
- 
-   db.catagory.find({name:catagoryFromUser.name}).then( async(catagory)=>{
+   try {
     
-    console.log(catagory)
-     let response={}
-     if(catagory.length == 0){
-     
-       let cata= await db.catagory(catagoryFromUser)
-
-
-      cata.save()
-      response.data=cata
-       response.status=true
-
-      resolve(response)
-
-    }else{
-      resolve({status:false})
-    }
-
- })
+     db.catagory.find({name:catagoryFromUser.name}).then( async(catagory)=>{
+      
+      console.log(catagory)
+       let response={}
+       if(catagory.length == 0){
+       
+         let cata= await db.catagory(catagoryFromUser)
+  
+  
+        cata.save()
+        response.data=cata
+         response.status=true
+  
+        resolve(response)
+  
+      }else{
+        resolve({status:false})
+      }
+  
+   })
+   } catch (error) {
+    reject(error)
+   }
 })
 },
 
@@ -122,32 +140,48 @@ getallCatagory:()=>{
 },
 
 deleteCatagory:(cataId)=>{
- return new Promise((resolve,rejuct)=>{
-  db.catagory.deleteOne({_id:cataId}).then(()=>{
-    resolve()
-  })
+ return new Promise((resolve,reject)=>{
+  try {
+    db.catagory.deleteOne({_id:cataId}).then(()=>{
+      resolve()
+    })
+    
+  } catch (error) {
+    reject(error)
+  }
  })
 },
 
 getCatdetails:(cataId)=>{
 return new Promise(async(resolve,reject)=>{
-  await db.catagory.findOne({_id:cataId}).then((catagories)=>{
-    resolve(catagories)
-  })
+  try {
+    await db.catagory.findOne({_id:cataId}).then((catagories)=>{
+      resolve(catagories)
+    })
+    
+  } catch (error) {
+    reject(error)
+  }
  
 })
 },
 updateCatagory:(cataId,cataDetails)=>{
 return new Promise(async(resolve,reject)=>{
- await db.catagory.updateOne({_id:cataId},
-    {
-      $set:{
-        name:cataDetails.name
-      }
-    }
-    )
-    console.log(cataDetails)
-    resolve()
+  try {
+    
+    await db.catagory.updateOne({_id:cataId},
+       {
+         $set:{
+           name:cataDetails.name
+         }
+       }
+       )
+       console.log(cataDetails)
+       resolve()
+
+  } catch (error) {
+    reject(error)
+  }
 })
 },
 

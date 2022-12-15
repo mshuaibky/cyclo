@@ -108,6 +108,8 @@ module.exports = {
 
 
                 res.render('admin/editProduct', { layout: 'admin/adminLayout', product, catagory, nav: true, sidebar: true });
+            }).catch((error)=>{
+                res.render('error',{error:error.message})
             })
         
 
@@ -128,6 +130,8 @@ module.exports = {
              productHelpers.updateProduct(req.params.id, req.body).then(() => {
                           
                 res.redirect('/admin/allproduct')
+             }).catch((error)=>{
+                res.render('error',{error:error.message})
              })
     
 
@@ -140,6 +144,8 @@ module.exports = {
             console.log(proId);
             productHelpers.deleteProducts(proId).then((response) => {
                 res.redirect('/admin/allproduct')
+            }).catch((error)=>{
+                res.render('error',{error:error.message})
             })
         }
     },
@@ -149,6 +155,8 @@ module.exports = {
             req.session.loggedIn=false
             console.log(user);
             res.redirect('/admin/allUsers')
+        }).catch((error)=>{
+            res.render('error',{error:error.message})
         })
     },
 
@@ -156,6 +164,8 @@ module.exports = {
         adduserHelpers.unblockUser(req.params.id).then((user) => {
             console.log(user);
             res.redirect('/admin/allUsers')
+        }).catch((error)=>{
+            res.render('error',{error:error.message})
         })
     },
 
@@ -165,6 +175,8 @@ module.exports = {
                 //   console.log(catagory);
                 res.render('admin/catagory', { layout: 'admin/adminLayout', catagory, nav: true, sidebar: true })
 
+            }).catch((error)=>{
+                res.render('error',{error:error.message})
             })
         
     },
@@ -175,13 +187,14 @@ module.exports = {
     addCatagoryPost: (req, res) => {
         productHelpers.addCatagory(req.body).then((data) => {
             if (data.status) {
-                console.log('true');
                 res.send({ value: 'success' })
             } else {
-                console.log('false');
+              
                 res.send({ value: "failed" })
             }
 
+        }).catch((error)=>{
+            res.send({error:error.message})
         })
     },
 
@@ -191,18 +204,27 @@ module.exports = {
         productHelpers.deleteCatagory(catagory).then((response) => {
             res.redirect('/admin/Catagory')
 
+        }).catch((error)=>{
+            res.render('error',{error:error.message})
         })
     },
 
     editCatagoryGet: async (req, res) => {
-        let catagory = await productHelpers.getCatdetails(req.params.id)
-        console.log(catagory);
-        res.render('admin/editCatagory', { layout: 'admin/adminLayout', catagory, nav: true, sidebar: true })
+        try {
+            
+            let catagory = await productHelpers.getCatdetails(req.params.id)
+            
+            res.render('admin/editCatagory', { layout: 'admin/adminLayout', catagory, nav: true, sidebar: true })
+        } catch (error) {
+            res.render('error',{error:error.message})
+        }
     },
 
     editCatagoryPost: (req, res) => {
         productHelpers.updateCatagory(req.params.id, req.body).then(() => {
             res.redirect('/admin/catagory')
+        }).catch((error)=>{
+            res.render('error',{error:error.message})
         })
 
     },
@@ -210,16 +232,21 @@ module.exports = {
     // >>>>>>>>>>>>>>>>>>>  admin pages   <<<<<<<<<<<<<<<//
 
     adminLoginGet: (req, res) => {
-        if (req.session.adminlogin) {
-            res.redirect('/admin')
-        }
-        else {
-            res.render('admin/adminlogin', { layout: 'admin/adminLayout' })
+        try {
+            
+            if (req.session.adminlogin) {
+                res.redirect('/admin')
+            }
+            else {
+                res.render('admin/adminlogin', { layout: 'admin/adminLayout' })
+            }
+        } catch (error) {
+          res.render('error',{error:error.message})  
         }
     },
 
     adminLoginPost: (req, res) => {
-        console.log(req.body);
+       
         adminHelpers.adminlogin(req.body).then((response) => {
             if (response.status) {
                 req.session.adminlogin = true
@@ -230,6 +257,8 @@ module.exports = {
                 res.redirect('/admin/adminlogin')
             }
 
+        }).catch((error)=>{
+              res.render('error',{error:error.message})
         })
     },
 
@@ -240,37 +269,51 @@ module.exports = {
 
     adminOrders:async(req,res)=>{
         // let userId=req.session.user._id
-   let orderitems= await adminHelpers.getorders()
-    
-            res.render('admin/Orders',{ layout: 'admin/adminLayout',orderitems,nav: true })
+        try {
+            
+            let orderitems= await adminHelpers.getorders()
+             
+                     res.render('admin/Orders',{ layout: 'admin/adminLayout',orderitems,nav: true })
+        } catch (error) {
+           res.render('error',{error:error.message}) 
+        }
     
     },
     viewMore:async(req,res)=>{
-       
-        let allOrders=await adminHelpers.orderDetails(req.params._id)
-       
-        res.render('admin/viewmore',{allOrders,layout: 'admin/adminLayout',nav:true})
+       try {
+        
+           let allOrders=await adminHelpers.orderDetails(req.params._id)
+          
+           res.render('admin/viewmore',{allOrders,layout: 'admin/adminLayout',nav:true})
+       } catch (error) {
+        res.render('error',{error:error.message})
+       }
     },
     changeShippingStatus:(req,res)=>{
         
-        console.log(req.body,'shipping');
+       
         adminHelpers.shippingStatus(req.body).then((response)=>{
-            console.log(response,'the main response');
             res.json(response)
+        }).catch((error)=>{
+            res.json({status:false,error:error.message})
         })
     },
 
     salesReport:async(req,res)=>{
-        
-        let dailydata=await adminHelpers.dailyData()
-        console.log(dailydata,'dailydata');
-    //    let monthlydata = await adminHelpers.findMonthly()
-     
-       let EveryMonthly=await adminHelpers.findEveryMonthly()
-       
-       let yearlyData=await adminHelpers.yeardata()
-
-        res.render('admin/salesReport',{layout:'admin/adminLayout' ,sidebar:true,EveryMonthly:EveryMonthly,dailydata:dailydata,yearlyData:yearlyData})
+        try {
+            
+            let dailydata=await adminHelpers.dailyData()
+            console.log(dailydata,'dailydata');
+        //    let monthlydata = await adminHelpers.findMonthly()
+         
+           let EveryMonthly=await adminHelpers.findEveryMonthly()
+           
+           let yearlyData=await adminHelpers.yeardata()
+    
+            res.render('admin/salesReport',{layout:'admin/adminLayout' ,sidebar:true,EveryMonthly:EveryMonthly,dailydata:dailydata,yearlyData:yearlyData})
+        } catch (error) {
+            res.render('error',{error:error.message})
+        }
     },
 
     yearlyreport:async(req,res)=>{

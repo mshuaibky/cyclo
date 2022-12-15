@@ -38,6 +38,12 @@ router.get('/cart',varifyLogin,controller.cartPage)
 
 router.get('/addtocart/:id',varifyLogin,controller.addTocartPage)
 
+router.get('/wishlist',varifyLogin,controller.wishlistpage)
+
+router.post('/deletewish',controller.deleteWish)
+
+router.get('/addtowishlist/:id',varifyLogin,controller.addtoWishlist)
+
 router.get('/userLogin',controller.userLoginGet)
 
 router.post('/userLogin',controller.userLoginPost)
@@ -98,5 +104,7 @@ router.get('/detailOrder/:id',controller.detailOrder)
 router.post('/applycoupon',controller.applyCoupon)
 
 router.get('/Shopnow',controller.findOfferdProduct)
+
+
 
 module.exports = router;

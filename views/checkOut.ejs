@@ -645,7 +645,15 @@ function submit(
     },
     method:'post',
     success:(response)=>{
-        if(response.cod){
+        if(response.error){
+            Swal.fire({
+  icon: 'error',
+  title: 'Oops...',
+  text: response.error,
+  footer: '<a href="">Why do I have this issue?</a>'
+})
+        }
+      else if(response.cod){
          
             window.location.href="/success"
         }else if(response.paypal){
@@ -655,6 +663,7 @@ function submit(
         
           
         }
+       
         else{
             razorpaypayment(response)
             console.log(response,'razorpay');
@@ -797,12 +806,21 @@ function varifyPayment(payment,order){
 
     function display(addressId){
         
-         console.log('fkfklf');
+       
         $.ajax({
             url:'/filladdres/'+addressId,
             method:'get',
             success:(response)=>{
-               
+              if(response.error){
+                Swal.fire({
+  icon: 'error',
+  title: 'Oops...',
+  text: 'Something went wrong!',
+  footer: '<a href="">Why do I have this issue?</a>'
+})
+              }else{
+
+              
                 document.getElementById('firstname').value=response.firstname
                 document.getElementById('lastname').value=response.lastname
                 document.getElementById('country').value=response.country
@@ -812,8 +830,7 @@ function varifyPayment(payment,order){
                 document.getElementById('pincode').value=response.pincode
                 document.getElementById('phone').value=response.phone
                 document.getElementById('email').value=response.email
-
-
+              }
             }
         })
     }

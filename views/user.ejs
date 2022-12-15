@@ -163,7 +163,7 @@
                   return accumulator + a;
                 } %> 
                 <% const total =userDetails.wallet.reduce(add, 0) %> 
-                <% console.log(total,'lll'); %> 
+                
                 <body >
                   <div class="wallet-container text-center ">
                     <p class= "  page-title"><i class="fa fa-align-left"></i>My E-wallet<i class="fa fa-user"></i></p>
@@ -567,12 +567,15 @@
       if (response.status) {
           location.reload()
         Swal.fire('DELETED')
+      }else{
+        Swal.fire('something went Wrong')
+
       }
     })
   }
 
   function editAddress(input) {
-    console.log('kggh')
+   
     let firstname = input.parentElement.parentElement.querySelector('#firstname').value
     let lastname = input.parentElement.parentElement.querySelector('#lastname').value
     let country = input.parentElement.parentElement.querySelector('#country').value
@@ -608,6 +611,13 @@
         Swal.fire('Your action is SAVED')
 
         location.reload()
+      }else{
+        Swal.fire({
+  icon: 'error',
+  title: 'Oops...',
+  text: 'Something went wrong!',
+  footer: '<a href="">Why do I have this issue?</a>'
+})
       }
     })
   }
@@ -713,9 +723,11 @@ if(currentPassword==" "){
             Swal.fire('Profile Updated').then(()=>{
                 location.reload()
             })
-           
-           
-        }
+          }
+           else if(response.error){
+            swal("Alert!", response.error)
+           }
+        
         else{
             Swal.fire('Password Not Match')
         }

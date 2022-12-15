@@ -1,3 +1,38 @@
+
+<style>
+    .colored-toast.swal2-icon-success {
+  background-color: #7fe046 !important;
+}
+
+.colored-toast.swal2-icon-error {
+  background-color: #eb4141 !important;
+}
+
+.colored-toast.swal2-icon-warning {
+  background-color: #f8bb86 !important;
+}
+
+.colored-toast.swal2-icon-info {
+  background-color: #3fc3ee !important;
+}
+
+.colored-toast.swal2-icon-question {
+  background-color: #87adbd !important;
+}
+
+.colored-toast .swal2-title {
+  color: white;
+}
+
+.colored-toast .swal2-close {
+  color: white;
+}
+
+.colored-toast .swal2-html-container {
+  color: white;
+}
+</style>
+
 <section>
     <main class="main">
         <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
@@ -28,7 +63,6 @@
                     <div class="row">
                         <div class="col-md-12 d-flex" >
                         <div class="col-md-6" style="float: left;">
-                           
                                     <figure class="product-main-image">
                                         <img  id="product-zoom" src="/product-images/<%=productid.image[0]%>" data-zoom-image="/product-images/<%=productid.image[0]%>" alt="product image">
         
@@ -82,26 +116,19 @@
                                     <p>The C68 is the pinnacle of the evolution of Colnago history, it’s the lug construction at its extreme development, it’s where 68 years of frame design meet the future. C68 is simply the new milestone.</p>
                                 </div><!-- End .product-content -->
 
-                                <div class="details-filter-row details-row-size">
-                                    <label>Color:</label>
-
-                                
-                                </div><!-- End .details-filter-row -->
 
                                
 
                                 <div class="product-details-action">
                                     <div class="details-action-col">
                                         <div class="product-details-quantity">
-                                            <input type="number" id="qty" class="form-control" value="1" min="1" max="10" step="1" data-decimals="0" required>
                                         </div><!-- End .product-details-quantity -->
 
-                                        <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                                        <span style="text-decoration: none; cursor: pointer;"  onclick="addtoCart('<%=productid._id%>','<%= productid.stock%>')" class="btn-product btn-cart"><span>add to cart</span></span>
                                     </div><!-- End .details-action-col -->
 
                                     <div class="details-action-wrapper">
-                                        <a href="#" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
-                                        <a href="#" class="btn-product btn-compare" title="Compare"><span>Add to Compare</span></a>
+                                        <span style="text-decoration: none; cursor: pointer;" onclick="addtoWishlist('<%=productid._id%>')" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></span>
                                     </div><!-- End .details-action-wrapper -->
                                 </div><!-- End .product-details-action -->
 
@@ -252,3 +279,147 @@
         </div><!-- End .page-content -->
     </main><!-- End .main -->
 </section>
+
+<script>
+    function addtoCart(proId,stock){
+        console.log(proId,stock,'namma stockum productum');
+        $.ajax({
+         
+         url:'/produnct-quantity/'+proId,
+         method:'get',
+        
+     }).then((response)=>{
+        console.log(response); 
+        if(response.status){
+         if(stock-response.quantity<=0){
+             toast()
+         }
+         else{
+ $.ajax({
+         url:'/addtocart/'+proId,
+         method:'get',
+         success:(response)=>{
+             if(response.status){
+                 toast1()
+                 console.log('test status');
+                 let count=$('#cart').html()
+                 count=parseInt(count)+1
+                 $("#cart").html(count)
+             }
+            
+         }
+     })
+         }
+        }else if(!response.status&&stock==0){
+        toast()
+        }else{
+         $.ajax({
+         url:'/addtocart/'+proId,
+         method:'get',
+         success:(response)=>{
+             if(response.status){
+                 toast1()
+                 console.log('test status');
+                 let count=$('#cart').html()
+                 count=parseInt(count)+1
+                 $("#cart").html(count)
+             }
+            
+         }
+     })
+        }
+     })
+     
+    }
+
+    async function toast(){
+    const Toast = Swal.mixin({
+  toast: true,
+  position: 'bottom',
+  iconColor: 'white',
+  customClass: {
+    popup: 'colored-toast'
+  },
+  showConfirmButton: false,
+  timer: 1500,
+  timerProgressBar: true
+})
+await Toast.fire({
+  icon: 'error',
+  title: 'Out Of Stock'
+})
+}
+async function toast1(){
+    const Toast = Swal.mixin({
+  toast: true,
+  position: 'bottom',
+  iconColor: 'white',
+  customClass: {
+    popup: 'colored-toast'
+  },
+  showConfirmButton: false,
+  timer: 1500,
+  timerProgressBar: true
+})
+await Toast.fire({
+  icon: 'success',
+  title: 'Added TO Cart'
+})
+}
+
+
+function addtoWishlist(proId){
+    $.ajax({
+        url:'/addtowishlist/'+proId,
+        method:'get',
+        success:(response)=>{
+           if(response.error){
+            alert(response.error)
+           }
+           else if(response.status){
+            wishlistSuccess()
+           }
+           else{
+            wishlistFailed()
+        }
+        }
+        
+    })
+}
+
+
+async function wishlistSuccess(){
+    const Toast = Swal.mixin({
+  toast: true,
+  position: 'bottom',
+  iconColor: 'white',
+  customClass: {
+    popup: 'colored-toast'
+  },
+  showConfirmButton: false,
+  timer: 1500,
+  timerProgressBar: true
+})
+await Toast.fire({
+  icon: 'success',
+  title: 'Added TO Wishlist'
+})
+}
+async function wishlistFailed(){
+    const Toast = Swal.mixin({
+  toast: true,
+  position: 'bottom',
+  iconColor: 'white',
+  customClass: {
+    popup: 'colored-toast'
+  },
+  showConfirmButton: false,
+  timer: 1500,
+  timerProgressBar: true
+})
+await Toast.fire({
+  icon: 'error',
+  title: 'Item already Exist'
+})
+}
+</script>
