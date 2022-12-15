@@ -32,11 +32,11 @@ module.exports = {
       if(req.session.loggedIn){
         res.locals.loggedIn=true
       }
-      let user = req.session.user
+      let user = req?.session?.user
   
       let banners=await   productHelpers.getAllBaners()
     
-        let cartcount = await userHelpers.getCartCount(req.session.user._id)
+        let cartcount = await userHelpers.getCartCount(req?.session?.user?._id)
         res.render('index', { user, nav: true, footer: true, cartcount,banners });
     } catch (error) {
       res.render('error',{error:error.message})
@@ -52,9 +52,9 @@ module.exports = {
       if(req.session.loggedIn){
         res.locals.loggedIn=true
       }
-      let cartproducts = await userHelpers.getCartProducts(req.session.user._id)
+      let cartproducts = await userHelpers.getCartProducts(req?.session?.user?._id)
   
-      let cartcount = await userHelpers.getCartCount(req.session.user._id)
+      let cartcount = await userHelpers.getCartCount(req?.session?.user?._id)
       productHelpers.getAllProducts().then((products) => {
      
           res.render('shop', { nav: true, footer: true, products, cartcount,cartproducts })
@@ -70,8 +70,8 @@ module.exports = {
   productPage: async (req, res) => {
     try {
       
-      let cartcount = await userHelpers.getCartCount(req.session.user._id)
-      let product = req.params.id
+      let cartcount = await userHelpers.getCartCount(req?.session?.user?._id)
+      let product = req?.params?.id
       productHelpers.getproductdetails(product).then((productid) => {
   
       
@@ -98,7 +98,7 @@ module.exports = {
   addTocartPage: function (req, res) {
     // console.log("api call");
     
-      userHelpers.addToCart(req.params.id, req.session.user._id).then(() => {
+      userHelpers.addToCart(req?.params?.id, req?.session?.user?._id).then(() => {
 
         res.json({ status: true })
       }).catch((error)=>{
@@ -110,9 +110,9 @@ module.exports = {
   cartPage: async (req, res) => {
     try {
       
-      let cartcount = await userHelpers.getCartCount(req.session.user._id)
-      let cartproducts = await userHelpers.getCartProducts(req.session.user._id)
-      totalAmount = await userHelpers.getTotalAmount(req.session.user._id)
+      let cartcount = await userHelpers.getCartCount(req?.session?.user?._id)
+      let cartproducts = await userHelpers.getCartProducts(req?.session?.user?._id)
+      totalAmount = await userHelpers.getTotalAmount(req?.session?.user?._id)
       res.render('cart', { totalAmount, cartproducts, cartcount, nav: true })
     } catch (error) {
       res.render('error',{error:error.message})
@@ -228,7 +228,7 @@ module.exports = {
       
       userHelpers.changeProductCount(req.body).then(async (response) => {
   
-        response.total = await userHelpers.getTotalAmount(req.session.user._id)
+        response.total = await userHelpers.getTotalAmount(req?.session?.user?._id)
   
   
         res.json(response)
@@ -256,10 +256,10 @@ module.exports = {
       
       let coupons=await couponHelpers.getAllCoupons()
        
-      let cartproducts = await userHelpers.getCartProducts(req.session.user?._id)
-      let address = await userHelpers.getAddress(req.session.user?._id)
+      let cartproducts = await userHelpers.getCartProducts(req?.session?.user?._id)
+      let address = await userHelpers.getAddress(req?.session?.user?._id)
      
-      let totalamount = await userHelpers.getTotalAmount(req.session.user?._id)
+      let totalamount = await userHelpers.getTotalAmount(req?.session?.user?._id)
   
       res.render('checkout', {coupons, totalamount, address, cartproducts,clientId:process.env.PAYPAL_CLIENT_ID })
     } catch (error) {
@@ -269,9 +269,9 @@ module.exports = {
   placeOrder: async (req, res) => {
 try {
   
-  let totalamount = await userHelpers.getTotalAmount(req.session.user._id)
+  let totalamount = await userHelpers.getTotalAmount(req?.session?.user?._id)
   totalamount=totalamount-couponAmount
-  req.body.userId = req.session.user._id
+  req.body.userId = req?.session?.user?._id
   userHelpers.placeOrder(req.body, totalamount,req.session.coupon).then(async(response) => {
    
  
