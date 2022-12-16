@@ -321,7 +321,7 @@ try {
   cancelOrder: (req, res) => {
     try {
       
-      userId=req.session.user._id
+      userId=req?.session?.user?._id
       console.log(userId,'cancelOrder id ');
       userHelpers.cancel(req.body,userId).then((response) => {
   
@@ -341,8 +341,8 @@ try {
   fillAddress: (req, res) => {
     try {
       
-      userId = req.session.user._id
-      addressId = req.params.id
+      userId = req?.session?.user?._id
+      addressId = req?.params?.id
   
       userHelpers.addressFill(userId, addressId).then((data) => {
         res.send(data[0].address)
@@ -354,7 +354,7 @@ try {
     }
   },
   razorpay:async (req,res) => {
-    let totalamount = await userHelpers.getTotalAmount(req.session.user._id)
+    let totalamount = await userHelpers.getTotalAmount(req?.session?.user?._id)
     userHelpers.varifyPayment(req.body).then((response)=>{
       userHelpers.changePaymentStatus(req.body['order[receipt]']).then(()=>{
 
@@ -468,7 +468,7 @@ try {
   },
   paypalSuccess:async(req,res)=>{
    
-    const orderDetails=await db.order.find({userId:req.session.user._id})
+    const orderDetails=await db.order.find({userId:req?.session?.user?._id})
     let orders=orderDetails[0].orders.reverse()
     let orderId=orders[0]._id
     
@@ -478,7 +478,7 @@ try {
     })
   },
   productQuantity:(req,res)=>{
-    userId=req.session.user._id
+    userId=req?.session?.user?._id
     proId=req.params.id
   
     userHelpers.findProductQuantity(proId,userId).then((quantity)=>{
@@ -486,7 +486,7 @@ try {
     })
   },
   returnOrder:(req,res)=>{
-    userId=req.session.user._id
+    userId=req?.session?.user?._id
     
    userHelpers.orderReturn(req.body,userId).then((response)=>{
     console.log(response,'ith verre response');
@@ -507,9 +507,9 @@ try {
   },
 
   applyCoupon:async(req,res)=>{
-  req.session.coupon=req.body.couponId
+  req.session.coupon=req?.body?.couponId
  let couponId=req.body.couponId
-  let totalamount = await userHelpers.getTotalAmount(req.session.user?._id)
+  let totalamount = await userHelpers.getTotalAmount(req?.session?.user?._id)
     
  couponHelpers.couponApply(couponId,totalamount).then((data)=>{
    
@@ -544,9 +544,9 @@ try {
   findOfferdProduct:async(req,res)=>{
    
    let products=await userHelpers.offeredProduct(req.query)
-   let cartcount = await userHelpers.getCartCount(req.session.user._id)
+   let cartcount = await userHelpers.getCartCount(req?.session?.user?._id)
 
-   let cartproducts = await userHelpers.getCartProducts(req.session.user._id)
+   let cartproducts = await userHelpers.getCartProducts(req?.session?.user?._id)
       res.render('shop', { nav: true, footer: true,products,cartproducts,cartcount})
    
 
@@ -554,8 +554,8 @@ try {
 
   addtoWishlist:(req,res)=>{
     try {
-      let proId=req.params.id
-      let userId=req.session.user._id
+      let proId=req?.params?.id
+      let userId=req?.session?.user?._id
        userHelpers.addWishlist(proId,userId).then((response)=>{
        
          res.send(response)
@@ -573,8 +573,8 @@ try {
 
   wishlistpage:async(req,res)=>{
     
-    let cartcount = await userHelpers.getCartCount(req.session.user._id)
-    let wishProducts=await userHelpers.getwishCount(req.session.user._id)
+    let cartcount = await userHelpers.getCartCount(req?.session?.user?._id)
+    let wishProducts=await userHelpers.getwishCount(req?.session?.user?._id)
     res.render('wishlist',{nav:true,cartcount,wishProducts})
   },
 
