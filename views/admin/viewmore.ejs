@@ -161,7 +161,8 @@
                                         <%if(items.orders.productDetails.returnStatus==false){%>
                                         <div  style=" margin-top: 50px;padding-left: 33px;">
                                           <% if(items.orders.productDetails.status){ %>
-                                          <select onchange="delivery(this,'<%= items.orders._id %>','<%= items.orders.productDetails._id %>','<%= items.userId%>')" style="padding-right: 283px; border-radius:15px;" >
+                                          <select onchange="delivery(this,'<%= items.orders._id %>','<%= items.orders.productDetails?._id %>','<%= items?.userId %>')" style="padding-right: 283px; border-radius:15px;" >
+                                            <%console.log(items.userId,'namma user id');%>
                                           <%if(items.orders.productDetails.shippingStatus<=3){ %>
                                             <option selected disabled hidden><%= deliveryStatus(items.orders.productDetails.shippingStatus)  %> </option>
                                             <option value="1">Placed</option>
