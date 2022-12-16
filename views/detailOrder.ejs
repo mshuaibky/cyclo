@@ -124,7 +124,7 @@
                                   <div class="mx-3">
                                     <h6 style="font-weight: 400; font-size: small; color: #585858;">Ordered :
                                       <%=dataToReadable(items.orders.createdAt) %> <span
-                                          class="px-4 text-light">|</span>Order Id :<%=items.orders._id %>
+                                          class="px-4 text-light">|</span>Order Id :<%=items?.orders?._id %>
                                     </h6>
                                   </div>
   
@@ -200,14 +200,14 @@
                                     <div >
 
                                       <% if(items.orders.productDetails.shippingStatus<=3){ %>
-                                      <button onclick="cancelOrder('<%= items.orders._id %>','<%= items.orders.productDetails._id %>')" class="cancel btn text-white  mx-3" style="border-radius: 10px; width: 160px; background-color: rgb(234, 34, 4);">Cancel Order</button>
+                                      <button onclick="cancelOrder('<%= items.orders?._id %>','<%= items.orders.productDetails?._id %>')" class="cancel btn text-white  mx-3" style="border-radius: 10px; width: 160px; background-color: rgb(234, 34, 4);">Cancel Order</button>
                                       <% }else if(items.orders.productDetails.returnStatus ){ %>
                                         <button disabled  class="cancel btn text-white  mx-3" style="border-radius: 10px; width: 160px;background-color: rgb(89, 218, 218); ">Return Order</button>
 
                                       <% }else if(items.orders.productDetails.shippingStatus==4) { %>
                                       
 
-                                        <button onclick="returnOrder('<%= items.orders._id %>','<%= items.orders.productDetails._id %>')" class="cancel btn text-white  mx-3" style="border-radius: 10px; width: 160px;background-color: rgb(89, 218, 218); ">Return Order</button>
+                                        <button onclick="returnOrder('<%= items.orders?._id %>','<%= items.orders.productDetails?._id %>')" class="cancel btn text-white  mx-3" style="border-radius: 10px; width: 160px;background-color: rgb(89, 218, 218); ">Return Order</button>
 
 
                                         <%}else{%>
@@ -218,7 +218,7 @@
                                   <br>
                                   <% if(items.orders.productDetails.shippingStatus==4&&items.orders.productDetails.returnStatus==false){%>
                                  
-                                    <button style="border-radius: 15px; width: 160px;" class="btn btn-success mx-3 " onclick="downloadInvoice('<%= items.orders._id%>','<%= index%>')">Download Invoice</button>
+                                    <button style="border-radius: 15px; width: 160px;" class="btn btn-success mx-3 " onclick="downloadInvoice('<%= items.orders?._id%>','<%= index%>')">Download Invoice</button>
                                    <%}%>
 
                                   </div>

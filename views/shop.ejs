@@ -86,16 +86,16 @@
                             <div class="product">
                                 <figure class="product-media">
                                     <span class="product-label label-new">New</span>
-                                    <a href="/products/<%= products._id  %>">
+                                    <a href="/products/<%= products?._id  %>">
                                         <img src="/product-images/<%= products.image[0]%>" alt="Product image" class="product-image">
                                     </a>
 
                                     <div class="product-action-vertical">
-                                        <button onclick="addtoWishlist('<%= products._id%>')" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></button>
+                                        <button onclick="addtoWishlist('<%= products?._id%>')" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></button>
                                     </div><!-- End .product-action -->
 
                                     <div class="product-action action-icon-top">
-                                        <button onclick="addtocart('<%= products._id %>','<%= products.stock %>','<%=cartproducts.quantity%>')"  class="btn-product btn-cart"> Add to cart</button>
+                                        <button onclick="addtocart('<%= products?._id %>','<%= products.stock %>','<%=cartproducts.quantity%>')"  class="btn-product btn-cart"> Add to cart</button>
 
 
                                         <a href="popup/quickView.html" class="btn-product btn-quickview" title="Quick view"><span>quick view</span></a>

@@ -298,10 +298,10 @@
                           <%= details.phone %> <br>
                           <%= details.email  %> <br>
 
-                          <span class=" mx-3"> <button onclick="deleteAddress('<%= details._id %>')" style="border-radius:15px  ; background-color: rgb(90, 159, 250);border: none;" class="btn btn-primary ">
+                          <span class=" mx-3"> <button onclick="deleteAddress('<%= details?._id %>')" style="border-radius:15px  ; background-color: rgb(90, 159, 250);border: none;" class="btn btn-primary ">
                               Delete</button></span>
 
-                          <button onclick="addressFilling('<%= details._id %>')" style=" border-radius:15px ;background-color: rgb(90, 159, 250);border: none;" class="btn btn-primary " data-toggle="modal" data-target="#exampleModal">
+                          <button onclick="addressFilling('<%= details?._id %>')" style=" border-radius:15px ;background-color: rgb(90, 159, 250);border: none;" class="btn btn-primary " data-toggle="modal" data-target="#exampleModal">
                             edit</button>
 
                           <!--<<<<<<<<<<< modal starting >>>>>>>>>>>>>>>>-->

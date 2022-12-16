@@ -130,7 +130,7 @@
                         <h3><%=details.description  %> </h3>
                         <div  class="coupon-row">
                             <span  id="cpnCode" class="couponName"><%= details.couponName  %> </span>
-                            <button class="couponButton" onclick="applycoupon(this,'<%= details._id%>')" id="cpnBtn">apply code</button>
+                            <button class="couponButton" onclick="applycoupon(this,'<%= details?._id%>')" id="cpnBtn">apply code</button>
                         </div>
                         <p class="text-dark">Valid Till: 20Dec, 2021</p>
                        
@@ -159,7 +159,7 @@
                         
                     <div class="card-header pt-3 mx-3" id="heading-3">
                         <p style="font-size:17px ;"  class="card-title  ">
-                           <input  onclick="display('<%=addresses._id %>')" name="address" id=" <%= index+1 %>" value="addrress" type="radio" class="collapsed " role="button" data-toggle="collapse"
+                           <input  onclick="display('<%=addresses?._id %>')" name="address" id=" <%= index+1 %>" value="addrress" type="radio" class="collapsed " role="button" data-toggle="collapse"
                                 href="#collapse-<%=index+1 %> " aria-expanded="false" aria-controls="collapse-<%= index+1 %>">
                                  <%= addresses.firstname %> <%= addresses.lastname %> 
                         </input>

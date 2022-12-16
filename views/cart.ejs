@@ -108,9 +108,9 @@
                     <td class="quantity-col">
                       <div class="cart-product-quantity">
                         <!-- <div class="col"> -->
-                        <button class="btn-minus" <% if(cartproducts.quantity<2){ %> disabled <% } %> onclick="changeQuantity(this,'<%= cartproducts.product?.stock %>','<%= cartproducts._id%>','<%=cartproducts.product?._id%>',-1,this.parentElement.querySelector('input'),'<%= cartproducts.product?.Offerprice%>')" style="border:0 ;border-radius:20px ;">-</button>
+                        <button class="btn-minus" <% if(cartproducts.quantity<2){ %> disabled <% } %> onclick="changeQuantity(this,'<%= cartproducts.product?.stock %>','<%= cartproducts?._id%>','<%=cartproducts.product?._id%>',-1,this.parentElement.querySelector('input'),'<%= cartproducts.product?.Offerprice%>')" style="border:0 ;border-radius:20px ;">-</button>
                         <input class="text-center" style="width:30px ; border-radius: 5px;" type="text" value="<%= cartproducts.quantity %>"> </input>
-                        <button class="plus" onclick="changeQuantity(this,'<%= cartproducts.product?.stock %>','<%= cartproducts._id%>','<%=cartproducts.product?._id%>',1,this.parentElement.querySelector('input'),'<%= cartproducts.product?.Offerprice%>')" style="border: 0;border-radius:20px ;">+</button>
+                        <button class="plus" onclick="changeQuantity(this,'<%= cartproducts.product?.stock %>','<%= cartproducts?._id%>','<%=cartproducts.product?._id%>',1,this.parentElement.querySelector('input'),'<%= cartproducts.product?.Offerprice%>')" style="border: 0;border-radius:20px ;">+</button>
                         <!-- </div> -->
                       </div><!-- End .cart-product-quantity -->
                     </td>
@@ -119,7 +119,7 @@
                     </td>
                     <td id="total" class="total-col"><%=cartproducts.product?.Offerprice*cartproducts.quantity %></td>
                     
-                    <td class="remove-col"><button onclick="remove('<%=cartproducts._id%>','<%=cartproducts.product?._id%>')" class="btn-remove"><i class="icon-close"></i></button></td>
+                    <td class="remove-col"><button onclick="remove('<%=cartproducts?._id%>','<%=cartproducts.product?._id%>')" class="btn-remove"><i class="icon-close"></i></button></td>
                   </tr>
                   <% }) %>
                 </tbody>

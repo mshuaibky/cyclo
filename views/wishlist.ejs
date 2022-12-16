@@ -96,10 +96,10 @@
                     <% if(wish.product.stock==0){ %>
                     <button class="btn btn-success disabled"><span>add to cart</span></button>
                     <% }else{ %>
-                    <button class="btn btn-success  " onclick="addtocart('<%= wish.product._id%>','<%= wish.product.stock%>')" class=" btn-product btn-cart "><span>add to cart</span></button>
+                    <button class="btn btn-success  " onclick="addtocart('<%= wish.product?._id%>','<%= wish.product.stock%>')" class=" btn-product btn-cart "><span>add to cart</span></button>
                     <% } %>
                     <div class="pt-3">
-                      <button onclick="removeWish('<%= wish._id%>','<%= wish.product._id%>')" class="btn btn-dark "><span>Remove</span> </button>
+                      <button onclick="removeWish('<%= wish._id%>','<%= wish.product?._id%>')" class="btn btn-dark "><span>Remove</span> </button>
 
                     </div>
                   </div><!-- End .product-list-action -->

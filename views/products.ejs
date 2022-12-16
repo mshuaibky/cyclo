@@ -124,11 +124,11 @@
                                         <div class="product-details-quantity">
                                         </div><!-- End .product-details-quantity -->
 
-                                        <span style="text-decoration: none; cursor: pointer;"  onclick="addtoCart('<%=productid._id%>','<%= productid.stock%>')" class="btn-product btn-cart"><span>add to cart</span></span>
+                                        <span style="text-decoration: none; cursor: pointer;"  onclick="addtoCart('<%=productid?._id%>','<%= productid.stock%>')" class="btn-product btn-cart"><span>add to cart</span></span>
                                     </div><!-- End .details-action-col -->
 
                                     <div class="details-action-wrapper">
-                                        <span style="text-decoration: none; cursor: pointer;" onclick="addtoWishlist('<%=productid._id%>')" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></span>
+                                        <span style="text-decoration: none; cursor: pointer;" onclick="addtoWishlist('<%=productid?._id%>')" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></span>
                                     </div><!-- End .details-action-wrapper -->
                                 </div><!-- End .product-details-action -->
 
