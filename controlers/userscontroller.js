@@ -35,9 +35,10 @@ module.exports = {
       let user = req?.session?.user
   
       let banners=await   productHelpers.getAllBaners()
-    
+      let catabaners=await  productHelpers.getcataBaners()
+
         let cartcount = await userHelpers.getCartCount(req?.session?.user?._id)
-        res.render('index', { user, nav: true, footer: true, cartcount,banners });
+        res.render('index', { user, nav: true, footer: true, cartcount,banners,catabaners });
     } catch (error) {
       res.render('error',{error:error.message})
     }
@@ -592,5 +593,26 @@ try {
     }
   },
 
+
+  cataProdect:async(req,res)=>{
+
+
+    let products=await userHelpers.offeredProduct(req.query)
+    let cartcount = await userHelpers.getCartCount(req?.session?.user?._id)
+ 
+    let cartproducts = await userHelpers.getCartProducts(req?.session?.user?._id)
+       res.render('shop', { nav: true, footer: true,products,cartproducts,cartcount})
+  },
+
+  cataproduct:async(req,res)=>{
+
+    let products=await userHelpers.offeredProduct(req.query)
+    let cartcount = await userHelpers.getCartCount(req?.session?.user?._id)
+ 
+    let cartproducts = await userHelpers.getCartProducts(req?.session?.user?._id)
+       res.render('shop', { nav: true, footer: true,products,cartproducts,cartcount})
+
+
+  }
  
 }

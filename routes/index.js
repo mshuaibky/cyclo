@@ -105,6 +105,10 @@ router.post('/applycoupon',controller.applyCoupon)
 
 router.get('/Shopnow',controller.findOfferdProduct),
 
+router.get('/catagory',controller.cataProdect)
+
+router.get('/cata',controller.cataproduct)
+
 
 
 
