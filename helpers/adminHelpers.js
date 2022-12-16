@@ -74,6 +74,7 @@ module.exports = {
 
     },
     shippingStatus: async (details) => {
+        console.log(details,'jfjfjfj');
         return new Promise(async (resolve, reject) => {
             try {
                 

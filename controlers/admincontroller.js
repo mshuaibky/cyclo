@@ -291,6 +291,7 @@ module.exports = {
     },
     changeShippingStatus:(req,res)=>{
         
+        console.log(req.body,'namma respoonseee');
        
         adminHelpers.shippingStatus(req.body).then((response)=>{
             res.json(response)
