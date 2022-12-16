@@ -103,7 +103,10 @@ router.get('/detailOrder/:id',controller.detailOrder)
 
 router.post('/applycoupon',controller.applyCoupon)
 
-router.get('/Shopnow',controller.findOfferdProduct)
+router.get('/Shopnow',controller.findOfferdProduct),
+
+
+
 
 
 

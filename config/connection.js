@@ -94,6 +94,16 @@ const bannerschema=new mongoose.Schema({
     image:Array,
 
 })
+ 
+
+const catabanerschema=new mongoose.Schema({
+    name:String,
+    catagory:String,
+    Url:String,
+    image:Array
+
+    
+})
 
 const orderschema=new mongoose.Schema({
     userId:mongoose.Types.ObjectId,
@@ -144,7 +154,9 @@ module.exports={
     address:db.model('address',addressschema),
     order:db.model('order',orderschema),
     banner:db.model('banner',bannerschema),
-    coupon:db.model('coupon',couponSchema)
+    coupon:db.model('coupon',couponSchema),
+    catabaner:db.model('catabaner',catabanerschema)
+
 }
 
 

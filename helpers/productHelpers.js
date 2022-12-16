@@ -234,5 +234,30 @@ generateCoupon:()=>{
     console.log(error);
     reject({error:error})
   }
+},
+
+addCatabaner:(data)=>{
+  return new Promise(async(resolve,reject)=>{
+    let catabaner=await db.catabaner(data)
+    catabaner.save()
+    resolve(catabaner)
+  })
+},
+
+getcataBaners:()=>{
+  return new Promise(async(resolve,reject)=>{
+    let catabanners= await db.catabaner.find({})
+    console.log(catabanners,'namma databanners');
+    resolve(catabanners)
+  })
+},
+
+deleteCatabaner:(banerId)=>{
+  return new Promise((resolve,reject)=>{
+    db.catabaner.deleteOne({_id:banerId}).then((response)=>{
+      console.log(response);
+      resolve()
+    })
+  })
 }
 }

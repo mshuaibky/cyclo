@@ -102,6 +102,7 @@ module.exports = {
 
         res.json({ status: true })
       }).catch((error)=>{
+        console.log('cart errors => ',error)
         res.send({error:error.message})
       })
 
@@ -589,5 +590,7 @@ try {
     } catch (error) {
       res.send({error:error.message})
     }
-  }
+  },
+
+ 
 }

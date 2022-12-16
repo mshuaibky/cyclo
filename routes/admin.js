@@ -148,8 +148,13 @@ router.get('/deletebanner/:id',adminController.deleteBanner)
 router.get('/newarrivals',adminController.newArrival)
 
 
-router.get('/generatecode',adminController.gernerateCode)
+router.get('/generatecode',adminController.gernerateCode),
 
+router.get('/catabaner',adminController.catabanner)
+
+router.post('/catabaner',upload2.array('image'), adminController.catabanerPost)
+
+router.get('/deletecatabaner/:id',adminController.deletecataBanner)
 
 
 module.exports = router;

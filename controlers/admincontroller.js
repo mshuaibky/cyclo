@@ -372,8 +372,9 @@ module.exports = {
             res.redirect('/admin/banermainTable')
         })
      },
-     newArrival:(req,res)=>{
-        res.render('admin/newarrivals',{layout:'admin/adminLayout' ,sidebar:true})
+     newArrival:async(req,res)=>{
+        let catabaners=await  productHelpers.getcataBaners()
+        res.render('admin/newarrivals',{layout:'admin/adminLayout' ,sidebar:true,catabaners})
      },
 
 
@@ -398,6 +399,34 @@ module.exports = {
         couponHelpers.deleteCoupons(req.params.id).then((response)=>{
             res.redirect('/admin/couponManagment')
         })
-     }
+     },
+     catabanner:(req,res)=>{
+        res.render('admin/catabaner',{layout:'admin/adminLayout' ,sidebar:true})
+     },
      
+     catabanerPost:(req,res)=>{
+        console.log(req.body,'cata body');
+        console.log(req.files,'cata pics');
+        const files=req.files
+        const filesname=files.map((file)=>{
+            return file.filename
+        })
+        const catabaner=req.body
+        
+        catabaner.image=filesname
+        productHelpers.addCatabaner(catabaner).then((response)=>{
+            res.redirect('/admin/newarrivals')
+        })
+        
+     },
+
+     deletecataBanner:(req,res)=>{
+        let banerId=req?.params?.id
+         console.log(banerId,'fjfjfj');
+        productHelpers.deleteCatabaner(banerId).then((response)=>{
+          res.redirect('/admin/newarrivals')
+        })
+        
+      }
+    
 }
