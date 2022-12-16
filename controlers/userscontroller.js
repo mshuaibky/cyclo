@@ -272,8 +272,9 @@ module.exports = {
 try {
   
   let totalamount = await userHelpers.getTotalAmount(req?.session?.user?._id)
-  totalamount=totalamount-couponAmount
-  req.body.userId = req?.session?.user?._id
+  totalamount=totalamount-couponAmount;
+  req.body.userId = req?.session?.user?._id;
+console.log(req?.session?.user?._id,'user id from place order')
   userHelpers.placeOrder(req.body, totalamount,req.session.coupon).then(async(response) => {
    
  
