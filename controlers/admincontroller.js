@@ -329,7 +329,7 @@ module.exports = {
      },
      coupon:(req,res)=>{
         couponHelpers.getAllCoupons().then((allcoupons)=>{
-
+            //    hhhh 123
             res.render('admin/couponmanagment',{layout:'admin/adminLayout' ,sidebar:true,allcoupons})
 
         })
