@@ -330,6 +330,7 @@
    
 
   function delivery(value,orderId,proId,userId){
+    console.log('ppppppp');
     console.log(userId);
     Swal.fire({
   title: 'Are you sure?',
@@ -343,7 +344,7 @@
 }).then((result) => {
   if (result.isConfirmed) {
     $.ajax({
-      
+
       url:'/admin/shippingStatus',
       data:{
         value:value.value,
