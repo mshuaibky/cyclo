@@ -291,9 +291,10 @@ module.exports = {
     },
     changeShippingStatus:(req,res)=>{
         
-        console.log(req.body,'namma respoonseee');
+       
        
         adminHelpers.shippingStatus(req.body).then((response)=>{
+            console.log(response,'change shipping status response');
             res.json(response)
         }).catch((error)=>{
             res.json({status:false,error:error.message})

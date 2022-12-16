@@ -108,6 +108,7 @@ module.exports = {
                     }
                 }
             } catch (error) {
+                console.log(error,'error catch');
                reject(error) 
             }
         })
