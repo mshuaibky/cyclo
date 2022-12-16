@@ -407,8 +407,7 @@ module.exports = {
      },
      
      catabanerPost:(req,res)=>{
-        console.log(req.body,'cata body');
-        console.log(req.files,'cata pics');
+       
         const files=req.files
         const filesname=files.map((file)=>{
             return file.filename

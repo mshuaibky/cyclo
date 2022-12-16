@@ -957,6 +957,7 @@ module.exports = {
     },
 
     offeredProduct:(query)=>{
+      
         return new Promise(async(resolve,reject)=>{
             try {
                 console.log(query,'test');

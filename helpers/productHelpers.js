@@ -186,6 +186,7 @@ return new Promise(async(resolve,reject)=>{
 },
 
 addbaners:(data)=>{
+  console.log(data,'daata of main banners');
   return new Promise(async(resolve,reject)=>{
     let baner=await db.banner(data)
     baner.save()
@@ -237,6 +238,7 @@ generateCoupon:()=>{
 },
 
 addCatabaner:(data)=>{
+  console.log(data ,'data of cata banner');
   return new Promise(async(resolve,reject)=>{
     let catabaner=await db.catabaner(data)
     catabaner.save()
