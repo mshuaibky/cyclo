@@ -291,7 +291,7 @@ module.exports = {
     },
     changeShippingStatus:(req,res)=>{
         
-       
+       console.log(req.body,'status body');
        
         adminHelpers.shippingStatus(req.body).then((response)=>{
             console.log(response,'change shipping status response');
