@@ -273,7 +273,7 @@ module.exports = {
             
             let orderitems= await adminHelpers.getorders()
              
-                     res.render('admin/Orders',{ layout: 'admin/adminLayout',orderitems,nav: true })
+                     res.render('admin/orders',{ layout: 'admin/adminLayout',orderitems,nav: true })
         } catch (error) {
            res.render('error',{error:error.message}) 
         }
