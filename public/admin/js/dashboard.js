@@ -85,14 +85,14 @@ new Chart("mymonthlyChart", {
 
           if ($("#yearlychart").length) {
             console.log(yearly[0],'aahaha');
-            var xValues = [2018,2019,2020,2021,2022,2023,2024,2025,2026,2027];
+            var xValues = [2018,2019,2020,2021,2022];
   
             new Chart("yearlychart", {
               type: "line",
               data: {
                 labels: xValues,
                 datasets: [{ 
-                  data: [yearly[0].totalRevenue,yearly[1].totalRevenue,yearly[2].totalRevenue,yearly[3].totalRevenue,yearly[4].totalRevenue],
+                  data: [0,0,0,0,yearly[0].totalRevenue],
                   borderColor: "red",
                   fill: false
                 }]

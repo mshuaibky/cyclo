@@ -619,7 +619,7 @@ try {
   gettingProducts:async(req,res)=>{
    let data=await  userHelpers.gettingProducts()
    console.log(data,'data of all  ');
-   res.send({status:true,data:data})
+   res.send(data)
   }
  
 }
