@@ -614,6 +614,11 @@ try {
        res.render('shop', { nav: true, footer: true,products,cartproducts,cartcount})
 
 
+  },
+  gettingProducts:async(req,res)=>{
+   let data=await  userHelpers.gettingProducts()
+   console.log(data,'data of all  ');
+   res.send({status:true,data:data})
   }
  
 }

@@ -76,7 +76,7 @@
                         <div class="header-search-wrapper search-wrapper-wide">
                             <label for="q" class="sr-only">Search</label>
                             <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
-                            <input type="search" class="form-control" name="q" id="q" placeholder="Search product ..." required>
+                            <input type="search" class="form-control" onkeyup="closeSearch()" autocomplete="off" name="q" id="q" data-search placeholder="Search in..." required>
                         </div><!-- End .header-search-wrapper -->
                     </form>
                 </div><!-- End .header-search -->
@@ -181,4 +181,83 @@
             
         </div><!-- End .container -->
     </div><!-- End .header-bottom -->
+
+    <div class=" mx-auto sdiv">
+        <div class="user-cards" data-user-cards-container></div>
+        <template data-user-template>
+          <div class="card" id="cardSearch" onclick="myFunction(this.querySelector('p'))" style="position: relative;">
+            <div class="header" data-header></div>
+            <div class="body" data-body></div>
+            <p class="_id" id="idSearch" hidden data-id></p>
+            <img data-img src="" style="height: 50px; width:50px; position: absolute; right: 10px;">
+          </div>
+        </template>
+      </div>
+
 </header><!-- End .header -->
+<script>
+    const userCardTemplate = document.querySelector("[data-user-template]")
+    const userCardContainer = document.querySelector("[data-user-cards-container]")
+    const searchInput = document.querySelector("[data-search]")
+    let boolSearch = userCardContainer.classList
+    if (searchInput.value.trim().length == 0) {
+      boolSearch.add("hide")
+    } else {
+      boolSearch.remove("hide")
+    }
+    let products = [new Set()]
+    searchInput.addEventListener("input", e => {
+      const value = e.target.value.trim().toLowerCase()
+      products.forEach(product => {
+        const isVisible =
+          product.name.toLowerCase().includes(value) ||
+          product.category.includes(value)
+        product.element.classList.toggle("hide", !isVisible)
+      })
+    })
+  
+    fetch("/getProducts", {
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(res => res.json())
+      .then(data => {
+        
+        console.log(data,'products');
+        products = data.map(product => {
+          const card = userCardTemplate.content.cloneNode(true).children[0]
+          const header = card.querySelector("[data-header]")
+          const body = card.querySelector("[data-body]")
+          const id = card.querySelector("[data-id]")
+          const image = card.querySelector("[data-img]")
+          header.textContent = product.name
+          body.textContent = product.catagory
+          id.textContent = product._id
+          image.src = `/product-images/${product.image[0]}`
+          userCardContainer.append(card)
+          return {
+            name: product.name,
+            category: product.category,
+            id: product._id,
+            element: card
+          }
+        })
+      })
+  
+    function myFunction(input) {
+      let tag = input.innerText
+      location.href = `/single-product/${tag}`
+    }
+  
+    function closeSearch() {
+
+      let boolSearch = userCardContainer.classList
+      if (searchInput.value.trim().length == 0) {
+        boolSearch.add("hide")
+      } else {
+        boolSearch.remove("hide")
+      }
+    }
+  </script>

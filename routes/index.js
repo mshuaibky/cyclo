@@ -109,6 +109,8 @@ router.get('/catagory',controller.cataProdect)
 
 router.get('/cata',controller.cataproduct)
 
+router.get('/getProducts',controller.gettingProducts)
+
 
 
 

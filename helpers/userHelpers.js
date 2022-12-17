@@ -1084,5 +1084,13 @@ module.exports = {
 
 
         })
+    },
+
+    gettingProducts:()=>{
+        return new Promise(async(resolve,reject)=>{
+        let products=await db.product.find({})
+        console.log(products,'ethoooo products');
+        resolve(products)
+        })
     }
 }
