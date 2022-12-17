@@ -36,9 +36,10 @@ module.exports = {
   
       let banners=await   productHelpers.getAllBaners()
       let catabaners=await  productHelpers.getcataBaners()
-
+      console.log(catabaners,'ella catabanersum');
+      let products=await productHelpers.getAllProducts()
         let cartcount = await userHelpers.getCartCount(req?.session?.user?._id)
-        res.render('index', { user, nav: true, footer: true, cartcount,banners,catabaners });
+        res.render('index', { user, nav: true, footer: true, cartcount,banners,catabaners,products });
     } catch (error) {
       res.render('error',{error:error.message})
     }

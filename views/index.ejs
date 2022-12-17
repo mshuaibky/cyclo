@@ -58,7 +58,6 @@
 
 
                  
-                 <% console.log(catabaners,'caata baners indaa'); %> 
                  <% catabaners.forEach((baners)=>{ %> 
          
                     <div class="col-6 col-sm-4 col-lg-2">
@@ -83,15 +82,15 @@
             <div class="row justify-content-center">
                 <div class="col-md-6 col-lg-4">
                     <div class="banner banner-overlay banner-overlay-light">
-                        <a href="#">
-                            <img src="assets/images/demos/demo-4/banners/banner-1.png" alt="Banner">
+                        <a href="/shop">
+                            <img src="assets/banner-images/1671240834629-Athletes by  Tim Tadder Commercial Photography.jpg" alt="Banner">
                         </a>
 
                         <div class="banner-content">
                             <h4 class="banner-subtitle"><a href="#">Smart Offer</a></h4><!-- End .banner-subtitle -->
-                            <h3 class="banner-title"><a href="#">Save $150 <strong>on Samsung <br>Galaxy
+                            <h3 class="banner-title"><a href="#">Save Rs 1500 <strong>on mountain <br>bikes
                                         Note9</strong></a></h3><!-- End .banner-title -->
-                            <a href="#" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
+                            <a href="/shop" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
                         </div><!-- End .banner-content -->
                     </div><!-- End .banner -->
                 </div><!-- End .col-md-4 -->
@@ -99,7 +98,7 @@
                 <div class="col-md-6 col-lg-4">
                     <div class="banner banner-overlay banner-overlay-light">
                         <a href="#">
-                            <img src="assets/images/demos/demo-4/banners/banner-2.jpg" alt="Banner">
+                            <img src="assets/banner-images/1671241221097-Cyclist_ Light Trails.jpg" alt="Banner">
                         </a>
 
                         <div class="banner-content">
@@ -139,6 +138,7 @@
 
             </div><!-- End .heading -->
 
+            
             <div class="tab-content tab-content-carousel just-action-icons-sm">
                 <div class="tab-pane p-0 fade show active" id="new-all-tab" role="tabpanel"
                     aria-labelledby="new-all-link">
@@ -166,34 +166,35 @@
                                     }
                                 }
                             }'>
+                            <% products.forEach((product)=>{ %> 
                         <div class="product product-2">
                             <figure class="product-media">
                                 <span class="product-label label-circle label-top">Top</span>
-                                <a href="product.html">
-                                    <img src="assets/images/demos/demo-4/products/product-1.jpg" alt="Product image"
+                                <a href="/shop">
+                                    <img src="/product-images/<%= product.image[0]  %> " alt="Product image"
                                         class="product-image">
                                 </a>
 
                                 <div class="product-action-vertical">
-                                    <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
+                                    <a href="/shop" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                                 </div><!-- End .product-action -->
 
                                 <div class="product-action">
-                                    <a href="/product" class="btn-product btn-cart" title="Add to cart"><span>add to
+                                    <a href="/shop" class="btn-product btn-cart" title="Add to cart"><span>add to
                                             cart</span></a>
-                                    <a href="popup/quickView.html" class="btn-product btn-quickview"
+                                    <a href="/shop" class="btn-product btn-quickview"
                                         title="Quick view"><span>quick view</span></a>
                                 </div><!-- End .product-action -->
                             </figure><!-- End .product-media -->
 
                             <div class="product-body">
                                 <div class="product-cat">
-                                    <a href="#">Laptops</a>
+                                    <a href="#"><%= product.catagory  %> </a>
                                 </div><!-- End .product-cat -->
-                                <h3 class="product-title"><a href="product.html">MacBook Pro 13" Display, i5</a></h3>
+                                <h3 class="product-title"><a href="/shop"><%= product.name  %> </a></h3>
                                 <!-- End .product-title -->
                                 <div class="product-price">
-                                    $1,199.99
+                                  <%= product.Offerprice  %> 
                                 </div><!-- End .product-price -->
                                 <div class="ratings-container">
                                     <div class="ratings">
@@ -204,199 +205,18 @@
                             </div><!-- End .product-body -->
                         </div><!-- End .product -->
 
-                        <div class="product product-2">
-                            <figure class="product-media">
-                                <span class="product-label label-circle label-top">Top</span>
-                                <a href="product.html">
-                                    <img src="assets/images/demos/demo-4/products/product-1.jpg" alt="Product image"
-                                        class="product-image">
-                                </a>
+                        <% }) %> 
 
-                                <div class="product-action-vertical">
-                                    <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
-                                </div><!-- End .product-action -->
+                        
+                        
 
-                                <div class="product-action">
-                                    <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                            cart</span></a>
-                                    <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                        title="Quick view"><span>quick view</span></a>
-                                </div><!-- End .product-action -->
-                            </figure><!-- End .product-media -->
+                        
 
-                            <div class="product-body">
-                                <div class="product-cat">
-                                    <a href="#">Laptops</a>
-                                </div><!-- End .product-cat -->
-                                <h3 class="product-title"><a href="product.html">MacBook Pro 13" Display, i5</a></h3>
-                                <!-- End .product-title -->
-                                <div class="product-price">
-                                    $1,199.99
-                                </div><!-- End .product-price -->
-                                <div class="ratings-container">
-                                    <div class="ratings">
-                                        <div class="ratings-val" style="width: 100%;"></div><!-- End .ratings-val -->
-                                    </div><!-- End .ratings -->
-                                    <span class="ratings-text">( 4 Reviews )</span>
-                                </div><!-- End .rating-container -->
-                            </div><!-- End .product-body -->
-                        </div><!-- End .product -->
-
-                        <div class="product product-2">
-                            <figure class="product-media">
-                                <span class="product-label label-circle label-top">Top</span>
-                                <a href="product.html">
-                                    <img src="assets/images/demos/demo-4/products/product-1.jpg" alt="Product image"
-                                        class="product-image">
-                                </a>
-
-                                <div class="product-action-vertical">
-                                    <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
-                                </div><!-- End .product-action -->
-
-                                <div class="product-action">
-                                    <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                            cart</span></a>
-                                    <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                        title="Quick view"><span>quick view</span></a>
-                                </div><!-- End .product-action -->
-                            </figure><!-- End .product-media -->
-
-                            <div class="product-body">
-                                <div class="product-cat">
-                                    <a href="#">Laptops</a>
-                                </div><!-- End .product-cat -->
-                                <h3 class="product-title"><a href="product.html">MacBook Pro 13" Display, i5</a></h3>
-                                <!-- End .product-title -->
-                                <div class="product-price">
-                                    $1,199.99
-                                </div><!-- End .product-price -->
-                                <div class="ratings-container">
-                                    <div class="ratings">
-                                        <div class="ratings-val" style="width: 100%;"></div><!-- End .ratings-val -->
-                                    </div><!-- End .ratings -->
-                                    <span class="ratings-text">( 4 Reviews )</span>
-                                </div><!-- End .rating-container -->
-                            </div><!-- End .product-body -->
-                        </div><!-- End .product -->
-
-                        <div class="product product-2">
-                            <figure class="product-media">
-                                <span class="product-label label-circle label-top">Top</span>
-                                <a href="product.html">
-                                    <img src="assets/images/demos/demo-4/products/product-1.jpg" alt="Product image"
-                                        class="product-image">
-                                </a>
-
-                                <div class="product-action-vertical">
-                                    <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
-                                </div><!-- End .product-action -->
-
-                                <div class="product-action">
-                                    <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                            cart</span></a>
-                                    <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                        title="Quick view"><span>quick view</span></a>
-                                </div><!-- End .product-action -->
-                            </figure><!-- End .product-media -->
-
-                            <div class="product-body">
-                                <div class="product-cat">
-                                    <a href="#">Laptops</a>
-                                </div><!-- End .product-cat -->
-                                <h3 class="product-title"><a href="product.html">MacBook Pro 13" Display, i5</a></h3>
-                                <!-- End .product-title -->
-                                <div class="product-price">
-                                    $1,199.99
-                                </div><!-- End .product-price -->
-                                <div class="ratings-container">
-                                    <div class="ratings">
-                                        <div class="ratings-val" style="width: 100%;"></div><!-- End .ratings-val -->
-                                    </div><!-- End .ratings -->
-                                    <span class="ratings-text">( 4 Reviews )</span>
-                                </div><!-- End .rating-container -->
-                            </div><!-- End .product-body -->
-                        </div><!-- End .product -->
-
-                        <div class="product product-2">
-                            <figure class="product-media">
-                                <span class="product-label label-circle label-top">Top</span>
-                                <a href="product.html">
-                                    <img src="assets/images/demos/demo-4/products/product-1.jpg" alt="Product image"
-                                        class="product-image">
-                                </a>
-
-                                <div class="product-action-vertical">
-                                    <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
-                                </div><!-- End .product-action -->
-
-                                <div class="product-action">
-                                    <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                            cart</span></a>
-                                    <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                        title="Quick view"><span>quick view</span></a>
-                                </div><!-- End .product-action -->
-                            </figure><!-- End .product-media -->
-
-                            <div class="product-body">
-                                <div class="product-cat">
-                                    <a href="#">Laptops</a>
-                                </div><!-- End .product-cat -->
-                                <h3 class="product-title"><a href="product.html">MacBook Pro 13" Display, i5</a></h3>
-                                <!-- End .product-title -->
-                                <div class="product-price">
-                                    $1,199.99
-                                </div><!-- End .product-price -->
-                                <div class="ratings-container">
-                                    <div class="ratings">
-                                        <div class="ratings-val" style="width: 100%;"></div><!-- End .ratings-val -->
-                                    </div><!-- End .ratings -->
-                                    <span class="ratings-text">( 4 Reviews )</span>
-                                </div><!-- End .rating-container -->
-                            </div><!-- End .product-body -->
-                        </div><!-- End .product -->
-
-                        <div class="product product-2">
-                            <figure class="product-media">
-                                <span class="product-label label-circle label-top">Top</span>
-                                <a href="product.html">
-                                    <img src="assets/images/demos/demo-4/products/product-1.jpg" alt="Product image"
-                                        class="product-image">
-                                </a>
-
-                                <div class="product-action-vertical">
-                                    <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
-                                </div><!-- End .product-action -->
-
-                                <div class="product-action">
-                                    <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                            cart</span></a>
-                                    <a href="popup/quickView.html" class="btn-product btn-quickview"
-                                        title="Quick view"><span>quick view</span></a>
-                                </div><!-- End .product-action -->
-                            </figure><!-- End .product-media -->
-
-                            <div class="product-body">
-                                <div class="product-cat">
-                                    <a href="#">Laptops</a>
-                                </div><!-- End .product-cat -->
-                                <h3 class="product-title"><a href="product.html">MacBook Pro 13" Display, i5</a></h3>
-                                <!-- End .product-title -->
-                                <div class="product-price">
-                                    $1,199.99
-                                </div><!-- End .product-price -->
-                                <div class="ratings-container">
-                                    <div class="ratings">
-                                        <div class="ratings-val" style="width: 100%;"></div><!-- End .ratings-val -->
-                                    </div><!-- End .ratings -->
-                                    <span class="ratings-text">( 4 Reviews )</span>
-                                </div><!-- End .rating-container -->
-                            </div><!-- End .product-body -->
-                        </div><!-- End .product -->
+                    
                     </div><!-- End .owl-carousel -->
                 </div><!-- .End .tab-pane -->
-
             </div><!-- End .container -->
+        
 
          
 
