@@ -520,12 +520,15 @@ module.exports = {
     //     })
     // },
 
-    getOneOrder: () => {
+    getOneOrder: (user) => {
     
         return new Promise(async (resolve, reject) => {
             try {
                 
                 let orders = await db.order.aggregate([
+                    {
+                       $match:{userId:user}
+                    },
                     {
                         $unwind: '$orders'
                     }

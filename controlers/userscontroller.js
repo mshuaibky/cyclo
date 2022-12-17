@@ -31,6 +31,8 @@ module.exports = {
       
       if(req.session.loggedIn){
         res.locals.loggedIn=true
+      }else{
+        res.redirect('/userLogin')
       }
       let user = req?.session?.user
   
@@ -166,7 +168,7 @@ module.exports = {
     userHelpers.doSignup(req.body).then((response) => {
 
       if (response.status) {
-        req.session.loggedIn = true
+        req.session.loggedIn = false
 
         res.send({ value: 'success' })
       }
@@ -310,8 +312,10 @@ console.log(req?.session,'user id from place order')
 
 
   orders: async (req, res) => {
+
 try {
-  let Orders=await userHelpers.getOneOrder()
+  let userId= req.session.user._id
+  let Orders=await userHelpers.getOneOrder(userId)
   res.render('orders', { Orders })
   
 } catch (error) {
